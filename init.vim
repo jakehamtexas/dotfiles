@@ -41,6 +41,8 @@ Plug 'nvim-lua/lsp_extensions.nvim'
 " Autocompletion framework for built-in LSP
 Plug 'nvim-lua/completion-nvim'
 Plug 'APZelos/blamer.nvim'
+Plug 'tpope/vim-surround'
+Plug 'jremmen/vim-ripgrep'
 call plug#end()
 
 let g:rustfmt_autosave = 1
@@ -82,6 +84,7 @@ EOF
 
 
 colorscheme gruvbox
+let mapleader = " "
 
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -102,7 +105,12 @@ nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> <Leader><c-p><cmd>Telescope file_files<cr>
 
+vnoremap <leader>p "_dP
+" Telescope!
+nnoremap <C-p> :Telescope find_files<CR>
+nnoremap <C-f> :Telescope live_grep<CR>
 " Show diagnostic popup on cursor hold
 autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 
