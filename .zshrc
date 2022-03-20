@@ -128,5 +128,5 @@ alias mount-respondent="sshfs -o Ciphers=arcfour -o Compression=no -o IdentityFi
 alias unmount-respondent="fusermount3 -u ~/respondent"
 alias printdoc=lpr
 source /usr/share/nvm/init-nvm.sh
-export DOTFILES_GIT_DIR="$HOME/.dotfiles-git"
-alias dotfiles="/usr/bin/git --git-dir=$DOTFILES_GIT_DIR --work-tree=$HOME"
+source $HOME/dotfiles.alias
+export NVIM_DIR=$HOME/.config/nvim 

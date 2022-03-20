@@ -1,10 +1,38 @@
 # Instructions
 
-1. Install Nvim using either `install-nvim-mac.sh` or `install-nvim-nightly.sh` for Debian distros
-2. Run `setup-symlinks.sh` to symlink `.zshrc` and `init.vim`.
-3. Run `install-vim-plug.sh` to install `vim-plug` and all the plugins.
-4. Install `zsh` if you want it, with `oh-my-zsh`. If you already have it installed, use `exec zsh` to reload your terminal.
+This dotfiles repo is set up to follow the article given by [Gabrielle Young for ackama.com][1].
 
+## Cloning and Installing
+
+Use the following script to correctly clone the bare repo.
 
 ```sh
-sh install-nvim-mac.sh && sh setup-symlinks.sh && sh install-vim-plug.sh && exec zsh
+wget -O - https://raw.githubusercontent.com/jakehamtexas/dotfiles/main/scripts/clone.sh | sh
+```
+
+Next, restart the shell and use `checkout` to "install" the home directory.
+
+```sh
+exec zsh
+dotfiles checkout
+```
+
+## Usage
+
+In `dotfiles.alias` (which is sourced in `.zshrc` and by the clone script above), a shell variable is exported
+that is called `$DOTFILES_GIT_DIR`. It enables the usage of the `~/.dotfiles-git` dir as the bare git directory
+git dir.
+
+There is also an alias for `dotfiles` that is sourced in `dotfiles.alias`. It aliases the `git` command in the `$HOME`
+directory. This means that you can manipulate the dotfiles git repo from any directory, as long as the alias is sourced.
+
+e.g.
+
+```sh
+dotfiles status
+dotfiles add .
+dotfiles commit -m "Dotfiles is just Git!"
+```
+
+[1]: https://www.ackama.com/what-we-think/the-best-way-to-store-your-dotfiles-a-bare-git-repository-explained/
+

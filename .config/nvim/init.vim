@@ -27,27 +27,40 @@ set autochdir
 
 filetype plugin indent on
 
+" Markdown
+source $NVIM_DIR/markdown-preview.vim
+
 " Neovide
 let g:neovide_cursor_animation_length=0.13
 
 " Netrw
-" 25% of screen
-let g:netrw_winsize = 25
 " Disable top info in netrw
 let g:netrw_banner = 0
 " Tree style explorer
 let g:netrw_liststyle = 3
 
+" Color scheme
 syntax enable
 colorscheme gruvbox
+
+" Remaps
 let mapleader = " "
 
+" Tabs
+command! -nargs=1 -complete=file NewTabOpen :tabe <args>
+nnoremap <leader>et :NewTabOpen<space>
+nnoremap <leader>t :tabn<CR>
+nnoremap <leader>T :tabp<CR>
+
 " Open vimrc
-nnoremap <leader><CR> :e $MYVIMRC<CR>
+nnoremap <leader><CR> :NewTabOpen $MYVIMRC<CR>
+
+" Edit plugins
+nnoremap <leader>ep :NewTabOpen ~/.config/nvim/lua/plugins.lua<CR>
+
 " Source vimrc
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " I don't remember what this does~
 vnoremap <leader>p "_dP
 
-nnoremap <leader>ep :e ~/.config/nvim/lua/plugins.lua<CR>
