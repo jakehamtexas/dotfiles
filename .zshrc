@@ -124,9 +124,9 @@ alias screencap="flameshot &"
 alias vim="neovide"
 alias slack="slack &"
 alias grep="rg"
-alias mount-respondent="sshfs -o Ciphers=arcfour -o Compression=no -o IdentityFile=/home/jakeh/.ssh/work_rsa jake@work.local://Users/jake ~/respondent"
+alias mount-respondent="sshfs -o Ciphers=arcfour -o Compression=no -o IdentityFile=$HOME/.ssh/work_rsa jake@work.local://Users/jake ~/respondent"
 alias unmount-respondent="fusermount3 -u ~/respondent"
 alias printdoc=lpr
 source /usr/share/nvm/init-nvm.sh
-export DOTFILES_GIT_DIR="/home/jakeh/.dotfiles-git"
-alias dotfiles="/usr/bin/git --git-dir=/home/jakeh/.dotfiles-git --work-tree=/home/jakeh"
+export DOTFILES_GIT_DIR="$HOME/.dotfiles-git"
+alias dotfiles="/usr/bin/git --git-dir=$DOTFILES_GIT_DIR --work-tree=$HOME"
