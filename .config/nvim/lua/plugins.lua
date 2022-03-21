@@ -3,4 +3,5 @@ return require('packer').startup(function()
   use 'neovim/nvim-lspconfig'
   use 'ellisonleao/gruvbox.nvim'
   use 'iamcco/markdown-preview.nvim'
+  use { 'neoclide/coc.nvim', branch = 'release' }
 end)

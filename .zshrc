@@ -101,7 +101,10 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 alias npm-what=npm pack && tar -xvzf *.tgz && rm -rf package *.tgz
 alias ssh-pi="ssh pi@raspberrypi.local"
-alias ssh-work="ssh -i ~/.ssh/work_rsa jake@work.local"
+alias ssh-respondent="ssh -i ~/.ssh/work_rsa jake@work.local"
+
+SAFEBASE_HOSTNAME="safebase.local"
+alias ssh-safebase="sudo $HOME/scripts/wake-host.sh $SAFEBASE_HOSTNAME && ssh -i $HOME/.ssh/safebase_rsa jake@$SAFEBASE_HOSTNAME"
 alias vim="/usr/local/bin/neovide"
 alias create-react-app="npx create-react-app"
 
