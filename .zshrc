@@ -4,7 +4,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-source $ZSH/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -97,7 +96,7 @@ source $ZSH/oh-my-zsh.sh
 source ~/.oh-my-zsh/custom/plugins/zsh-autocomplete
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+source ~/.zsh-nvm/zsh-nvm.plugin.zsh # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 alias npm-what=npm pack && tar -xvzf *.tgz && rm -rf package *.tgz
 alias ssh-pi="ssh pi@raspberrypi.local"
@@ -108,14 +107,6 @@ alias ssh-safebase="sudo $HOME/scripts/wake-host.sh $SAFEBASE_HOSTNAME && ssh -i
 alias vim="/usr/local/bin/neovide"
 alias create-react-app="npx create-react-app"
 
-### Added by Zinit's installer
-if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-        print -P "%F{160}▓▒░ The clone has failed.%f%b"
-fi
 
 PURE_POWER_MODE=modern
 POWERLEVEL9K_MODE='nerdfont-complete'
@@ -130,6 +121,5 @@ alias grep="rg"
 alias mount-respondent="sshfs -o Ciphers=arcfour -o Compression=no -o IdentityFile=$HOME/.ssh/work_rsa jake@work.local://Users/jake ~/respondent"
 alias unmount-respondent="fusermount3 -u ~/respondent"
 alias printdoc=lpr
-source /usr/share/nvm/init-nvm.sh
 source $HOME/dotfiles.alias
 export NVIM_DIR=$HOME/.config/nvim 
