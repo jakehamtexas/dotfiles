@@ -1,9 +1,11 @@
+# Everything
 .dotfiles-git
 [Dd]esktop
 [Dd]ocuments
 [Bb]ackup
 [Pp]rojects
 [Rr]espondent
+[Dd]ownloads
 
 # For shame!
 [Ss]nap 
@@ -59,3 +61,21 @@ source
 .zinit
 .zsh_history
 .zshrc.pre-oh-my-zsh
+
+.docker
+.doppler
+*.bak
+.zprofile
+
+# Mac
+Movies
+Music
+Templates
+Public
+Pictures
+Library
+
+.CFUserTextEncoding
+.DS_Store
+.zcompdump
+.zsh-nvm
