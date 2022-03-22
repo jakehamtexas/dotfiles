@@ -8,3 +8,5 @@ cd neovim
 sudo make CMAKE_BUILD_TYPE=Release install
 cd ~
 sudo rm -r neovim
+
+./install-packer.sh
