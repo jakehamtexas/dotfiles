@@ -53,6 +53,9 @@ nnoremap <leader>et :NewTabOpen<space>
 nnoremap <leader>l :tabn<CR>
 nnoremap <leader>h :tabp<CR>
 
+" Windows
+nnoremap <leader>sr :vne 'splitright'<CR>
+
 " Configuration
 " Open vimrc
 nnoremap <leader><CR> :NewTabOpen $MYVIMRC<CR>

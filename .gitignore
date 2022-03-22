@@ -73,9 +73,10 @@ Templates
 Public
 Pictures
 Library
+.Trash
 
 .CFUserTextEncoding
 .DS_Store
-.zcompdump
+.zcompdump*
 .zsh-nvm
 
