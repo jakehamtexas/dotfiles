@@ -3,6 +3,13 @@ let mapleader = " "
 
 " ~/.config/nvim/lua/init.lua
 lua require('init')
+
+" When plugins are updated, run PackerCompile
+augroup packer_user_config
+  autocmd!
+  autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+augroup end
+
 set exrc
 set smartindent
 set relativenumber
@@ -24,15 +31,15 @@ set termguicolors
 set scrolloff=8
 set noshowmode
 set colorcolumn=120
-set autochdir
 
 filetype plugin indent on
 
-" CoC
-source $NVIM_DIR/coc.nvim.vim
 
 " Markdown
 source $NVIM_DIR/markdown-preview.vim
+
+" Telescope 
+source $NVIM_DIR/telescope.nvim.vim
 
 " Neovide
 let g:neovide_cursor_animation_length=0.13
@@ -47,14 +54,16 @@ let g:netrw_liststyle = 3
 syntax enable
 colorscheme gruvbox
 
+" Navigation
 " Tabs
 command! -nargs=1 -complete=file NewTabOpen :tabe <args>
 nnoremap <leader>et :NewTabOpen<space>
 nnoremap <leader>l :tabn<CR>
 nnoremap <leader>h :tabp<CR>
-
 " Windows
 nnoremap <leader>sr :vne 'splitright'<CR>
+" Misc
+nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 
 " Configuration
 " Open vimrc
@@ -70,3 +79,15 @@ vnoremap <leader>p "_dP
 " Clipboard
 vnoremap <leader>c "+y
 nnoremap <leader>p "+p
+
+" Terminal
+if has('nvim')
+  tnoremap <Esc> <C-\><C-n>
+endif
+
+" CoC
+source $NVIM_DIR/coc.nvim.vim
+
+" Git
+" Blamer (Git Blame)
+let g:blamer_enabled = 1

@@ -10,6 +10,11 @@ return require('packer').startup(function()
   use 'ellisonleao/gruvbox.nvim'
   use 'iamcco/markdown-preview.nvim'
   use { 'neoclide/coc.nvim', branch = 'release' }
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = { {'nvim-lua/plenary.nvim'} }
+  }
+  use 'APZelos/blamer.nvim'
 
   -- Automatically set up your configuration after cloning packer.nvim
   if packer_bootstrap then
