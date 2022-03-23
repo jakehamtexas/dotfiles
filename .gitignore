@@ -80,3 +80,5 @@ Library
 .zcompdump*
 .zsh-nvm
 
+.viminfo
+.yarn
