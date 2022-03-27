@@ -31,6 +31,10 @@ set termguicolors
 set scrolloff=8
 set noshowmode
 set colorcolumn=120
+set statusline=%=%f\ %{strftime('%H:%M')}
+set switchbuf+=newtab
+set splitright
+
 
 filetype plugin indent on
 
@@ -49,6 +53,10 @@ let g:neovide_cursor_animation_length=0.13
 let g:netrw_banner = 0
 " Tree style explorer
 let g:netrw_liststyle = 3
+" Set size to 25%
+let g:netrw_winsize=25
+" Make copy work
+let g:netrw_keepdir=0
 
 " Color scheme
 syntax enable
@@ -64,21 +72,25 @@ nnoremap <leader>h :tabp<CR>
 nnoremap <leader>sr :vne 'splitright'<CR>
 " Misc
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
+nnoremap <leader>lex :Lex %:p:h<CR>
 
 " Configuration
 " Open vimrc
 nnoremap <leader><CR> :NewTabOpen $MYVIMRC<CR>
 " Edit plugins
 nnoremap <leader>ep :NewTabOpen ~/.config/nvim/lua/plugins.lua<CR>
+" Edit Coc
+nnoremap <leader>ec :NewTabOpen ~/.config/nvim/coc.nvim.vim<CR>
 " Source vimrc
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
-" I don't remember what this does~
+" Delete selected text into _ register and paste on line above
+" i.e. replace the selected text
 vnoremap <leader>p "_dP
 
 " Clipboard
-vnoremap <leader>c "+y
-nnoremap <leader>p "+p
+vnoremap <leader>mc "+y
+nnoremap <leader>mp "+p
 
 " Terminal
 if has('nvim')

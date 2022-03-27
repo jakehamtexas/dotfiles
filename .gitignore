@@ -6,6 +6,7 @@
 [Pp]rojects
 [Rr]espondent
 [Dd]ownloads
+[Aa]pplications
 
 # For shame!
 [Ss]nap 
@@ -82,3 +83,5 @@ Library
 
 .viminfo
 .yarn
+
+.cups

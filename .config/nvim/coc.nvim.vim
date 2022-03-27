@@ -79,8 +79,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <F2> <Plug>(coc-rename)
 
 " Formatting selected code
-xmap <leader>kf <Plug>(coc-format-selected)
-nmap <leader>kf <Plug>(coc-format-selected)
+xmap <C-K> <Plug>(coc-format-selected)
+nmap <C-K> <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -167,4 +167,7 @@ nnoremap <silent><nowait> <leader><space>p  :<C-u>CocListResume<CR>
 let g:coc_disable_transparent_cursor = 1
 
 " Global extensions
-let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-sh', 'coc-git']
+let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-sh', 'coc-git', 'coc-eslint', 'coc-prettier']
+
+" Prettier
+command! -nargs=0 Prettier :CocCommand prettier.forceFormatDocument

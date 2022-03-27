@@ -104,7 +104,6 @@ alias ssh-respondent="ssh -i ~/.ssh/work_rsa jake@work.local"
 
 SAFEBASE_HOSTNAME="safebase.local"
 alias ssh-safebase="sudo $HOME/scripts/wake-host.sh $SAFEBASE_HOSTNAME && ssh -i $HOME/.ssh/safebase_rsa jake@$SAFEBASE_HOSTNAME"
-alias vim="/usr/local/bin/neovide"
 alias create-react-app="npx create-react-app"
 
 
@@ -115,7 +114,7 @@ alias ff="firefox -P Jake &"
 alias ff-work="firefox -P Respondent &"
 alias disco="discord &"
 alias screencap="flameshot &"
-alias vim="neovide"
+alias vim="nvim"
 alias slack="slack &"
 alias grep="rg"
 alias mount-respondent="sshfs -o Ciphers=arcfour -o Compression=no -o IdentityFile=$HOME/.ssh/work_rsa jake@work.local://Users/jake ~/respondent"
@@ -123,3 +122,4 @@ alias unmount-respondent="fusermount3 -u ~/respondent"
 alias printdoc=lpr
 source $HOME/dotfiles.alias
 export NVIM_DIR=$HOME/.config/nvim 
+alias arm64bi='arch -arm64 brew install'
