@@ -24,6 +24,8 @@ return require('packer').startup(function()
   use 'APZelos/blamer.nvim'
   use 'folke/lsp-colors.nvim'
 
+  use 'tpope/vim-eunuch'
+
   -- Automatically set up your configuration after cloning packer.nvim
   if packer_bootstrap then
     require('packer').sync()

@@ -66,10 +66,37 @@ colorscheme gruvbox
 " Tabs
 command! -nargs=1 -complete=file NewTabOpen :tabe <args>
 nnoremap <leader>et :NewTabOpen<space>
-nnoremap <leader>l :tabn<CR>
-nnoremap <leader>h :tabp<CR>
-" Windows
-nnoremap <leader>sr :vne 'splitright'<CR>
+" Splits
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+" Session
+function GitSessionPath()
+  let repo_name = trim(system('basename $(git remote get-url origin) .git'))
+  let branch_name = trim(system('git branch --show-current'))
+
+  let dir = $NVIM_DIR . '/sessions'
+  return printf("%s/%s/%s.vim", dir, repo_name, branch_name)
+endfunction
+
+function GitSeshSave()
+  let path = GitSessionPath()
+
+  let dir = system('dirname ' . path)
+  :exec '!mkdir -p ' . expand(dir)
+  :exec '!touch ' path
+
+  :exec 'mksession!' path
+endfunction
+
+function GitSeshLoad()
+  exec 'source' GitSessionPath()
+endfunction
+
+nnoremap <leader>ss :call GitSeshSave()<CR>
+nnoremap <leader>sl :call GitSeshLoad()<CR>
+
 " Misc
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <leader>lex :Lex %:p:h<CR>

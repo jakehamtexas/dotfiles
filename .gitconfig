@@ -1,5 +1,6 @@
 [user]
 	email = jakehamtexas@gmail.com
 	name = Jake Hamilton
+	signingkey = 49D796A8EFCB9394
 [init]
 	defaultBranch = main

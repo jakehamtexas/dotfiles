@@ -123,3 +123,4 @@ alias printdoc=lpr
 source $HOME/dotfiles.alias
 export NVIM_DIR=$HOME/.config/nvim 
 alias arm64bi='arch -arm64 brew install'
+export GPG_TTY=$(tty)
