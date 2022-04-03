@@ -1,6 +1,7 @@
 /*
 /*/
 !/nvim/
-packer_compiled.lua
+.packer
 sessions
+undodir
 

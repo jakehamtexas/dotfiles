@@ -122,5 +122,6 @@ alias unmount-respondent="fusermount3 -u ~/respondent"
 alias printdoc=lpr
 source $HOME/dotfiles.alias
 export NVIM_DIR=$HOME/.config/nvim 
+export NVIM_PLUGIN_DIR=$NVIM_DIR/plugins
 alias arm64bi='arch -arm64 brew install'
 export GPG_TTY=$(tty)

@@ -4,17 +4,42 @@ if fn.empty(fn.glob(install_path)) > 0 then
   packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
 
-return require('packer').startup(function()
-  use 'wbthomason/packer.nvim' 
-  use 'neovim/nvim-lspconfig'
-  use 'ellisonleao/gruvbox.nvim'
-  use { 'iamcco/markdown-preview.nvim', run = ':call mkdp#util#install()' }
-  use { 'neoclide/coc.nvim', branch = 'release', run= ':CocInstall' }
+local packer = require('packer')
+local util = require('packer.util')
 
-  -- Telescope
+packer.init({
+  compile_path = util.join_paths(vim.fn.stdpath('config'), '.packer', 'packer_compiled.lua')
+})
+
+-- When plugins are updated, run PackerCompile
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins/init.lua source <afile> | PackerCompile
+  augroup end
+]])
+
+return packer.startup(function()
+  local use = use
+  use 'wbthomason/packer.nvim'
+
+  use 'neovim/nvim-lspconfig'
+
+  use 'ellisonleao/gruvbox.nvim'
+  use 'folke/lsp-colors.nvim'
+
+  use { 'iamcco/markdown-preview.nvim', run = ':call mkdp#util#install()' }
+
+  use { 'neoclide/coc.nvim', branch = 'release', run= ':CocInstall' }
+  use 'nvim-treesitter/nvim-treesitter'
+  use 'sheerun/vim-polyglot'
+
+  use { 'prettier/vim-prettier', run = 'yarn install' }
+  use 'svermeulen/vimpeccable'
+
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { 
+    requires = {
       {'nvim-lua/plenary.nvim'},
       { 'nvim-telescope/telescope-live-grep-raw.nvim' }
     }
@@ -22,12 +47,11 @@ return require('packer').startup(function()
 
 
   use 'APZelos/blamer.nvim'
-  use 'folke/lsp-colors.nvim'
 
   use 'tpope/vim-eunuch'
 
   -- Automatically set up your configuration after cloning packer.nvim
   if packer_bootstrap then
-    require('packer').sync()
+    packer.sync()
   end
 end)

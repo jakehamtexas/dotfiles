@@ -4,3 +4,5 @@
 	signingkey = 49D796A8EFCB9394
 [init]
 	defaultBranch = main
+[pull]
+	rebase = true

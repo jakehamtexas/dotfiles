@@ -2,5 +2,7 @@
   "coc.preferences.extensionUpdateCheck": "daily",
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
   "coc.preferences.formatOnSaveFiletypes": ["ts", "tsx", "js", "jsx"],
-  "eslint.packageManager": "yarn"
+  "eslint.packageManager": "yarn",
+  "sumneko-lua.enableNvimLuaDev": true,
+  "Lua.telemetry.enable": false
 }
