@@ -6,12 +6,12 @@ local function packagepath(str)
 end
 package.path = packagepath(nvim_dir) .. packagepath(nvim_plugin_dir) .. packagepath(nvim_dir .. '/config') .. package.path
 
-require('plugins.init')
 
 local g = vim.g
 -- Remaps
 g.mapleader = " "
 
+require('plugins.init')
 
 local o = vim.o
 
