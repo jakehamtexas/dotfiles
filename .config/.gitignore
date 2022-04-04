@@ -1,7 +1,5 @@
 /*
 /*/
 !/nvim/
-.packer
-sessions
-undodir
+!/tmux/
 

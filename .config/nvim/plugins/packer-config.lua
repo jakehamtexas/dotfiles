@@ -31,7 +31,6 @@ return packer.startup(function()
   use { 'iamcco/markdown-preview.nvim', run = ':call mkdp#util#install()' }
 
   use { 'neoclide/coc.nvim', branch = 'release', run= ':CocInstall' }
-  use 'nvim-treesitter/nvim-treesitter'
   use 'sheerun/vim-polyglot'
 
   use { 'prettier/vim-prettier', run = 'yarn install' }
@@ -49,6 +48,9 @@ return packer.startup(function()
   use 'APZelos/blamer.nvim'
 
   use 'tpope/vim-eunuch'
+  use 'tpope/vim-surround'
+
+  use 'christoomey/vim-tmux-navigator'
 
   -- Automatically set up your configuration after cloning packer.nvim
   if packer_bootstrap then

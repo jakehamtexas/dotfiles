@@ -125,3 +125,4 @@ export NVIM_DIR=$HOME/.config/nvim
 export NVIM_PLUGIN_DIR=$NVIM_DIR/plugins
 alias arm64bi='arch -arm64 brew install'
 export GPG_TTY=$(tty)
+export TMUX_DIR=$HOME/.config/tmux
