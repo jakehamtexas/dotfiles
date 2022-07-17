@@ -2,3 +2,5 @@
 # Edit at your own risk.
 # <hostname>	<port>	<incl. subdomains>	<created>	<max-age>
 raw.githubusercontent.com	0	0	1647845155	31536000
+cloud.google.com	0	1	1650578353	63072000
+auth-dev.safebase.io	0	0	1655566743	31536000

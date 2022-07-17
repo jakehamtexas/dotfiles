@@ -46,8 +46,6 @@ o.colorcolumn = '120'
 
 o.statusline = "%=%f\\ %{strftime('%H:%M')}"
 
-vim.opt.switchbuf = vim.opt.switchbuf + "newtab"
-
 vim.opt.splitright = true
 
 vim.cmd('filetype plugin indent on')
@@ -76,58 +74,27 @@ netrw()
 neovide()
 colorscheme()
 
-local function remaps()
+local function critical_remaps()
   local vimp = require('vimp')
-
-  vim.cmd([[command! -nargs=1 -complete=file NewTabOpen :tabe <args>]])
-
-  -- Open new tab at specified path
-  vimp.nnoremap('<leader>et', ':NewTabOpen<space>')
-
-  -- Splits
-  vimp.nnoremap('<C-j>', '<C-w>j')
-  vimp.nnoremap('<C-k>', '<C-w>k')
-  vimp.nnoremap('<C-h>', '<C-w>h')
-  vimp.bind('n', { 'override' }, '<C-l>', '<C-w>l')
-
-  -- Change dir to current buffer path
-  vimp.nnoremap('<leader>cd', '%:p:h<CR>:pwd<CR>')
-
-  -- Left explore opened at buffer dir, with pwd unchanged
-  vimp.nnoremap('<leader>lex', ':Lex %:p:h<CR>')
-
   -- Open $MYVIMRC
-  vimp.nnoremap('<leader><CR>', ':NewTabOpen $MYVIMRC<CR>')
+  vimp.nnoremap('<leader><CR>', ':e $MYVIMRC<CR>')
   -- Edit plugins
-  vimp.nnoremap('<leader>ep', ':NewTabOpen $NVIM_PLUGIN_DIR<CR>')
+  vimp.nnoremap('<leader>ep', ':e $NVIM_PLUGIN_DIR<CR>')
   -- Source vimrc
-    vimp.nnoremap('<leader>sv', function()
-      -- Remove all previously added vimpeccable maps
-      vimp.unmap_all()
-      -- Unload the lua namespace so that the next time require('config.X') is called
-      -- it will reload the file
-      require("config.util").unload_lua_namespace('config')
-     -- Make sure all open buffers are saved
-      vim.cmd('silent wa')
-      -- Execute our vimrc lua file again to add back our maps
-      dofile(vim.fn.stdpath('config') .. '/init.lua')
+  vimp.nnoremap('<leader>sv', function()
+    -- Remove all previously added vimpeccable maps
+    vimp.unmap_all()
+    -- Unload the lua namespace so that the next time require('config.X') is called
+    -- it will reload the file
+    require('config.util').unload_lua_namespace('config')
+   -- Make sure all open buffers are saved
+    vim.cmd('silent wa')
+    -- Execute our vimrc lua file again to add back our maps
+    dofile(vim.fn.stdpath('config') .. '/init.lua')
 
-      print("Reloaded vimrc!")
-    end)
-
-  -- Delete selected text into _ register and paste on line above
-  -- i.e. replace the selected text
-  vimp.vnoremap('<leader>p', '"_dP')
-
-  -- Clipboard
-  vimp.vnoremap('<leader>mc', '"+y')
-  vimp.nnoremap('<leader>mp', '"+p')
-
-  vimp.tnoremap('<Esc>', '<C-\\><C-n>')
-
-  local sesh = require('git-sesh')
-  vimp.nnoremap('<leader>ss', sesh.git_sesh_save)
-  vimp.nnoremap('<leader>sl', sesh.git_sesh_load)
+    print("Reloaded vimrc!")
+  end)
 end
 
-remaps()
+critical_remaps()
+require('remaps')

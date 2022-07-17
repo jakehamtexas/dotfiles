@@ -87,3 +87,24 @@ Library
 
 .cups
 .node
+
+.bigqueryrc
+.eslint_d
+.gradle
+.m2
+.minikube
+.node_repl_history
+.pgadmin
+
+# tmux resurrect stateful stuff
+.tmux
+
+.ts_node_repl_history
+.yarnrc
+
+.android
+AndroidStudioProjects
+
+.wget-hsts
+
+.config/tmux/plugins

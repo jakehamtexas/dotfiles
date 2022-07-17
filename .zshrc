@@ -124,5 +124,16 @@ source $HOME/dotfiles.alias
 export NVIM_DIR=$HOME/.config/nvim 
 export NVIM_PLUGIN_DIR=$NVIM_DIR/plugins
 alias arm64bi='arch -arm64 brew install'
+
+export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/projects/monorepo/develop/.vim"
+alias setup="$HOME/scripts/prepare_dev.sh &"
+alias clint="$HOME/scripts/eslint.sh"
+
 export GPG_TTY=$(tty)
 export TMUX_DIR=$HOME/.config/tmux
+
+export EDITOR=$(which nvim)
+
+if [ ! -d $HOME/.config/tmux/plugins/tpm ]; then
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi

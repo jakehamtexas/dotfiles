@@ -6,3 +6,5 @@
 	defaultBranch = main
 [pull]
 	rebase = true
+[core]
+	editor = /opt/homebrew/bin/nvim
