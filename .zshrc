@@ -134,6 +134,7 @@ export TMUX_DIR=$HOME/.config/tmux
 
 export EDITOR=$(which nvim)
 
-if [ ! -d $HOME/.config/tmux/plugins/tpm ]; then
-  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+if [ ! -d $HOME/.config/tmux/plugins/tpm ]
+then
+  git clone https://github.com/tmux-plugins/tpm $HOME/.config/tmux/plugins/tpm
 fi
