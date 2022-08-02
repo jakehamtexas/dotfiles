@@ -6,6 +6,7 @@ local function source(name)
 end
 
 source('markdown-preview')
+require('easypick-config')
 source('telescope-config')
 source('coc')
 source('blamer')

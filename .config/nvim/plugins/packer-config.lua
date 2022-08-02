@@ -44,6 +44,7 @@ return packer.startup(function()
     }
   }
 
+  use {'axkirillov/easypick.nvim', requires = 'nvim-telescope/telescope.nvim'}
 
   use 'APZelos/blamer.nvim'
 

@@ -126,6 +126,8 @@ export NVIM_PLUGIN_DIR=$NVIM_DIR/plugins
 alias arm64bi='arch -arm64 brew install'
 
 export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/projects/monorepo/develop/.vim"
+export CYPRESS_SECRETS_PATH="$HOME/cypress.env.json"
+
 alias setup="$HOME/scripts/prepare_dev.sh &"
 alias clint="$HOME/scripts/eslint.sh"
 

@@ -9,6 +9,10 @@ nnoremap <leader>fGs <CMD>Telescope git_status<CR>
 nnoremap <leader>fGc <CMD>Telescope git_commits<CR>
 nnoremap <leader>fGb <CMD>Telescope git_bcommits<CR>
 
+nnoremap <leader>fGfd <CMD>:Easypick changed_files_develop<CR>
+nnoremap <leader>fGfm <CMD>:Easypick changed_files_develop<CR>
+nnoremap <leader>fGC <CMD>:Easypick conflicts<CR>
+
 nnoremap <leader>fl <CMD>Telescope builtin<CR>
 nnoremap <leader>fd <CMD>Telescope diagnostics<CR>
 nnoremap <leader>fqf <CMD>Telescope quickfix<CR>
