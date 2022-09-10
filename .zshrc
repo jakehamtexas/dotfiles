@@ -1,6 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# Add rustup completions if they exist
+[ -d $HOME/.zfunc ] && fpath+=$HOME/.zfunc
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -142,3 +145,10 @@ then
 fi
 
 set -o vi
+
+git config core.editor $(which nvim)
+git config commit.gpgsign true
+git config pull.rebase true
+git config init.defaultBranch main
+git config user.email 'jakehamtexas@gmail.com'
+git config user.name 'Jake Hamilton'

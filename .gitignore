@@ -111,3 +111,15 @@ AndroidStudioProjects
 cypress.env.json
 .rest-client
 Sites
+
+.mono
+
+# rustup completions - must be generated
+.zfunc
+
+.steam
+.steampath
+.steampid
+
+.pulse-cookie
+.gitconfig

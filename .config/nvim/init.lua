@@ -2,9 +2,11 @@ local nvim_dir = os.getenv('NVIM_DIR')
 local nvim_plugin_dir = os.getenv('NVIM_PLUGIN_DIR')
 
 local function packagepath(str)
-	return string.format("%s/?.lua;", str);
+  return string.format("%s/?.lua;", str);
 end
-package.path = packagepath(nvim_dir) .. packagepath(nvim_plugin_dir) .. packagepath(nvim_dir .. '/config') .. package.path
+
+package.path = packagepath(nvim_dir) ..
+    packagepath(nvim_plugin_dir) .. packagepath(nvim_dir .. '/config') .. package.path
 
 
 local g = vim.g
@@ -33,7 +35,7 @@ o.backup = false
 
 o.cmdheight = 2
 
-o.undodir =  nvim_dir .. "/undodir"
+o.undodir = nvim_dir .. "/undodir"
 o.undofile = true
 o.incsearch = true
 o.termguicolors = true
@@ -53,11 +55,11 @@ vim.cmd('filetype plugin indent on')
 local function netrw()
   -- Disable top info in netrw
   g.netrw_banner = 0
-    -- Tree style explorer
+  -- Tree style explorer
   g.netrw_liststyle = 3
-    -- Set size to 25%
+  -- Set size to 25%
   g.netrw_winsize = 25
-    -- Make copy work
+  -- Make copy work
   g.netrw_keepdir = 0
 end
 
@@ -87,7 +89,7 @@ local function critical_remaps()
     -- Unload the lua namespace so that the next time require('config.X') is called
     -- it will reload the file
     require('config.util').unload_lua_namespace('config')
-   -- Make sure all open buffers are saved
+    -- Make sure all open buffers are saved
     vim.cmd('silent wa')
     -- Execute our vimrc lua file again to add back our maps
     dofile(vim.fn.stdpath('config') .. '/init.lua')
