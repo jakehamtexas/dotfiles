@@ -40,7 +40,7 @@ return packer.startup(function()
     'nvim-telescope/telescope.nvim',
     requires = {
       {'nvim-lua/plenary.nvim'},
-      { 'nvim-telescope/telescope-live-grep-raw.nvim' }
+      { 'nvim-telescope/telescope-live-grep-args.nvim' }
     }
   }
 

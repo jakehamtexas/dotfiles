@@ -109,4 +109,5 @@ AndroidStudioProjects
 
 .config/tmux/plugins
 cypress.env.json
-
+.rest-client
+Sites

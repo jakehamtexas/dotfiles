@@ -2,10 +2,11 @@ local easypick = require("easypick")
 
 
 local change_files = function(base_branch) 
+	local with_origin = "origin/" .. base_branch
 	return {
 		name = "changed_files_" .. base_branch,
-		command = "git diff --name-only $(git merge-base HEAD " .. base_branch .. " )",
-		previewer = easypick.previewers.branch_diff({ base_branch = base_branch }) 
+		command = "git diff --name-only $(git merge-base HEAD " .. with_origin .. " )",
+		previewer = easypick.previewers.branch_diff({ base_branch = with_origin }) 
 	}
 end
 

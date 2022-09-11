@@ -68,7 +68,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker docker-compose)
+plugins=(zsh-history-filter git zsh-autosuggestions zsh-syntax-highlighting docker docker-compose)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -125,7 +125,7 @@ export NVIM_DIR=$HOME/.config/nvim
 export NVIM_PLUGIN_DIR=$NVIM_DIR/plugins
 alias arm64bi='arch -arm64 brew install'
 
-export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/projects/monorepo/develop/.vim"
+export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/projects/monorepo/work/develop/.vim"
 export CYPRESS_SECRETS_PATH="$HOME/cypress.env.json"
 
 alias setup="$HOME/scripts/prepare_dev.sh &"
@@ -140,3 +140,5 @@ if [ ! -d $HOME/.config/tmux/plugins/tpm ]
 then
   git clone https://github.com/tmux-plugins/tpm $HOME/.config/tmux/plugins/tpm
 fi
+
+set -o vi

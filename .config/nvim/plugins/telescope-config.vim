@@ -1,6 +1,6 @@
 
 nnoremap <leader>ff <CMD>Telescope find_files hidden=true<CR>
-nnoremap <leader>fg <CMD>:lua require('telescope').extensions.live_grep_raw.live_grep_raw()<CR>
+nnoremap <leader>fg <CMD>:lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>
 nnoremap <leader>fcg <CMD>Telescope grep_string hidden=true<CR>
 
 nnoremap <leader>fb <CMD>Telescope buffers<CR>
