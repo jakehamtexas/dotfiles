@@ -146,9 +146,9 @@ fi
 
 set -o vi
 
-git config core.editor $(which nvim)
-git config commit.gpgsign true
-git config pull.rebase true
-git config init.defaultBranch main
-git config user.email 'jakehamtexas@gmail.com'
-git config user.name 'Jake Hamilton'
+git config --global core.editor $(which nvim)
+git config --global commit.gpgsign true
+git config --global pull.rebase true
+git config --global init.defaultBranch main
+git config --global user.email 'jakehamtexas@gmail.com'
+git config --global user.name 'Jake Hamilton'
