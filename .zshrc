@@ -65,13 +65,30 @@ COMPLETION_WAITING_DOTS="true"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
-
+#
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(zsh-history-filter git zsh-autosuggestions zsh-syntax-highlighting docker docker-compose)
+
+plugins=(git docker docker-compose)
+
+source $ZSH/oh-my-zsh.sh
+
+custom_plugins=(
+  'MichaelAquilina/zsh-history-filter'
+  'zsh-users/zsh-autosuggestions'
+  'zsh-users/zsh-syntax-highlighting'
+  'marlonrichert/zsh-autocomplete'
+)
+for plugin in "${custom_plugins[@]}"; do
+  name="$(cut -d "/" -f2 <<<$plugin)"
+  zsh_custom_plugin_path="$ZSH_CUSTOM/plugins/$name"
+  if [ ! -d "$zsh_custom_plugin_path" ]; then
+    git clone https://github.com/"$plugin".git "$zsh_custom_plugin_path"
+  fi
+
+  plugins+=($name)
+done
 
 source $ZSH/oh-my-zsh.sh
 
@@ -99,16 +116,9 @@ source $ZSH/oh-my-zsh.sh
 source ~/.oh-my-zsh/custom/plugins/zsh-autocomplete
 
 export NVM_DIR="$HOME/.nvm"
-source ~/.zsh-nvm/zsh-nvm.plugin.zsh # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+source ~/.zsh-nvm/zsh-nvm.plugin.zsh                               # This loads nvm
 alias npm-what=npm pack && tar -xvzf *.tgz && rm -rf package *.tgz
 alias ssh-pi="ssh pi@raspberrypi.local"
-alias ssh-respondent="ssh -i ~/.ssh/work_rsa jake@work.local"
-
-SAFEBASE_HOSTNAME="safebase.local"
-alias ssh-safebase="sudo $HOME/scripts/wake-host.sh $SAFEBASE_HOSTNAME && ssh -i $HOME/.ssh/safebase_rsa jake@$SAFEBASE_HOSTNAME"
-alias create-react-app="npx create-react-app"
-
 
 PURE_POWER_MODE=modern
 POWERLEVEL9K_MODE='nerdfont-complete'
@@ -124,8 +134,8 @@ alias mount-respondent="sshfs -o Ciphers=arcfour -o Compression=no -o IdentityFi
 alias unmount-respondent="fusermount3 -u ~/respondent"
 alias printdoc=lpr
 source $HOME/dotfiles.alias
-export NVIM_DIR=$HOME/.config/nvim 
-export NVIM_PLUGIN_DIR=$NVIM_DIR/config/plugins
+export NVIM_DIR=$HOME/.config/nvim
+export NVIM_PLUGIN_DIR=$NVIM_DIR/plugins
 alias arm64bi='arch -arm64 brew install'
 
 export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/projects/monorepo/work/develop/.vim"
@@ -139,8 +149,7 @@ export TMUX_DIR=$HOME/.config/tmux
 
 export EDITOR=$(which nvim)
 
-if [ ! -d $HOME/.config/tmux/plugins/tpm ]
-then
+if [ ! -d $HOME/.config/tmux/plugins/tpm ]; then
   git clone https://github.com/tmux-plugins/tpm $HOME/.config/tmux/plugins/tpm
 fi
 
