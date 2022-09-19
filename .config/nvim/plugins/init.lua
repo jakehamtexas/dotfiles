@@ -1,4 +1,5 @@
 require('packer-config')
+vim.notify = require('notify')
 
 local function source(name)
   local path = os.getenv('NVIM_PLUGIN_DIR') .. '/' .. name .. '.vim'
@@ -6,7 +7,7 @@ local function source(name)
 end
 
 source('markdown-preview')
-require('easypick-config')
+require('pickers.init')
 source('telescope-config')
 source('coc')
 source('blamer')

@@ -1,7 +1,8 @@
 local fn = vim.fn
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
+    install_path })
 end
 
 local packer = require('packer')
@@ -30,7 +31,7 @@ return packer.startup(function()
 
   use { 'iamcco/markdown-preview.nvim', run = ':call mkdp#util#install()' }
 
-  use { 'neoclide/coc.nvim', branch = 'release', run= ':CocInstall' }
+  use { 'neoclide/coc.nvim', branch = 'release', run = ':CocInstall' }
   use 'sheerun/vim-polyglot'
 
   use { 'prettier/vim-prettier', run = 'yarn install' }
@@ -39,12 +40,12 @@ return packer.startup(function()
   use {
     'nvim-telescope/telescope.nvim',
     requires = {
-      {'nvim-lua/plenary.nvim'},
+      { 'nvim-lua/plenary.nvim' },
       { 'nvim-telescope/telescope-live-grep-args.nvim' }
     }
   }
 
-  use {'axkirillov/easypick.nvim', requires = 'nvim-telescope/telescope.nvim'}
+  use { "rcarriga/nvim-notify" }
 
   use 'APZelos/blamer.nvim'
 

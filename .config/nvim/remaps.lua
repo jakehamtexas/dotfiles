@@ -1,11 +1,6 @@
 local config_util = require('config.util')
 
-local function remaps() 
-
-  vim.cmd([[command! -nargs=1 -complete=file NewTabOpen :tabe <args>]])
-
-  -- Open new tab at specified path
-  vimp.nnoremap('<leader>et', ':NewTabOpen<space>')
+local function remaps()
 
   -- Splits
   vimp.nnoremap('<C-j>', '<C-w>j')
