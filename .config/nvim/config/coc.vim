@@ -19,11 +19,6 @@ set updatetime=300
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-" Recently vim can merge signcolumn and number column into one
-set signcolumn=number
-
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
@@ -165,7 +160,7 @@ nnoremap <silent><nowait> <leader><space>p  :<C-u>CocListResume<CR>
 let g:coc_disable_transparent_cursor = 1
 
 " Global extensions
-let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-sh', 'coc-git', 'coc-eslint', 'coc-prettier']
+let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-sh', 'coc-eslint', 'coc-prettier']
 
 " Prettier
 command! -nargs=0 Prettier :CocCommand prettier.forceFormatDocument

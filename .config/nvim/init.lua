@@ -1,102 +1,77 @@
 local nvim_dir = os.getenv('NVIM_DIR')
-local nvim_plugin_dir = os.getenv('NVIM_PLUGIN_DIR')
+package.path = nvim_dir .. '/?.lua;' .. package.path
 
-local function packagepath(str)
-  return string.format("%s/?.lua;", str);
+require('global')
+package.path_add(nvim_dir .. '/config')
+
+local fn = vim.fn
+local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+if fn.empty(fn.glob(install_path)) > 0 then
+   IS_BOOTSTRAPPING = true
+   fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
+   vim.cmd [[packadd packer.nim]]
 end
 
-package.path = packagepath(nvim_dir) ..
-    packagepath(nvim_plugin_dir) .. packagepath(nvim_dir .. '/config') .. package.path
+local packer = require('packer')
 
+-- When plugins are updated, run PackerCompile
+local packer_group = vim.api.nvim_create_augroup('Packer', { clear = true })
+vim.api.nvim_create_autocmd('BufWritePost', {
+   command = 'source <afile> | PackerCompile',
+   group = packer_group,
+   pattern = nvim_dir .. '.*'
+})
 
-local g = vim.g
--- Remaps
-g.mapleader = " "
+packer.startup(function(use)
+   use 'wbthomason/packer.nvim'
 
-require('plugins.init')
+   use 'neovim/nvim-lspconfig'
 
-local o = vim.o
+   use 'ellisonleao/gruvbox.nvim'
+   use 'folke/lsp-colors.nvim'
 
-o.exrc = true
-o.smartindent = true
-o.relativenumber = true
-o.nu = true
-o.hlsearch = false
-o.hidden = true
-o.errorbells = false
+   use { 'iamcco/markdown-preview.nvim', run = ':call mkdp#util#install()' }
 
-o.tabstop = 2
-o.softtabstop = o.tabstop
-o.shiftwidth = o.tabstop
+   use { 'neoclide/coc.nvim', branch = 'release', run = ':CocInstall' }
+   use 'sheerun/vim-polyglot'
 
-o.expandtab = true
-o.wrap = false
-o.backup = false
+   use { 'prettier/vim-prettier', run = 'yarn install' }
+   use 'svermeulen/vimpeccable'
 
-o.cmdheight = 2
+   use {
+      'nvim-telescope/telescope.nvim',
+      requires = {
+         { 'nvim-lua/plenary.nvim' },
+         { 'nvim-telescope/telescope-live-grep-args.nvim' }
+      }
+   }
 
-o.undodir = nvim_dir .. "/undodir"
-o.undofile = true
-o.incsearch = true
-o.termguicolors = true
-o.scrolloff = 10
-o.sidescrolloff = 10
+   use { "rcarriga/nvim-notify" }
 
-o.showmode = false
+   use 'APZelos/blamer.nvim'
+   use { 'lewis6991/gitsigns.nvim',
+      requires = { 'nvim-lua/plenary.nvim' },
+      config = function()
+         require('gitsigns').setup()
+      end }
 
-o.colorcolumn = '120'
+   use 'tpope/vim-eunuch'
+   use 'tpope/vim-surround'
 
-o.statusline = "%=%f\\ %{strftime('%H:%M')}"
+   use 'christoomey/vim-tmux-navigator'
 
-vim.opt.splitright = true
+   -- Automatically set up your configuration after cloning packer.nvim
+   if IS_BOOTSTRAPPING then
+      packer.sync()
+   end
+end)
 
-vim.cmd('filetype plugin indent on')
-
-local function netrw()
-  -- Disable top info in netrw
-  g.netrw_banner = 0
-  -- Tree style explorer
-  g.netrw_liststyle = 3
-  -- Set size to 25%
-  g.netrw_winsize = 25
-  -- Make copy work
-  g.netrw_keepdir = 0
+if IS_BOOTSTRAPPING then
+   print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+   print '  You can just restart Neovim when  '
+   print '  Packer Sync is completed. :)))))  '
+   print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+   return
 end
 
-local function neovide()
-  g.neovide_cursor_animation_length = 0.13
-end
-
-local function colorscheme()
-  vim.cmd('syntax enable')
-  vim.cmd('colorscheme gruvbox')
-end
-
-netrw()
-neovide()
-colorscheme()
-
-local function critical_remaps()
-  local vimp = require('vimp')
-  -- Open $MYVIMRC
-  vimp.nnoremap('<leader><CR>', ':e $MYVIMRC<CR>')
-  -- Edit plugins
-  vimp.nnoremap('<leader>ep', ':e $NVIM_PLUGIN_DIR<CR>')
-  -- Source vimrc
-  vimp.nnoremap('<leader>sv', function()
-    -- Remove all previously added vimpeccable maps
-    vimp.unmap_all()
-    -- Unload the lua namespace so that the next time require('config.X') is called
-    -- it will reload the file
-    require('config.util').unload_lua_namespace('config')
-    -- Make sure all open buffers are saved
-    vim.cmd('silent wa')
-    -- Execute our vimrc lua file again to add back our maps
-    dofile(vim.fn.stdpath('config') .. '/init.lua')
-
-    print("Reloaded vimrc!")
-  end)
-end
-
-critical_remaps()
-require('remaps')
+require('config.init')

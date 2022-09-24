@@ -15,14 +15,6 @@ local register_pickers = function(_pickers)
 end
 
 
-function table.contains(table, element)
-  for _, value in pairs(table) do
-    if value == element then
-      return true
-    end
-  end
-end
-
 local function allowed_for_filetype(picker, filetype)
   if picker.filetypes == nil then
     return true

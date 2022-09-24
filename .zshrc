@@ -125,7 +125,7 @@ alias unmount-respondent="fusermount3 -u ~/respondent"
 alias printdoc=lpr
 source $HOME/dotfiles.alias
 export NVIM_DIR=$HOME/.config/nvim 
-export NVIM_PLUGIN_DIR=$NVIM_DIR/plugins
+export NVIM_PLUGIN_DIR=$NVIM_DIR/config/plugins
 alias arm64bi='arch -arm64 brew install'
 
 export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/projects/monorepo/work/develop/.vim"
