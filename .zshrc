@@ -89,38 +89,23 @@ export NVM_DIR="$HOME/.nvm"
 test -f "$HOME/.zsh-nvm/zsh-nvm.plugin.zsh" && source "$HOME/.zsh-nvm/zsh-nvm.plugin.zsh" # This loads nvm
 
 # User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# USER DEFINED ALIASES
 # For a full list of active aliases, run `alias`.
 
-alias npm-what=npm pack && tar -xvzf *.tgz && rm -rf package *.tgz
-alias ssh-pi="ssh pi@raspberrypi.local"
-
+# JAKE CONFIG/ALIASES
+export LANG=en_US.UTF-8
 export PURE_POWER_MODE=modern
 export POWERLEVEL9K_MODE='nerdfont-complete'
-
-alias vim="nvim"
-alias grep="rg"
-
-alias printdoc=lpr
-
 export NVIM_DIR=$HOME/.config/nvim
 export NVIM_PLUGIN_DIR=$NVIM_DIR/plugins
-alias arm64bi='arch -arm64 brew install'
-
-export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/projects/monorepo/work/develop/.vim"
-export CYPRESS_SECRETS_PATH="$HOME/cypress.env.json"
-
-alias setup="$HOME/scripts/prepare_dev.sh &"
-
 export GPG_TTY=$(tty)
 export TMUX_DIR=$HOME/.config/tmux
 export EDITOR=$(which nvim)
+
+alias npm-what=npm pack && tar -xvzf *.tgz && rm -rf package *.tgz
+alias ssh-pi="ssh pi@raspberrypi.local"
+alias vim="nvim"
+alias grep="rg"
+alias printdoc=lpr
 
 if [ ! -d "$TMUX_DIR/plugins/tpm" ]; then
   git clone https://github.com/tmux-plugins/tpm $HOME/.config/tmux/plugins/tpm
@@ -134,6 +119,18 @@ git config --global init.defaultBranch main
 git config --global user.email 'jakehamtexas@gmail.com'
 git config --global user.name 'Jake Hamilton'
 git config --global fetch.prune true
+
+git config --global alias.ca 'commit -a'
+git config --global alias.caa 'commit -a --amend'
+git config --global alias.caan 'commit -a --amend --no-edit'
+
+git config --global alias.fp 'push -u origin --force-with-lease'
+
+git config --global alias.rd 'rebase origin/develop'
+git config --global alias.rid 'rebase -i origin/develop'
+git config --global alias.rc 'rebase --continue'
+
+git config --global alias.aliases "! git config --get-regexp '^alias\.' | cat"
 
 source $HOME/dotfiles.alias
 
@@ -150,5 +147,22 @@ handle_home_git_dir () {
 chpwd () {
   handle_home_git_dir
 }
+
 handle_home_git_dir 
+
+# SAFEBASE CONFIG/ALIASES
+export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/projects/monorepo/work/develop/.vim"
+export CYPRESS_SECRETS_PATH="$HOME/cypress.env.json"
+
+alias arm64bi='arch -arm64 brew install'
+alias setup="$HOME/scripts/prepare_dev.sh &"
+
+
+
+
+
+
+
+
+
 

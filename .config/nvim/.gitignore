@@ -1,4 +1,5 @@
 .packer
 sessions
+undodir
 .undodir
 plugin
