@@ -67,6 +67,8 @@ g.netrw_winsize = 25
 -- Make copy work
 g.netrw_keepdir = 0
 
+g.sql_type_default = 'pgsql'
+
 -- REMAPS!
 g.mapleader = " "
 g.maplocalleader = " "
