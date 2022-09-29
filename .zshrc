@@ -4,8 +4,7 @@
 # Path to your oh-my-zsh installation.
 ZSH="$HOME/.oh-my-zsh"
 
-if [ ! -d "$ZSH" ]
-then
+if [ ! -d "$ZSH" ]; then
   export KEEP_ZSHRC=yes
   sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 fi
@@ -82,7 +81,7 @@ for plugin in "${_plugins[@]}"; do
   plugins+=($name)
 done
 
-source $ZSH/oh-my-zsh.sh
+source $ZSH/oh-my-zsh.sh >/dev/null 2>&1
 source $ZSH_CUSTOM/plugins/zsh-autocomplete
 
 export NVM_DIR="$HOME/.nvm"
@@ -121,7 +120,9 @@ git config --global user.name 'Jake Hamilton'
 git config --global fetch.prune true
 
 git config --global alias.ca 'commit -a'
+git config --global alias.cam 'commit -a -m'
 git config --global alias.caa 'commit -a --amend'
+git config --global alias.caam 'commit -a --amend -m'
 git config --global alias.caan 'commit -a --amend --no-edit'
 
 git config --global alias.fp 'push -u origin --force-with-lease'
@@ -144,11 +145,35 @@ handle_home_git_dir () {
   fi
 }
 
+dotfiles_diff() {
+  local branch_status=$(dotfiles status -b --porcelain)
+  local without_leading_hashes=(${(s/##/)branch_status})
+  local branches_only=$(echo $without_leading_hashes | head -1)
+  local branches=(${(s/.../)branches_only})
+
+  local local_branch=$(echo $branches | cut -d' ' -f2)
+  local remote_branch=$(echo $branches | cut -d' ' -f3)
+
+  dotfiles -c color.status=always diff $local_branch $remote_branch
+}
+
+check_for_new_dotfiles_revision () {
+  local dotfiles_diff=$(dotfiles_diff)
+  [ -z $dotfiles_diff ] && exit
+
+  echo ''
+  echo 'New changes in upstream dotfiles!'
+  echo 'Use function "dotfiles_diff" to see them'
+  echo ''
+}
+
 chpwd () {
   handle_home_git_dir
+  check_for_new_dotfiles_revision
 }
 
 handle_home_git_dir 
+check_for_new_dotfiles_revision 
 
 # SAFEBASE CONFIG/ALIASES
 export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/projects/monorepo/work/develop/.vim"
@@ -156,13 +181,4 @@ export CYPRESS_SECRETS_PATH="$HOME/cypress.env.json"
 
 alias arm64bi='arch -arm64 brew install'
 alias setup="$HOME/scripts/prepare_dev.sh &"
-
-
-
-
-
-
-
-
-
 
