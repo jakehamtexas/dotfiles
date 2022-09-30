@@ -154,16 +154,19 @@ dotfiles_diff() {
   local local_branch=$(echo $branches | cut -d' ' -f2)
   local remote_branch=$(echo $branches | cut -d' ' -f3)
 
-  dotfiles -c color.status=always diff $local_branch $remote_branch
+  dotfiles diff --color=always $local_branch $remote_branch
 }
 
 check_for_new_dotfiles_revision () {
-  local dotfiles_diff=$(dotfiles_diff)
-  [ -z $dotfiles_diff ] && exit
+  local diff=$(dotfiles_diff)
+
+  if [ -z $diff ]; then
+    return
+  fi
 
   echo ''
   echo 'New changes in upstream dotfiles!'
-  echo 'Use function "dotfiles_diff" to see them'
+  echo 'Use function "dotfiles_diff" to see them.'
   echo ''
 }
 
@@ -173,7 +176,7 @@ chpwd () {
 }
 
 handle_home_git_dir 
-check_for_new_dotfiles_revision 
+check_for_new_dotfiles_revision
 
 # SAFEBASE CONFIG/ALIASES
 export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/projects/monorepo/work/develop/.vim"
