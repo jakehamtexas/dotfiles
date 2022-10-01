@@ -128,3 +128,11 @@ Sites
 .psql_history
 .gsutil
 .enhancd
+
+# .w3m
+.w3m/w3mcache*
+.w3m/w3mtmp*
+.w3m/cookie
+.w3m/history
+
+.i3.log

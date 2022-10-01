@@ -61,6 +61,10 @@ packer.startup(function(use)
    use 'pantharshit00/vim-prisma'
 
    use 'christoomey/vim-tmux-navigator'
+   use { 'norcalli/nvim-colorizer.lua',
+      config = function()
+         require('colorizer').setup()
+      end }
 
    -- Automatically set up your configuration after cloning packer.nvim
    if IS_BOOTSTRAPPING then

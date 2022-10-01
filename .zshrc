@@ -84,8 +84,15 @@ done
 source $ZSH/oh-my-zsh.sh >/dev/null 2>&1
 source $ZSH_CUSTOM/plugins/zsh-autocomplete
 
-export NVM_DIR="$HOME/.nvm"
-test -f "$HOME/.zsh-nvm/zsh-nvm.plugin.zsh" && source "$HOME/.zsh-nvm/zsh-nvm.plugin.zsh" # This loads nvm
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  \. "$NVM_DIR/nvm.sh" # This loads nvm
+else
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+  \. "$NVM_DIR/nvm.sh" # This loads nvm
+  nvm install 16
+fi
 
 # User configuration
 # For a full list of active aliases, run `alias`.
@@ -134,6 +141,50 @@ git config --global alias.rc 'rebase --continue'
 git config --global alias.aliases "! git config --get-regexp '^alias\.' | cat"
 
 source $HOME/dotfiles.alias
+
+_findp () {
+  ps aux | rg -v rg | rg $1
+}
+
+findp () {
+  if [ -z $1 ]; then
+    echo "Not enough arguments, must include a search term"
+    return 1
+  fi
+
+  find_out=$(ps aux | rg -v rg | rg $1)
+  if [ -z $find_out ]; then
+    echo "Nothing found when searching: '$1'"
+    return 1
+  fi
+
+  echo $find_out
+}
+
+killp () {
+  if [ -z $1 ]; then
+    echo "Not enough arguments, must include a search term"
+    return 1
+  fi
+
+  find_out=$(_findp $1)
+  if [ -z $find_out ]; then
+    echo "Nothing found when searching: '$1'"
+    return 1
+  fi
+
+  echo $find_out
+
+  choice=
+  vared -p 'Kill these? [Y/n]' choice
+
+  if [[ $choice =~ ^[Yy]$ ]]; then
+    echo $find_out | awk '{ print $2 }' | sudo xargs kill
+    return
+  fi 
+
+  return 1
+}
 
 handle_home_git_dir () {
   if [ "$PWD" = "$HOME" ]; then
@@ -185,3 +236,8 @@ export CYPRESS_SECRETS_PATH="$HOME/cypress.env.json"
 alias arm64bi='arch -arm64 brew install'
 alias setup="$HOME/scripts/prepare_dev.sh &"
 
+
+if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && command -v startx; then
+  exec startx
+fi
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
