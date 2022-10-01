@@ -1,0 +1,10 @@
+- Figure out flickering tab complete for zsh extensions
+- Script extension installs for firefox
+- CheckBackspace error
+- i3 polybar
+- Remap caps to backspace
+- Fix upstream updates script so that it doesn't show output when the local repo is the only one with changes
+- Write linux install Script
+- Move from CoC to LSP
+- Add rust stuff to install steps
+- Separate personal, work, and general config/dotfiles
