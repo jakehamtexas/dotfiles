@@ -1,7 +1,6 @@
 - Figure out flickering tab complete for zsh extensions
 - Script extension installs for firefox
 - i3 polybar
-- Remap caps to backspace
 - Write linux install Script
 - Move from CoC to LSP
 - Add rust stuff to install steps

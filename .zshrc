@@ -254,7 +254,7 @@ dotfiles_diff() {
 chpwd () {
   _can_check && _check_for_new_dotfiles_revision
   handle_home_dir
-  $TMUX_DIR/install.sh
+  $TMUX_DIR/install.sh quiet
 }
 
 chpwd

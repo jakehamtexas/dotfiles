@@ -20,4 +20,4 @@ ip=$(ping -c 1 $host | grep PING | awk '{ print $3 }' | sed 's/[()]//g')
 echo "Sending magic WOL packet to:"
 echo "Host: $host"
 echo "IP: $ip"
-sudo arp-scan $ip | grep $ip | awk '{ print $2 }' | xargs wakeonlan > /dev/null
+sudo arp-scan $ip | grep $ip | awk '{ print $2 }' | xargs wol
