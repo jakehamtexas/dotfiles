@@ -129,10 +129,18 @@ git config --global user.email 'jakehamtexas@gmail.com'
 git config --global user.name 'Jake Hamilton'
 git config --global fetch.prune true
 
+git config --global alias.a add
+git config --global alias.aa 'add .'
+git config --global alias.ap 'add -p'
+git config --global alias.ca commit
 git config --global alias.ca 'commit -a'
+git config --global alias.cp 'commit -p'
 git config --global alias.cam 'commit -a -m'
+git config --global alias.cpm 'commit -p -m'
 git config --global alias.caa 'commit -a --amend'
 git config --global alias.caam 'commit -a --amend -m'
+git config --global alias.can 'commit --amend --no-edit'
+git config --global alias.cpan 'commit -p --amend --no-edit'
 git config --global alias.caan 'commit -a --amend --no-edit'
 
 git config --global alias.fp 'push -u origin --force-with-lease'
