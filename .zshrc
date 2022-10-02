@@ -201,19 +201,16 @@ handle_home_git_dir () {
 }
 
 dotfiles_diff() {
-  local branch_status=$(dotfiles status -b --porcelain)
-  local without_leading_hashes=(${(s/##/)branch_status})
-  local branches_only=$(echo $without_leading_hashes | head -1)
-  local branches=(${(s/.../)branches_only})
+  local remote=$(git remote show)
 
-  local local_branch=$(echo $branches | cut -d' ' -f2)
-  local remote_branch=$(echo $branches | cut -d' ' -f3)
-
-  dotfiles diff --color=always $local_branch $remote_branch
+  dotfiles diff --color=always main $remote/main
 }
 
 check_for_new_dotfiles_revision () {
-  local diff=$(dotfiles_diff)
+  git fetch
+
+  git rev-list main..$FETCH_HEAD --count
+  git rev-list $FETCH_HEAD..main --count
 
   if [ -z $diff ]; then
     return
