@@ -102,7 +102,6 @@ export LANG=en_US.UTF-8
 export PURE_POWER_MODE=modern
 export POWERLEVEL9K_MODE='nerdfont-complete'
 export NVIM_DIR=$HOME/.config/nvim
-export NVIM_PLUGIN_DIR=$NVIM_DIR/plugins
 export GPG_TTY=$(tty)
 export TMUX_DIR=$HOME/.config/tmux
 export TMUX_TPM_DIR_PATH=$TMUX_DIR/plugins/tpm
@@ -190,8 +189,13 @@ killp () {
   return 1
 }
 
-handle_home_git_dir () {
-  if [ "$PWD" = "$HOME" ] && [ -n "$DISPLAY" ]; then
+export DOTFILES_STATE=/tmp/dotfiles
+export DOTFILES_ORIGIN_MAIN_REV_CACHE_PATH=$DOTFILES_STATE/main_rev_cache
+export DOTFILES_LAST_REMOTE_CHECK_TIME_PATH=$DOTFILES_STATE/last_remote_check_time
+
+
+handle_home_dir () {
+  if [ "$PWD" = "$HOME" ] && [ -n "$DISPLAY" ] ; then
     export GIT_DIR=$DOTFILES_GIT_DIR
     export GIT_WORK_TREE=$HOME
   else
@@ -200,19 +204,40 @@ handle_home_git_dir () {
   fi
 }
 
-dotfiles_diff() {
-  local remote=$(git remote show)
-
-  dotfiles diff --color=always main $remote/main
+_dotfiles_head() {
+  dotfiles rev-parse HEAD
 }
 
-check_for_new_dotfiles_revision () {
-  git fetch
+_dotfiles_origin_main() {
+  cat $DOTFILES_ORIGIN_MAIN_REV_CACHE_PATH
+}
 
-  git rev-list main..$FETCH_HEAD --count
-  git rev-list $FETCH_HEAD..main --count
 
-  if [ -z $diff ]; then
+_can_check () {
+  readonly last_check_epoch_seconds=$(cat $DOTFILES_LAST_REMOTE_CHECK_TIME_PATH 2>/dev/null || echo 0)
+
+  readonly now_seconds=$(date +%s)
+  readonly min_seconds=
+  if [ $now_seconds -gt $(($last_check_epoch_seconds + 60*60)) ]; then
+    return 0
+  fi
+
+  return 1
+}
+
+_check_for_new_dotfiles_revision () {
+  dotfiles fetch >/dev/null 2>&1
+  mkdir -p $DOTFILES_STATE
+
+  readonly main_rev_cache=$(cat $DOTFILES_GIT_DIR/FETCH_HEAD | awk '{print $1}')
+  echo $main_rev_cache > $DOTFILES_ORIGIN_MAIN_REV_CACHE_PATH
+
+  readonly now_seconds=$(date +%s)
+  echo $now_seconds > $DOTFILES_LAST_REMOTE_CHECK_TIME_PATH
+
+  readonly num_ahead=$(dotfiles rev-list $(_dotfiles_head)..$(_dotfiles_origin_main) --count)
+
+  if [[ $num_ahead -eq 0 ]]; then
     return
   fi
 
@@ -222,18 +247,17 @@ check_for_new_dotfiles_revision () {
   echo ''
 }
 
-install_tpm () {
-  $TMUX_TPM_DIR_PATH/bin/install_plugins >/dev/null
+dotfiles_diff() {
+  dotfiles diff $(_dotfiles_head) $(_dotfiles_origin_main)
 }
 
 chpwd () {
-  handle_home_git_dir
-  check_for_new_dotfiles_revision
+  _can_check && _check_for_new_dotfiles_revision
+  handle_home_dir
+  $TMUX_DIR/install.sh
 }
 
-handle_home_git_dir 
-check_for_new_dotfiles_revision
-install_tpm 
+chpwd
 
 # SAFEBASE CONFIG/ALIASES
 export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/projects/monorepo/work/develop/.vim"
@@ -243,7 +267,8 @@ alias arm64bi='arch -arm64 brew install'
 alias setup="$HOME/scripts/prepare_dev.sh &"
 
 
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && command -v startx; then
   exec startx
 fi
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

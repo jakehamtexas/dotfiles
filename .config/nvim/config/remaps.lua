@@ -16,7 +16,8 @@ local function critical(vimp)
   end
   )
   -- Edit plugins
-  vimp.nnoremap('<leader>ep', ':e $NVIM_PLUGIN_DIR<CR>')
+  vimp.nnoremap('<leader>ee', ':e $NVIM_DIR<CR>')
+  vimp.nnoremap('<leader>ep', ':e $NVIM_DIR/init.lua<CR>')
 end
 
 local telescope = function(vimp)
