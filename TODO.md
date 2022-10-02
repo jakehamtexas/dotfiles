@@ -8,3 +8,4 @@
 - Move from CoC to LSP
 - Add rust stuff to install steps
 - Separate personal, work, and general config/dotfiles
+- Figure out closing a laptop lid and kernel panic

@@ -105,6 +105,7 @@ export NVIM_DIR=$HOME/.config/nvim
 export NVIM_PLUGIN_DIR=$NVIM_DIR/plugins
 export GPG_TTY=$(tty)
 export TMUX_DIR=$HOME/.config/tmux
+export TMUX_TPM_DIR_PATH=$TMUX_DIR/plugins/tpm
 export EDITOR=$(which nvim)
 
 alias npm-what=npm pack && tar -xvzf *.tgz && rm -rf package *.tgz
@@ -112,9 +113,12 @@ alias ssh-pi="ssh pi@raspberrypi.local"
 alias vim="nvim"
 alias grep="rg"
 alias printdoc=lpr
+alias pacman='sudo pacman'
+alias shutdown='sudo shutdown'
+alias reboot='sudo reboot'
 
-if [ ! -d "$TMUX_DIR/plugins/tpm" ]; then
-  git clone https://github.com/tmux-plugins/tpm $HOME/.config/tmux/plugins/tpm
+if [ ! -d "$TMUX_TPM_DIR_PATH" ]; then
+  git clone https://github.com/tmux-plugins/tpm $TMUX_TPM_DIR_PATH
 fi
 
 set -o vi
@@ -187,7 +191,7 @@ killp () {
 }
 
 handle_home_git_dir () {
-  if [ "$PWD" = "$HOME" ]; then
+  if [ "$PWD" = "$HOME" ] && [ -n "$DISPLAY" ]; then
     export GIT_DIR=$DOTFILES_GIT_DIR
     export GIT_WORK_TREE=$HOME
   else
@@ -221,6 +225,10 @@ check_for_new_dotfiles_revision () {
   echo ''
 }
 
+install_tpm () {
+  $TMUX_TPM_DIR_PATH/bin/install_plugins >/dev/null
+}
+
 chpwd () {
   handle_home_git_dir
   check_for_new_dotfiles_revision
@@ -228,6 +236,7 @@ chpwd () {
 
 handle_home_git_dir 
 check_for_new_dotfiles_revision
+install_tpm 
 
 # SAFEBASE CONFIG/ALIASES
 export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/projects/monorepo/work/develop/.vim"
