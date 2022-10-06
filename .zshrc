@@ -203,7 +203,7 @@ export DOTFILES_LAST_REMOTE_CHECK_TIME_PATH=$DOTFILES_STATE/last_remote_check_ti
 
 
 handle_home_dir () {
-  if [ "$PWD" = "$HOME" ] && [ -n "$DISPLAY" ] ; then
+  if [ "$PWD" = "$HOME" ]; then
     export GIT_DIR=$DOTFILES_GIT_DIR
     export GIT_WORK_TREE=$HOME
   else
@@ -211,6 +211,21 @@ handle_home_dir () {
     unset GIT_WORK_TREE
   fi
 }
+
+with_unset_git_env() {
+  readonly git_dir=$GIT_DIR
+  readonly git_wt=$GIT_WORK_TREE
+
+  unset GIT_DIR
+  unset GIT_WORK_TREE
+
+  $@ || true
+  
+  export GIT_DIR=$git_dir
+  export GIT_WORK_TREE=$git_wt
+}
+
+alias yay='with_unset_git_env yay'
 
 _dotfiles_head() {
   dotfiles rev-parse HEAD

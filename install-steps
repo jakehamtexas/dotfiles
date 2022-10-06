@@ -1,0 +1,55 @@
+TODO:
+  - Figure out flickering tab complete for zsh extensions
+	- Script extension installs for firefox
+	- CheckBackspace error
+	- i3 polybar
+	- Remap caps to backspace
+	- Fix upstream updates script so that it doesn't show output when the local repo is the only one with changes
+
+Use Arch Wiki
+When writing hostname, set '127.0.0.1 localhost' in /etc/hosts
+When using pacstrap, add these packages:
+iwd nvim wget git zsh curl zip unzip tar man-db man-pages texinfo sudo
+
+When doing EFI
+	- bootctl was the least difficult
+	- don't forgot to add an entry for the kernel
+	- cat /etc/fstab for UUID of root fs partition
+
+Post Install
+
+Network
+
+	- enable systemd-resolved
+	- disable systemd-networkd if it's on
+	- enable iwd.service
+	- do the connection
+User Mgmt/Sudo
+	- enable the wheel group in /etc/sudoers
+	- set 'Defaults insults' :)
+	- Make sure the user is in the wheel group
+	- set the pw with passwd
+
+Post Login
+
+Getting GitHub Access
+sudo pacman -S openssh nmap
+create a ed22159 key pair
+find a host that has a github access token
+ssh-copy-id to it
+ssh to it
+add the new public key to gh
+
+Clone dotfiles
+Install packages
+  - w3m
+	- tmux
+	- firefox (extensions script?)
+	  - DarkReader
+		- uBlock Origin
+	- i3-wm or i3-gaps
+	- xorg-server
+	- org-fonts-misc
+	- discord
+	- kitty
+	- node
