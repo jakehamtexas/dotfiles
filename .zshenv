@@ -23,6 +23,7 @@ git config --global init.defaultBranch main
 git config --global user.email 'jakehamtexas@gmail.com'
 git config --global user.name 'Jake Hamilton'
 git config --global fetch.prune true
+git config --global push.autoSetupRemote true
 
 git config --global alias.a add
 git config --global alias.aa 'add .'
