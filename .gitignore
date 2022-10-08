@@ -53,7 +53,6 @@ source
 
 .Xauthority
 .Xclients
-.xinitrc
 .xsession-errors
 .xsession-errors.old
 .zcompdump-baozi-5.8.1

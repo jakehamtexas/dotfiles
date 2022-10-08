@@ -35,7 +35,6 @@ local nvim_dir = os.getenv('NVIM_DIR')
 o.undodir = nvim_dir .. "/.undodir"
 o.undofile = true
 o.incsearch = true
-o.termguicolors = true
 o.scrolloff = 10
 o.sidescrolloff = 10
 

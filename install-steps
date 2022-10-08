@@ -1,10 +1,12 @@
 TODO:
+  - octo.nvim!!!!
   - Figure out flickering tab complete for zsh extensions
 	- Script extension installs for firefox
-	- CheckBackspace error
 	- i3 polybar
 	- Remap caps to backspace
-	- Fix upstream updates script so that it doesn't show output when the local repo is the only one with changes
+	- Document i3 sub packages
+	- Make one pacstrap command to rule them all
+	- archprofile + archinstall
 
 Use Arch Wiki
 When writing hostname, set '127.0.0.1 localhost' in /etc/hosts
@@ -12,7 +14,7 @@ When using pacstrap, add these packages:
 iwd nvim wget git zsh curl zip unzip tar man-db man-pages texinfo sudo
 
 When doing EFI
-	- bootctl was the least difficult
+	- bootctl command
 	- don't forgot to add an entry for the kernel
 	- cat /etc/fstab for UUID of root fs partition
 

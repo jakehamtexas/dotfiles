@@ -8,8 +8,8 @@ local fn = vim.fn
 local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
    IS_BOOTSTRAPPING = true
-   fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
-   vim.cmd [[packadd packer.nim]]
+   fn.system('with_unset_git_env git clone --depth 1 https://github.com/wbthomason/packer.nvim ' .. install_path)
+   vim.cmd [[packadd packer.nvim]]
 end
 
 local packer = require('packer')
@@ -52,6 +52,7 @@ packer.startup(function(use)
    use { 'lewis6991/gitsigns.nvim',
       requires = { 'nvim-lua/plenary.nvim' },
       config = function()
+         vim.o.termguicolors = true
          require('gitsigns').setup()
       end }
 
