@@ -28,7 +28,7 @@ git config --global push.autoSetupRemote true
 git config --global alias.a add
 git config --global alias.aa 'add .'
 git config --global alias.ap 'add -p'
-git config --global alias.ca commit
+git config --global alias.c commit
 git config --global alias.ca 'commit -a'
 git config --global alias.cp 'commit -p'
 git config --global alias.cam 'commit -a -m'
@@ -184,6 +184,12 @@ export CYPRESS_SECRETS_PATH="$HOME/cypress.env.json"
 alias arm64bi='arch -arm64 brew install'
 alias setup="$HOME/scripts/prepare_dev.sh &"
 
+alias yr='yarn run'
+alias yrd='yr dev'
+alias yrtc='yr g:type-check'
+alias yrg='yarn && yr generate' # The most often needed part of prepare dev when rebasing
+alias yrpp='yr g:pre-push'
+alias sbpd=./prepare_dev.sh
 
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 

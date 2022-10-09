@@ -86,12 +86,27 @@ source $ZSH_CUSTOM/plugins/zsh-autocomplete
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 
+
 if [ -s "$NVM_DIR/nvm.sh" ]; then
   \. "$NVM_DIR/nvm.sh" # This loads nvm
 else
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
   \. "$NVM_DIR/nvm.sh" # This loads nvm
   nvm install 16
+fi
+
+# TMUX
+if ! infocmp tmux-256color > /dev/null 2>&1; then
+  terminfo_dir=/tmp/tmux-terminfo
+
+  mkdir -p $terminfo_dir
+
+  terminfo_zipped=$terminfo_dir/info.src.gz
+  curl 'https://invisible-island.net/datafiles/current/terminfo.src.gz' -o $terminfo_zipped > /dev/null 2>&1
+
+  terminfo_unzipped=$terminfo_dir/info.src
+  gunzip $terminfo_zipped > /dev/null 2>&1
+  tic -xe tmux-256color $terminfo_unzipped > /dev/null 2>&1
 fi
 
 if [ ! -d "$TMUX_TPM_DIR_PATH" ]; then
