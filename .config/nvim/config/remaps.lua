@@ -16,8 +16,12 @@ local function critical(vimp)
   end
   )
   -- Edit plugins
-  vimp.nnoremap('<leader>ee', ':e $NVIM_DIR<CR>')
+  vimp.nnoremap('<leader>ev', ':e $NVIM_DIR<CR>')
   vimp.nnoremap('<leader>ep', ':e $NVIM_DIR/init.lua<CR>')
+  vimp.nnoremap('<leader>ec', ':e $NVIM_DIR/config/init.lua<CR>')
+  vimp.nnoremap('<leader>er', ':e $NVIM_DIR/config/remaps.lua<CR>')
+  vimp.nnoremap('<leader>ez', ':e $HOME/.zshrc<CR>')
+  vimp.nnoremap('<leader>et', ':e $TMUX_DIR/tmux.conf<CR>')
 end
 
 local telescope = function(vimp)

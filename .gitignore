@@ -52,6 +52,7 @@ source
 .vscode*
 
 .Xauthority
+.Xauthority*
 .Xclients
 .xsession-errors
 .xsession-errors.old

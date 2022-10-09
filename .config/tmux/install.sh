@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 readonly tmux_envvar=$TMUX_PLUGIN_MANAGER_PATH
 
@@ -9,4 +9,4 @@ if [ ! -d $tmux_envvar ] || [ -z $tmux_envvar ]; then
   exit 1
 fi
 
-$TMUX_TPM_DIR_PATH/bin/install_plugins | rg -v Already
+with_unset_git_env $TMUX_TPM_DIR_PATH/bin/install_plugins | rg -v Already

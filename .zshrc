@@ -54,6 +54,19 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
+plugin_path="$ZSH_CUSTOM/plugins"
+
+clear_plugins () {
+  rm -rf $plugin_path
+}
+
+zsh_autocomplete_path="$plugin_path/zsh-autocomplete"
+revert_autocomplete () {
+  last_working_commit=d8bfbef46efc54c1189010a3b70d501b44487504
+  $(cd $zsh_autocomplete_path && git checkout $last_working_commit > /dev/null 2>&1)
+  exec zsh
+}
+
 
 plugins=()
 
@@ -62,27 +75,29 @@ _plugins=(
   docker
   docker-compose
   'MichaelAquilina/zsh-history-filter'
+  'marlonrichert/zsh-autocomplete'
   'zsh-users/zsh-autosuggestions'
   'zsh-users/zsh-syntax-highlighting'
-  'marlonrichert/zsh-autocomplete'
   'b4b4r07/enhancd'
   'unixorn/fzf-zsh-plugin'
 )
+
+
 for plugin in "${_plugins[@]}"; do
   # Skip built-in plugins
   [[ $plugin != *"/"* ]] && continue
 
   name="$(cut -d "/" -f2 <<<$plugin)"
-  zsh_custom_plugin_path="$ZSH_CUSTOM/plugins/$name"
+  zsh_custom_plugin_path="$plugin_path/$name"
   if [ ! -d "$zsh_custom_plugin_path" ]; then
-    git clone https://github.com/"$plugin".git "$zsh_custom_plugin_path"
+    with_unset_git_env git clone https://github.com/"$plugin".git "$zsh_custom_plugin_path"
   fi
 
   plugins+=($name)
 done
 
 source $ZSH/oh-my-zsh.sh >/dev/null 2>&1
-source $ZSH_CUSTOM/plugins/zsh-autocomplete
+test -f $zsh_autocomplete_path && source $zsh_autocomplete_path 
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 
@@ -94,6 +109,8 @@ else
   \. "$NVM_DIR/nvm.sh" # This loads nvm
   nvm install 16
 fi
+
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # TMUX
 if ! infocmp tmux-256color > /dev/null 2>&1; then
@@ -110,7 +127,7 @@ if ! infocmp tmux-256color > /dev/null 2>&1; then
 fi
 
 if [ ! -d "$TMUX_TPM_DIR_PATH" ]; then
-  git clone https://github.com/tmux-plugins/tpm $TMUX_TPM_DIR_PATH
+  with_unset_git_env git clone https://github.com/tmux-plugins/tpm $TMUX_TPM_DIR_PATH
 fi
 
 set -o vi

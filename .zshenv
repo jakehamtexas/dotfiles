@@ -191,5 +191,4 @@ alias yrg='yarn && yr generate' # The most often needed part of prepare dev when
 alias yrpp='yr g:pre-push'
 alias sbpd=./prepare_dev.sh
 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
+alias zshrc='vim $HOME/.zshrc'
