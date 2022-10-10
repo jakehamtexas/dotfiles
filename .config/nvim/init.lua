@@ -29,6 +29,16 @@ packer.startup(function(use)
 
    use 'ellisonleao/gruvbox.nvim'
    use 'folke/lsp-colors.nvim'
+   use {
+     "folke/which-key.nvim",
+     config = function()
+       require("which-key").setup({
+         -- your configuration comes here
+         -- or leave it empty to use the default settings
+         -- refer to the configuration section below
+       })
+     end
+   }
 
    use { 'iamcco/markdown-preview.nvim', run = ':call mkdp#util#install()' }
 
@@ -36,7 +46,6 @@ packer.startup(function(use)
    use 'sheerun/vim-polyglot'
 
    use { 'prettier/vim-prettier', run = 'yarn install' }
-   use 'svermeulen/vimpeccable'
 
    use {
       'nvim-telescope/telescope.nvim',
@@ -66,6 +75,10 @@ packer.startup(function(use)
       config = function()
          require('colorizer').setup()
       end }
+
+   use {"akinsho/toggleterm.nvim", tag = '*', config = function()
+     require("toggleterm").setup()
+   end}
 
    use { 'Shatur/neovim-session-manager',
       requires = { 'nvim-lua/plenary.nvim' },

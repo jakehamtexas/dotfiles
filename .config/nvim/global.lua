@@ -35,3 +35,16 @@ function table.contains(table, element)
       end
    end
 end
+
+function table.find_by(table, callback)
+   for _, value in pairs(table) do
+      if callback(value) then
+         return value
+      end
+   end
+end
+
+function vim.print(obj)
+   local str = vim.inspect(obj)
+   print(str)
+end

@@ -61,6 +61,6 @@ vim.g.mkdp_page_title = '「${name}」'
 -- these filetypes will have MarkdownPreview... commands
 vim.g.mkdp_filetypes = { 'markdown' }
 
-return function(vimp)
-      vimp.nnoremap('<C-P> <Plug>MarkdownPreviewToggle')
+return function(keymap)
+      keymap.nnoremap('<C-P> <Plug>MarkdownPreviewToggle')
 end
