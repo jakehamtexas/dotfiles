@@ -17,6 +17,19 @@ alias pacman='sudo pacman'
 alias shutdown='sudo shutdown'
 alias reboot='sudo reboot'
 
+
+fzf_git_checkout () {
+  if [[ -n $1 ]]; then
+    git checkout $1
+    return
+  fi
+
+  git branch -av |
+  fzf --preview "echo {} | cut -d' ' -f2 | xargs git log --oneline" --preview-window nohidden |
+  cut -d' ' -f2 |
+  xargs git checkout
+}
+
 git config --global core.editor $(which nvim)
 git config --global pull.rebase true
 git config --global init.defaultBranch main
@@ -28,6 +41,9 @@ git config --global push.autoSetupRemote true
 git config --global alias.a add
 git config --global alias.aa 'add .'
 git config --global alias.ap 'add -p'
+
+git config --global alias.co '! fzf_git_checkout'
+
 git config --global alias.c commit
 git config --global alias.ca 'commit -a'
 git config --global alias.cp 'commit -p'
