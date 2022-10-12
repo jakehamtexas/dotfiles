@@ -62,5 +62,5 @@ vim.g.mkdp_page_title = '「${name}」'
 vim.g.mkdp_filetypes = { 'markdown' }
 
 return function(keymap)
-      keymap.nnoremap('<C-P> <Plug>MarkdownPreviewToggle')
+      keymap.n('<C-P> <Plug>MarkdownPreviewToggle')
 end

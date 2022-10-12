@@ -72,72 +72,12 @@ g.sql_type_default = 'pgsql'
 g.mapleader = " "
 g.maplocalleader = " "
 
-local function remap_by(mode)
-  return function(lhs, rhs, opts)
-    opts = opts or {}
-    local options = { noremap = true }
-
-    if opts then
-      options = vim.tbl_extend("force", options, opts)
-    end
-
-    local mode_remaps = vim.api.nvim_get_keymap(mode)
-    local existing_remap = table.find_by(mode_remaps, function (remap)
-      return remap.lhs == string.gsub(lhs, '<leader>', vim.g.mapleader)
-    end)
-
-    if not opts.override and existing_remap then
-      vim.print({
-        desc = "Remap found for LHS when 'override' option not specified. Remap skipped.",
-        mode = mode,
-        lhs = lhs,
-        rhs_of_attempted_remap = rhs,
-        rhs_of_existing = existing_remap.rhs
-      })
-      return
-    end
-
-    if existing_remap then
-      vim.api.nvim_del_keymap(mode, lhs)
-    end
-
-    options.override = nil
-
-    if type(rhs) == 'string' then
-      vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-    else
-      options.callback = rhs
-      vim.api.nvim_set_keymap(mode, lhs, '', options)
-    end
-  end
-end
-
-local modes = { 'n', 'x', 'o', 'l', 's', 'v', 'i', 't', 'c' }
-local keymap = {
-  nnoremap = remap_by('n'),
-  xnoremap = remap_by('x'),
-  onoremap = remap_by('o'),
-  lnoremap = remap_by('l'),
-  snoremap = remap_by('s'),
-  vnoremap = remap_by('v'),
-  inoremap = remap_by('i'),
-  tnoremap = remap_by('t'),
-  cnoremap = remap_by('c'),
-  unmap_all = function()
-    for _, mode in ipairs(modes) do
-      local mode_remaps = vim.api.nvim_get_keymap(mode)
-      for _, mode_remap in ipairs(mode_remaps) do
-        vim.api.nvim_del_keymap(mode_remap.mode, mode_remap.lhs)
-      end
-    end
-  end
-}
-
+local keymap = require('config.keymap')
 local remaps = require('config.remaps')
 remaps.critical(keymap)
 remaps.general(keymap)
 remaps.telescope(keymap)
-remaps.toggleterm(keymap)
+remaps.terminal(keymap)
 
 vim.cmd('syntax enable')
 vim.cmd('colorscheme gruvbox')

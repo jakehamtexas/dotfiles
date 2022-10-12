@@ -19,7 +19,7 @@ local packer_group = vim.api.nvim_create_augroup('Packer', { clear = true })
 vim.api.nvim_create_autocmd('BufWritePost', {
    command = 'source <afile> | PackerCompile',
    group = packer_group,
-   pattern = nvim_dir .. '.*'
+   pattern = vim.fn.expand '$MYVIMRC'
 })
 
 packer.startup(function(use)
@@ -77,7 +77,21 @@ packer.startup(function(use)
       end }
 
    use {"akinsho/toggleterm.nvim", tag = '*', config = function()
-     require("toggleterm").setup()
+     local toggleterm = require("toggleterm")
+     toggleterm.setup({
+         on_open = function(term)
+           local term_group = vim.api.nvim_create_augroup('TermQuickExit', { clear = true })
+           vim.api.nvim_create_autocmd('TermEnter', {
+            callback = function()
+              require('config.keymap').n('<esc>', function()
+                 toggleterm.toggle(term.count or 0)
+              end, { desc = 'Close the terminal', bufnr = term.bufnr })
+            end,
+            buffer = term.bufnr,
+            group = term_group,
+          })
+         end
+     })
    end}
 
    use { 'Shatur/neovim-session-manager',

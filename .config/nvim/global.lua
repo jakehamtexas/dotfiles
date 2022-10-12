@@ -37,7 +37,7 @@ function table.contains(table, element)
 end
 
 function table.find_by(table, callback)
-   for _, value in pairs(table) do
+   for _, value in ipairs(table) do
       if callback(value) then
          return value
       end
