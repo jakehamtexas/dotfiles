@@ -17,7 +17,6 @@ alias pacman='sudo pacman'
 alias shutdown='sudo shutdown'
 alias reboot='sudo reboot'
 
-
 fzf_git_checkout () {
   if [[ -n $1 ]]; then
     git checkout $1

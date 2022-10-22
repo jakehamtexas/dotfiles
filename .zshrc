@@ -99,6 +99,26 @@ done
 source $ZSH/oh-my-zsh.sh >/dev/null 2>&1
 test -f $zsh_autocomplete_path && source $zsh_autocomplete_path 
 
+if ! $(command -v rustup > /dev/null); then
+  if $(command -v yay > /dev/null); then
+    yay rustup
+  fi
+
+  if $(command -v pacman > /dev/null); then
+    sudo pacman -S rustup
+  fi
+
+  if $(command -v brew > /dev/null); then
+    brew install rustup
+  fi
+fi
+
+if $(command -v rustup > /dev/null); then
+  rustup update
+  rustup default stable
+fi
+
+# BEGIN NVM
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 
 
@@ -111,6 +131,7 @@ else
 fi
 
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# END NVM
 
 # TMUX
 if ! infocmp tmux-256color > /dev/null 2>&1; then
@@ -129,6 +150,7 @@ fi
 if [ ! -d "$TMUX_TPM_DIR_PATH" ]; then
   with_unset_git_env git clone https://github.com/tmux-plugins/tpm $TMUX_TPM_DIR_PATH
 fi
+# END TMUX
 
 set -o vi
 
