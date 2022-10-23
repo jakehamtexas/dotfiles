@@ -37,8 +37,6 @@ handle_find() {
   # Select tmux session
 }
 
-clear_tmp_dir
-
 read -n1 -p '(c)reate or (f)ind session?' -r
 printf '\n'
 
