@@ -4,9 +4,15 @@ export PURE_POWER_MODE=modern
 export POWERLEVEL9K_MODE='nerdfont-complete'
 export NVIM_DIR=$HOME/.config/nvim
 export GPG_TTY=$(tty)
+export EDITOR=$(which nvim)
+
 export TMUX_DIR=$HOME/.config/tmux
 export TMUX_TPM_DIR_PATH=$TMUX_DIR/plugins/tpm
-export EDITOR=$(which nvim)
+
+if [ -n $TMUX ]; then
+  tmux setenv TMUX_DIR $TMUX_DIR
+  tmux setenv TMUX_TPM_DIR_PATH $TMUX_TPM_DIR_PATH
+fi
 
 alias npm-what=npm pack && tar -xvzf *.tgz && rm -rf package *.tgz
 alias ssh-pi="ssh pi@raspberrypi.local"
