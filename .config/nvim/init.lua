@@ -79,6 +79,7 @@ packer.startup(function(use)
    use {"akinsho/toggleterm.nvim", tag = '*', config = function()
      local toggleterm = require("toggleterm")
      toggleterm.setup({
+        direction = 'float',
          on_open = function(term)
            local term_group = vim.api.nvim_create_augroup('TermQuickExit', { clear = true })
            vim.api.nvim_create_autocmd('TermEnter', {
