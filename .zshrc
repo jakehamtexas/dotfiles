@@ -1,5 +1,6 @@
-# Add rustup completions if they exist
-[ -d $HOME/.zfunc ] && fpath+=$HOME/.zfunc
+# Add dir for rustup completions, if it doesn't exist
+mkdir -p ~/.zfunc
+fpath+=~/.zfunc
 
 # Path to your oh-my-zsh installation.
 ZSH="$HOME/.oh-my-zsh"
@@ -99,24 +100,33 @@ done
 source $ZSH/oh-my-zsh.sh >/dev/null 2>&1
 test -f $zsh_autocomplete_path && source $zsh_autocomplete_path 
 
-if ! $(command -v rustup > /dev/null); then
-  if $(command -v yay > /dev/null); then
-    yay rustup
-  fi
+# TODO: Make this rustup script idempotent and fail gracefully
+#       When it fails on Arch, it has the following output:
+#
+#           info: removing previous version of component 'cargo'
+#           info: rolling back changes
+#           error: failure removing component 'cargo-x86_64-unknown-linux-gnu', directory does not exist: 'share/zsh/site-functions/_cargo'
+#             stable-x86_64-unknown-linux-gnu update failed - (error reading rustc version)
+#
+# if ! command -v rustup > /dev/null; then
+#   if command -v yay > /dev/null; then
+#     yay rustup
+#   fi
+# 
+#   if command -v pacman > /dev/null; then
+#     sudo pacman -S rustup
+#   fi
+# 
+#   if command -v brew > /dev/null; then
+#     brew install rustup
+#   fi
+# fi
 
-  if $(command -v pacman > /dev/null); then
-    sudo pacman -S rustup
-  fi
-
-  if $(command -v brew > /dev/null); then
-    brew install rustup
-  fi
-fi
-
-if $(command -v rustup > /dev/null); then
-  rustup update
-  rustup default stable
-fi
+# if command -v rustup > /dev/null; then
+#   rustup update
+#   rustup default stable
+#   rustup completions zsh > ~/.zfunc/_rustup
+# fi
 
 # BEGIN NVM
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
