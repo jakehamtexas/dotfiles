@@ -114,6 +114,11 @@ packer.startup(function(use)
       end,
    }
 
+   use {
+       'glacambre/firenvim',
+       run = function() vim.fn['firenvim#install'](0) end 
+   }
+
    -- Automatically set up your configuration after cloning packer.nvim
    if IS_BOOTSTRAPPING then
       packer.sync()
