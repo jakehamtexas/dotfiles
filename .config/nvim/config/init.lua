@@ -29,7 +29,7 @@ o.expandtab = true
 o.wrap = false
 o.backup = false
 
-o.cmdheight = 2
+o.cmdheight = 0
 
 local nvim_dir = os.getenv('NVIM_DIR')
 o.undodir = nvim_dir .. "/.undodir"
