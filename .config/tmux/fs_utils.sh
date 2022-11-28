@@ -12,7 +12,7 @@ tmp_file_write() {
   local content=$2
 
   _ensure_tmp_dir
-  echo $content > $tmp_dir/$filename
+  echo $content >$tmp_dir/$filename
 }
 
 tmp_file_read() {
@@ -36,20 +36,21 @@ write_session_name() {
 }
 
 prompt_session_name() {
-  if [ -n $1 ]; then
-    read -p "Session name?" -er -i $1
+  if [ -n "$1" ]; then
+    read -p "Session name (Default: $1)?" -r session_name
+    session_name=${session_name:-$1}
   else
-    read -p 'Session name?' -r
+    read -p 'Session name?' -r session_name
   fi
 
-  if $(tmux has -t $REPLY >/dev/null 2>&1); then
+  if tmux has -t "$session_name" >/dev/null 2>&1; then
     echo "Session already exists, choose another name."
 
-    prompt_session_name $@
+    prompt_session_name "$@"
     return
   fi
 
-  write_session_name $REPLY
+  write_session_name "$session_name"
 }
 
 readonly window_name_filename='window-name'
@@ -58,7 +59,7 @@ read_window_name() {
 }
 
 write_window_name() {
-  tmp_file_write $window_name_filename $1
+  tmp_file_write $window_name_filename "$1"
 }
 
 clear_tmp_dir
