@@ -58,7 +58,11 @@ local keymap = {
     for _, mode in ipairs(modes) do
       local mode_remaps = vim.api.nvim_get_keymap(mode)
       for _, mode_remap in ipairs(mode_remaps) do
-        vim.api.nvim_del_keymap(mode_remap.mode, mode_remap.lhs)
+        -- 'christoomey/vim-tmux-navigator' has mappings that have a mode of " ".
+        -- This breaks when passed to `nvim_del_keymap`.
+        if table.contains(modes, mode_remap.mode) then
+          vim.api.nvim_del_keymap(mode_remap.mode, mode_remap.lhs)
+        end
       end
     end
   end
