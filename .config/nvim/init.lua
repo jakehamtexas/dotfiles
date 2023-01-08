@@ -96,6 +96,7 @@ packer.startup(function(use)
    use 'tpope/vim-eunuch'
    use 'tpope/vim-surround'
    use 'tpope/vim-dadbod'
+   use 'tpope/vim-commentary'
    use 'pantharshit00/vim-prisma'
 
    use 'christoomey/vim-tmux-navigator'
