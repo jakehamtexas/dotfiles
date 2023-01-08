@@ -145,6 +145,9 @@ yay
 # TODO: Maybe explore not ignoring this?
 .tldrc
 
+# Arch MB stuff
+proj/audio-driver
+
 # SAFEBASE
 import_template.csv
 
