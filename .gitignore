@@ -145,11 +145,14 @@ yay
 # TODO: Maybe explore not ignoring this?
 .tldrc
 
-# Arch MB stuff
-proj/audio-driver
 
 # SAFEBASE
 import_template.csv
 
 # Linear plugin
 .linear_env
+
+# Arch MB stuff
+proj/audio-driver
+.~lock*
+coc-to-lsp.ods
