@@ -89,4 +89,16 @@ require('markdown-preview')
 require('pickers.init')
 
 -- Git stuff
-vim.g.blamer_enabled = 1
+g.blamer_enabled = 1
+
+local firenvim_group = vim.api.nvim_create_augroup('Firenvim', { clear = true })
+
+-- firenvim
+--  if g.started_by_firenvim then
+--    g.laststatus = 0
+--      vim.api.nvim_create_autocmd('TextChanged', {
+--     command = 'source <afile> | PackerCompile',
+--     group = packer_group,
+--     pattern = vim.fn.expand '$MYVIMRC'
+--  })
+--  end
