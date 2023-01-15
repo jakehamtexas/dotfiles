@@ -8,7 +8,7 @@ package.unload = function(prefix)
 end
 
 function vim.source(name)
-   local path = os.getenv('NVIM_DIR') .. '/config/' .. name .. '.vim'
+   local path = vim.nvim_dir .. '/config/' .. name .. '.vim'
    vim.cmd('source ' .. path)
 end
 

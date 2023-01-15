@@ -66,6 +66,11 @@ git config --global alias.rd 'rebase origin/develop'
 git config --global alias.rid 'rebase -i origin/develop'
 git config --global alias.rc 'rebase --continue'
 
+git config --global alias.wa 'worktree add'
+git config --global alias.wr 'worktree remove'
+git config --global alias.wrf 'worktree remove --force'
+git config --global alias.wrp 'worktree prune'
+
 git config --global alias.aliases "! git config --get-regexp '^alias\.' | cat"
 test -f "$HOME/.cargo/env" && . "$HOME/.cargo/env"
 
@@ -199,7 +204,7 @@ chpwd () {
 }
 
 # SAFEBASE CONFIG/ALIASES
-export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/projects/monorepo/work/develop/.vim"
+export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/.sb-local-vim"
 export CYPRESS_SECRETS_PATH="$HOME/cypress.env.json"
 
 alias arm64bi='arch -arm64 brew install'

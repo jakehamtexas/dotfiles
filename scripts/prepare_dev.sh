@@ -8,7 +8,7 @@ if [ ! -f ./prepare_dev.sh ]; then
 fi
 
 echo "Copying vim config from $VIM_LOCAL_CONFIG_DIR_PATH."
-cp -rf "$VIM_LOCAL_CONFIG_DIR_PATH" ./ || echo "Done (already copied)"
+cp -rf "$VIM_LOCAL_CONFIG_DIR_PATH" ./.vim || echo "Done (already copied)"
 
 echo "Copying cypress secrets from $CYPRESS_SECRETS_PATH."
 cp "$CYPRESS_SECRETS_PATH" ./apps/server/ || echo "Done (already copied)"

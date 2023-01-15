@@ -1,8 +1,13 @@
-local nvim_dir = os.getenv('NVIM_DIR')
-package.path = nvim_dir .. '/?.lua;' .. package.path
+function vim.script_path()
+  local str = debug.getinfo(2, 'S').source:sub(2)                  
+  return str:match('(.*/)')
+end
+
+vim.nvim_dir = os.getenv('NVIM_DIR') or vim.script_path():sub(0, -2) 
+package.path = vim.nvim_dir .. '/?.lua;' .. package.path
 
 require('global')
-package.path_add(nvim_dir .. '/config')
+package.path_add(vim.nvim_dir .. '/config')
 
 local fn = vim.fn
 local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
@@ -40,9 +45,16 @@ packer.startup(function(use)
      end
    }
 
-   use { 'iamcco/markdown-preview.nvim', run = ':call mkdp#util#install()' }
+   use {
+      'iamcco/markdown-preview.nvim',
+      run = ':call mkdp#util#install()'
+   }
 
-   use { 'neoclide/coc.nvim', branch = 'release', run = ':CocInstall' }
+   use {
+      'neoclide/coc.nvim',
+      branch = 'release',
+      run = ':CocInstall'
+   }
    use 'sheerun/vim-polyglot'
 
    use { 'prettier/vim-prettier', run = 'yarn install' }
@@ -55,15 +67,30 @@ packer.startup(function(use)
       }
    }
 
-   use { "rcarriga/nvim-notify" }
+   use {
+      "rcarriga/nvim-notify",
+      after = 'firenvim',
+      config = function()
+         if not vim.g.started_by_firenvim then
+            vim.notify = require('notify')
+         end
+      end
+   }
 
-   use 'APZelos/blamer.nvim'
-   use { 'lewis6991/gitsigns.nvim',
+   use { 
+      'APZelos/blamer.nvim',
+      after = 'firenvim',
+      opt = true,
+      cond = function() return not vim.g.started_by_firenvim end
+   }
+   use { 
+      'lewis6991/gitsigns.nvim',
       requires = { 'nvim-lua/plenary.nvim' },
       config = function()
          vim.o.termguicolors = true
          require('gitsigns').setup()
-      end }
+      end
+   }
 
    use 'tpope/vim-eunuch'
    use 'tpope/vim-surround'
@@ -117,7 +144,29 @@ packer.startup(function(use)
 
    use {
        'glacambre/firenvim',
-       run = function() vim.fn['firenvim#install'](0) end 
+       run = function() vim.fn['firenvim#install'](0) end,
+       config = function()
+         local firenvim_config = {
+             globalSettings = {
+                alt = 'all',
+             },
+             localSettings = {
+                ['.*'] = {
+                   cmdline = 'neovim',
+                   content = 'text',
+                   priority = 0,
+                   selector = 'textarea',
+                   takeover = 'always',
+                },
+             }
+          }
+          local forbidden_domains = {'.*localhost.*', '.*safebase.*', '.*linear.*'}
+
+          for _, value in ipairs(forbidden_domains) do
+             firenvim_config.localSettings[value] = { takeover = 'never', priority = 1 }
+          end
+          vim.g.firenvim_config = firenvim_config
+       end
    }
 
    -- Automatically set up your configuration after cloning packer.nvim

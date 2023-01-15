@@ -1,5 +1,3 @@
-vim.notify = require('notify')
-
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -31,8 +29,7 @@ o.backup = false
 
 o.cmdheight = 0
 
-local nvim_dir = os.getenv('NVIM_DIR')
-o.undodir = nvim_dir .. "/.undodir"
+o.undodir = vim.nvim_dir .. "/.undodir"
 o.undofile = true
 o.incsearch = true
 o.scrolloff = 10
@@ -83,7 +80,9 @@ vim.cmd('syntax enable')
 vim.cmd('colorscheme gruvbox')
 
 -- CoC is the last thing in vim
-vim.source('coc')
+if not g.started_by_firenvim then
+  vim.source('coc')
+end
 
 require('markdown-preview')
 require('pickers.init')

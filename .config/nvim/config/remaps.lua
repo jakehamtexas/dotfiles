@@ -18,6 +18,7 @@ local function critical(keymap)
   end,
   { desc = 'Reload Neovim config.' }
   )
+
   -- Edit plugins
   keymap.n('<leader>ed', ':e $NVIM_DIR<CR>', { desc = '(e)dit config (d)irectory' })
   keymap.n('<leader>ep', ':e $NVIM_DIR/init.lua<CR>', { desc = '(e)dit config (p)lugins' })
@@ -51,6 +52,10 @@ local function general(keymap)
   keymap.v('/', '/\\v', { desc = 'Make search very magic' })
   keymap.c('%s/', '%smagic/', { desc = 'Make replace very magic' })
   keymap.c('>s/', '>smagic/', { desc = 'Make replace very magic' })
+
+  -- CTRL+d/u niceness
+  keymap.n('<C-d>', '<C-d>zz', { desc = 'Center the cursor when using CTRL+d' })
+  keymap.n('<C-u>', '<C-u>zz', { desc = 'Center the cursor when using CTRL+u' })
 end
 
 local function telescope(keymap)

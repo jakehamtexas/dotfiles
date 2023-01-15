@@ -138,3 +138,5 @@ Sites
 .i3.log
 yay
 .terminfo
+.degit
+.pyenv
