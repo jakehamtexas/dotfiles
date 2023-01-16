@@ -121,16 +121,16 @@ test -f $zsh_autocomplete_path && source $zsh_autocomplete_path
 #             stable-x86_64-unknown-linux-gnu update failed - (error reading rustc version)
 #
 # if ! command -v rustup > /dev/null; then
+#   if command -v brew > /dev/null; then
+#     brew install rustup
+#   fi
+#
 #   if command -v yay > /dev/null; then
 #     yay rustup
 #   fi
 # 
 #   if command -v pacman > /dev/null; then
 #     sudo pacman -S rustup
-#   fi
-# 
-#   if command -v brew > /dev/null; then
-#     brew install rustup
 #   fi
 # fi
 
@@ -163,6 +163,7 @@ set -o vi
 
 # Refer to .zshenv for definition of chpwd
 chpwd
+"$TMUX_DIR"/install.sh quiet
 
 if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && command -v startx; then
   exec startx
@@ -171,3 +172,4 @@ fi
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
+

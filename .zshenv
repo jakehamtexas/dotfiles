@@ -61,7 +61,10 @@ git config --global alias.wr 'worktree remove'
 git config --global alias.wrf 'worktree remove --force'
 git config --global alias.wrp 'worktree prune'
 
+git config --global alias.bsc 'branch --show-current'
+
 git config --global alias.aliases "! git config --get-regexp '^alias\.' | cat"
+
 test -f "$HOME/.cargo/env" && . "$HOME/.cargo/env"
 
 . $HOME/dotfiles.alias
@@ -188,9 +191,8 @@ dotfiles_diff() {
 }
 
 chpwd () {
-  _can_check && _check_for_new_dotfiles_revision
   handle_home_dir
-  $TMUX_DIR/install.sh quiet
+  _can_check && _check_for_new_dotfiles_revision
 }
 
 # SAFEBASE CONFIG/ALIASES
