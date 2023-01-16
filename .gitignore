@@ -140,3 +140,6 @@ yay
 .terminfo
 .degit
 .pyenv
+
+# SAFEBASE
+import_template.csv
