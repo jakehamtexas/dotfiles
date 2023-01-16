@@ -55,6 +55,17 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
+
+# BEGIN NVM
+# NOTE: Must come before plugin loading
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+export NVM_COMPLETION=true
+export NVM_NO_USE=true
+export NVM_AUTO_USE=true
+export NVM_LAZY_LOAD=true
+export NVM_LAZY_LOAD_EXTRA_COMMANDS=('vim' 'nvim')
+# END NVM
+
 plugin_path="$ZSH_CUSTOM/plugins"
 
 clear_plugins () {
@@ -81,6 +92,7 @@ _plugins=(
   'zsh-users/zsh-syntax-highlighting'
   'b4b4r07/enhancd'
   'unixorn/fzf-zsh-plugin'
+  'lukechilds/zsh-nvm'
 )
 
 
@@ -128,21 +140,6 @@ test -f $zsh_autocomplete_path && source $zsh_autocomplete_path
 #   rustup completions zsh > ~/.zfunc/_rustup
 # fi
 
-# BEGIN NVM
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-
-
-if [ -s "$NVM_DIR/nvm.sh" ]; then
-  \. "$NVM_DIR/nvm.sh" # This loads nvm
-else
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-  \. "$NVM_DIR/nvm.sh" # This loads nvm
-  nvm install 16
-fi
-
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# END NVM
-
 # TMUX
 if ! infocmp tmux-256color > /dev/null 2>&1; then
   terminfo_dir=/tmp/tmux-terminfo
@@ -170,6 +167,7 @@ chpwd
 if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && command -v startx; then
   exec startx
 fi
+
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
