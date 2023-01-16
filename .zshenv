@@ -23,19 +23,9 @@ alias pacman='sudo pacman'
 alias shutdown='sudo shutdown'
 alias reboot='sudo reboot'
 
-fzf_git_checkout () {
-  if [[ -n $1 ]]; then
-    git checkout $1
-    return
-  fi
+#!/usr/bin/env bash
 
-  git branch -av |
-  fzf --preview "echo {} | cut -d' ' -f2 | xargs git log --oneline" --preview-window nohidden |
-  cut -d' ' -f2 |
-  xargs git checkout
-}
-
-git config --global core.editor $(which nvim)
+git config --global core.editor "$(which nvim)"
 git config --global pull.rebase true
 git config --global init.defaultBranch main
 git config --global user.email 'jakehamtexas@gmail.com'
@@ -47,7 +37,7 @@ git config --global alias.a add
 git config --global alias.aa 'add .'
 git config --global alias.ap 'add -p'
 
-git config --global alias.co '! fzf_git_checkout'
+git config --global alias.co "!sh $HOME/scripts/fzf_git_checkout.sh"
 
 git config --global alias.c commit
 git config --global alias.ca 'commit -a'
@@ -60,10 +50,10 @@ git config --global alias.can 'commit --amend --no-edit'
 git config --global alias.cpan 'commit -p --amend --no-edit'
 git config --global alias.caan 'commit -a --amend --no-edit'
 
-git config --global alias.fp 'push -u origin --force-with-lease'
+git config --global alias.fp 'push -u --force-with-lease'
 
-git config --global alias.rd 'rebase origin/develop'
-git config --global alias.rid 'rebase -i origin/develop'
+git config --global alias.r '!f(){ git rebase $($HOME/scripts/git_upstream_branch.sh $1); }; f'
+git config --global alias.ri '!f(){ git rebase -i $($HOME/scripts/git_upstream_branch.sh $1); }; f'
 git config --global alias.rc 'rebase --continue'
 
 git config --global alias.wa 'worktree add'
@@ -74,7 +64,7 @@ git config --global alias.wrp 'worktree prune'
 git config --global alias.aliases "! git config --get-regexp '^alias\.' | cat"
 test -f "$HOME/.cargo/env" && . "$HOME/.cargo/env"
 
-source $HOME/dotfiles.alias
+. $HOME/dotfiles.alias
 
 _findp () {
   ps aux | rg -v rg | rg $1
