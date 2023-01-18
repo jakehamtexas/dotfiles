@@ -211,28 +211,4 @@ alias sbpd=./prepare_dev.sh
 
 alias zshrc='vim $HOME/.zshrc'
 
-pr () {
-  case $1 in
-    view)
-      gh pr view --web
-      ;;
-    link)
-      url=$(gh pr view --json url -q '.url')
-      echo $url | pbcopy
-      echo "Copied url!"
-      echo $url
-      ;;
-    branch)
-      branch=$(gh pr view --json headRefName -q '.headRefName')
-      echo $branch | pbcopy
-      echo "Copied branch!"
-      echo $branch
-      ;;
-    *)
-    echo 'Usage:'
-    echo '        pr view   -- open PR in web browser'
-    echo '        pr link   -- copies current PR link to clipboard with pbcopy'
-    echo '        pr branch -- copies current PR branch name to clipboard with pbcopy'
-      ;;
-  esac
-}
+alias pr="$HOME/scripts/pr.sh"

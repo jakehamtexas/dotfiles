@@ -141,5 +141,8 @@ yay
 .degit
 .pyenv
 
+# TODO: Maybe explore not ignoring this?
+.tldrc
+
 # SAFEBASE
 import_template.csv
