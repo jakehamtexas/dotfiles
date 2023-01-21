@@ -140,6 +140,7 @@ yay
 .terminfo
 .degit
 .pyenv
+.clasprc.json
 
 # TODO: Maybe explore not ignoring this?
 .tldrc

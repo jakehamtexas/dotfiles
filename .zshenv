@@ -15,7 +15,7 @@ if [ -n $TMUX ]; then
 fi
 
 alias npm-what=npm pack && tar -xvzf *.tgz && rm -rf package *.tgz
-alias ssh-pi="ssh pi@raspberrypi.local"
+alias ssh-pi="ssh -i $HOME/.ssh/rpi_ecdsa pi@192.168.0.6"
 alias vim="nvim"
 alias grep="rg"
 alias printdoc=lpr

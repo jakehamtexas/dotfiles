@@ -1,7 +1,8 @@
 {
+  "tsserver.reportStyleChecksAsWarnings": false,
   "coc.preferences.extensionUpdateCheck": "daily",
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
-  "coc.preferences.formatOnSaveFiletypes": ["*"],
+  "coc.preferences.formatOnSave": true,
   "eslint.packageManager": "yarn",
   "sumneko-lua.enableNvimLuaDev": true,
   "Lua.telemetry.enable": false,
@@ -46,5 +47,5 @@
   "prettier.printWidth": 120,
   "prettier.singleQuote": true,
   "typescript.suggest.objectLiteralMethodSnippets.enabled": true,
-  "typescript.updateImportsOnFileMove.enable": true
+  "typescript.updateImportsOnFileMove.enabled": "always"
 }

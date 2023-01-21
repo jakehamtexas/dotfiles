@@ -1,9 +1,9 @@
 function vim.script_path()
-  local str = debug.getinfo(2, 'S').source:sub(2)                  
-  return str:match('(.*/)')
+   local str = debug.getinfo(2, 'S').source:sub(2)
+   return str:match('(.*/)')
 end
 
-vim.nvim_dir = os.getenv('NVIM_DIR') or vim.script_path():sub(0, -2) 
+vim.nvim_dir = os.getenv('NVIM_DIR') or vim.script_path():sub(0, -2)
 package.path = vim.nvim_dir .. '/?.lua;' .. package.path
 
 require('global')
@@ -35,14 +35,14 @@ packer.startup(function(use)
    use 'ellisonleao/gruvbox.nvim'
    use 'folke/lsp-colors.nvim'
    use {
-     "folke/which-key.nvim",
-     config = function()
-       require("which-key").setup({
-         -- your configuration comes here
-         -- or leave it empty to use the default settings
-         -- refer to the configuration section below
-       })
-     end
+      "folke/which-key.nvim",
+      config = function()
+         require("which-key").setup({
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+         })
+      end
    }
 
    use {
@@ -77,13 +77,13 @@ packer.startup(function(use)
       end
    }
 
-   use { 
+   use {
       'APZelos/blamer.nvim',
       after = 'firenvim',
       opt = true,
       cond = function() return not vim.g.started_by_firenvim end
    }
-   use { 
+   use {
       'lewis6991/gitsigns.nvim',
       requires = { 'nvim-lua/plenary.nvim' },
       config = function()
@@ -103,70 +103,74 @@ packer.startup(function(use)
          require('colorizer').setup()
       end }
 
-   use {"akinsho/toggleterm.nvim", tag = '*', config = function()
-     local toggleterm = require("toggleterm")
-     toggleterm.setup({
-        direction = 'float',
+   use { "akinsho/toggleterm.nvim", tag = '*', config = function()
+      local toggleterm = require("toggleterm")
+      toggleterm.setup({
+         direction = 'float',
          on_open = function(term)
-           local term_group = vim.api.nvim_create_augroup('TermQuickExit', { clear = true })
-           vim.api.nvim_create_autocmd('TermEnter', {
-            callback = function()
-              require('config.keymap').n('<esc>', function()
-                 toggleterm.toggle(term.count or 0)
-              end, { desc = 'Close the terminal', bufnr = term.bufnr })
-            end,
-            buffer = term.bufnr,
-            group = term_group,
-          })
+            local term_group = vim.api.nvim_create_augroup('TermQuickExit', { clear = true })
+            vim.api.nvim_create_autocmd('TermEnter', {
+               callback = function()
+                  require('config.keymap').n('<esc>', function()
+                     toggleterm.toggle(term.count or 0)
+                  end, { desc = 'Close the terminal', bufnr = term.bufnr })
+               end,
+               buffer = term.bufnr,
+               group = term_group,
+            })
          end
-     })
-   end}
+      })
+   end }
 
    use { 'Shatur/neovim-session-manager',
       requires = { 'nvim-lua/plenary.nvim' },
       config = function()
          local Path = require('plenary.path')
          require('session_manager').setup({
-           sessions_dir = Path:new(vim.fn.stdpath('data'), 'sessions'), -- The directory where the session files will be saved.
-           path_replacer = '__', -- The character to which the path separator will be replaced for session files.
-           colon_replacer = '++', -- The character to which the colon symbol will be replaced for session files.
-           autoload_mode = require('session_manager.config').AutoloadMode.CurrentDir, -- Define what to do when Neovim is started without arguments. Possible values: Disabled, CurrentDir, LastSession
-           autosave_last_session = true, -- Automatically save last session on exit and on session switch.
-           autosave_ignore_not_normal = true, -- Plugin will not save a session when no buffers are opened, or all of them aren't writable or listed.
-           autosave_ignore_filetypes = { -- All buffers of these file types will be closed before the session is saved.
-             'gitcommit',
-           },
-           autosave_only_in_session = false, -- Always autosaves session. If true, only autosaves after a session is active.
-           max_path_length = 80,  -- Shorten the display path if length exceeds this threshold. Use 0 if don't want to shorten the path at all.
+            sessions_dir = Path:new(vim.fn.stdpath('data'), 'sessions'), -- The directory where the session files will be saved.
+            path_replacer = '__', -- The character to which the path separator will be replaced for session files.
+            colon_replacer = '++', -- The character to which the colon symbol will be replaced for session files.
+            autoload_mode = require('session_manager.config').AutoloadMode.CurrentDir, -- Define what to do when Neovim is started without arguments. Possible values: Disabled, CurrentDir, LastSession
+            autosave_last_session = true, -- Automatically save last session on exit and on session switch.
+            autosave_ignore_not_normal = true, -- Plugin will not save a session when no buffers are opened, or all of them aren't writable or listed.
+            autosave_ignore_filetypes = { -- All buffers of these file types will be closed before the session is saved.
+               'gitcommit',
+            },
+            autosave_only_in_session = false, -- Always autosaves session. If true, only autosaves after a session is active.
+            max_path_length = 80, -- Shorten the display path if length exceeds this threshold. Use 0 if don't want to shorten the path at all.
          })
       end,
    }
 
    use {
-       'glacambre/firenvim',
-       run = function() vim.fn['firenvim#install'](0) end,
-       config = function()
+      'glacambre/firenvim',
+      run = function() vim.fn['firenvim#install'](0) end,
+      config = function()
          local firenvim_config = {
-             globalSettings = {
-                alt = 'all',
-             },
-             localSettings = {
-                ['.*'] = {
-                   cmdline = 'neovim',
-                   content = 'text',
-                   priority = 0,
-                   selector = 'textarea',
-                   takeover = 'always',
-                },
-             }
-          }
-          local forbidden_domains = {'.*localhost.*', '.*safebase.*', '.*linear.*'}
+            globalSettings = {
+               alt = 'all',
+            },
+            localSettings = {
+               ['.*'] = {
+                  cmdline = 'neovim',
+                  content = 'text',
+                  priority = 0,
+                  selector = 'textarea',
+                  takeover = 'always',
+               },
+            }
+         }
+         local forbidden_domains = { '.*localhost.*', '.*safebase.*', '.*linear.*' }
 
-          for _, value in ipairs(forbidden_domains) do
-             firenvim_config.localSettings[value] = { takeover = 'never', priority = 1 }
-          end
-          vim.g.firenvim_config = firenvim_config
-       end
+         for _, value in ipairs(forbidden_domains) do
+            firenvim_config.localSettings[value] = { takeover = 'never', priority = 1 }
+         end
+         vim.g.firenvim_config = firenvim_config
+      end
+   }
+
+   use {
+      'lbrayner/vim-rzip'
    }
 
    -- Automatically set up your configuration after cloning packer.nvim
