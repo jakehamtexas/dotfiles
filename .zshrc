@@ -60,10 +60,32 @@ COMPLETION_WAITING_DOTS="true"
 # NOTE: Must come before plugin loading
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 export NVM_COMPLETION=true
-export NVM_NO_USE=true
 export NVM_AUTO_USE=true
-export NVM_LAZY_LOAD=true
-export NVM_LAZY_LOAD_EXTRA_COMMANDS=('vim' 'nvim')
+export NVM_LAZY_LOAD=false
+
+# TODO: Figure out how to get coc.nvim to load node appropriately, then re-enable this
+# export NVM_NO_USE=true
+# export NVM_LAZY_LOAD=true
+# export NVM_LAZY_LOAD_EXTRA_COMMANDS=('vim' 'nvim')
+# export NVM_LAZY_AUTO_DIR="$HOME/projects"
+
+activate_nvm() {
+  # checking dir in path, and if node is a shell function (not loaded)
+  if [[ $PWD =~ $NVM_LAZY_AUTO_DIR && "$(type node)" = *'a shell function'* ]]; then
+    print 'Activating nvm...'
+    
+    # trigger loading
+    node --version
+    # cd into same dir to activate auto_use
+    cd $PWD
+
+  fi
+}
+
+# use this function if LAZY_LOAD is true
+if [ "$NVM_LAZY_LOAD" = true ]; then
+  precmd_functions+=(activate_nvm)
+fi
 # END NVM
 
 plugin_path="$ZSH_CUSTOM/plugins"
