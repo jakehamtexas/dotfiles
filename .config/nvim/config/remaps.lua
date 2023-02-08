@@ -45,7 +45,7 @@ local function general(keymap)
   keymap.n('<leader>mp', '"+p', { desc = '(m)ouse (p)aste' })
 
   -- Make terminal easier to escape
-  keymap.t('<Esc>', '<C-\\><C-n>', { desc = 'Enter normal mode in terminal' })
+  keymap.t('ii', '<C-\\><C-n>', { desc = 'Enter normal mode in terminal' })
 
   -- RegExp Magic mode
   keymap.n('/', '/\\v', { desc = 'Make search very magic' })
@@ -59,7 +59,21 @@ local function general(keymap)
 end
 
 local function telescope(keymap)
-  keymap.n('<leader>ff', '<CMD>Telescope find_files hidden=true<CR>', { desc = '(f)ind (f)iles' })
+  keymap.n('<leader>ff', function()
+    local pwd = vim.fn.system("pwd | tr -d '\n'")
+    local home_dir = vim.fn.expand '$HOME'
+    local find_command = { "rg", "--files", "--color", "never" }
+
+    if (pwd == home_dir) then
+      table.insert(find_command, '--ignore-file')
+      table.insert(find_command, home_dir .. '/.gitignore')
+    end
+
+    require('telescope.builtin').find_files({ 
+      hidden = true,
+      find_command = find_command
+    })
+  end, { desc = '(f)ind (f)iles' })
   keymap.n('<leader>fg', function()
     require('telescope').extensions.live_grep_args.live_grep_args()
   end, { desc = '(f)ind with (g)rep' })
@@ -82,6 +96,8 @@ local function telescope(keymap)
   keymap.n('<leader>fqf', '<CMD>Telescope quickfix<CR>', { desc = '(f)ind entries in the (q)uickfix list' })
   keymap.n('<leader>fo', '<CMD>Telescope oldfiles<CR>', { desc = '(f)ind (o)ld files' })
   keymap.n('<leader>fr', '<CMD>Telescope resume<CR>', { desc = '(r)esume last search' })
+
+  keymap.n('<leader>f/', '<CMD>Telescope current_buffer_fuzzy_find<CR>',{ desc = '(f)uzzy find in current buffer' })
 end
 
 local function terminal(keymap)

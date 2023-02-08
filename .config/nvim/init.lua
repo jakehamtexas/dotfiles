@@ -63,7 +63,8 @@ packer.startup(function(use)
       'nvim-telescope/telescope.nvim',
       requires = {
          { 'nvim-lua/plenary.nvim' },
-         { 'nvim-telescope/telescope-live-grep-args.nvim' }
+         { 'nvim-telescope/telescope-live-grep-args.nvim' },
+         { 'nvim-treesitter/nvim-treesitter' }
       }
    }
 
@@ -111,7 +112,7 @@ packer.startup(function(use)
             local term_group = vim.api.nvim_create_augroup('TermQuickExit', { clear = true })
             vim.api.nvim_create_autocmd('TermEnter', {
                callback = function()
-                  require('config.keymap').n('<esc>', function()
+                  require('config.keymap').n('<leader>i', function()
                      toggleterm.toggle(term.count or 0)
                   end, { desc = 'Close the terminal', bufnr = term.bufnr })
                end,
@@ -180,6 +181,14 @@ packer.startup(function(use)
    }
 
    use { 'itchyny/vim-qfedit' }
+
+   use {
+      'tummetott/reticle.nvim',
+      config = function()
+         vim.wo.cursorline = true
+         require('reticle').setup {}
+      end
+   }
    -- Automatically set up your configuration after cloning packer.nvim
    if IS_BOOTSTRAPPING then
       packer.sync()
