@@ -93,4 +93,14 @@ local function terminal(keymap)
   keymap.n('<leader>tt', ':ToggleTerm<CR>', { desc = '(t)oggle any (t)erminal' })
 end
 
-return { critical = critical, general = general, telescope = telescope, terminal = terminal }
+local function oil(keymap)
+  keymap.n("<leader>-", require("oil").open, { desc = "Open parent directory" })
+end
+
+return { 
+  critical = critical, 
+  general = general, 
+  telescope = telescope, 
+  terminal = terminal,
+  oil = oil
+}

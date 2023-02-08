@@ -173,6 +173,13 @@ packer.startup(function(use)
       'lbrayner/vim-rzip'
    }
 
+   use { 'nvim-tree/nvim-web-devicons' }
+   use {
+      'stevearc/oil.nvim',
+      config = function() require('oil').setup() end
+   }
+
+   use { 'itchyny/vim-qfedit' }
    -- Automatically set up your configuration after cloning packer.nvim
    if IS_BOOTSTRAPPING then
       packer.sync()

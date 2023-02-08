@@ -75,6 +75,7 @@ remaps.critical(keymap)
 remaps.general(keymap)
 remaps.telescope(keymap)
 remaps.terminal(keymap)
+remaps.oil(keymap)
 
 vim.cmd('syntax enable')
 vim.cmd('colorscheme gruvbox')
