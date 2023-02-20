@@ -112,7 +112,7 @@ packer.startup(function(use)
             local term_group = vim.api.nvim_create_augroup('TermQuickExit', { clear = true })
             vim.api.nvim_create_autocmd('TermEnter', {
                callback = function()
-                  require('config.keymap').n('<leader>i', function()
+                  require('config.keymap').n('<esc>', function()
                      toggleterm.toggle(term.count or 0)
                   end, { desc = 'Close the terminal', bufnr = term.bufnr })
                end,

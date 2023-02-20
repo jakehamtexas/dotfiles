@@ -44,9 +44,6 @@ local function general(keymap)
   keymap.v('<leader>mc', '"+y', { desc = '(m)ouse (c)opy' })
   keymap.n('<leader>mp', '"+p', { desc = '(m)ouse (p)aste' })
 
-  -- Make terminal easier to escape
-  keymap.t('ii', '<C-\\><C-n>', { desc = 'Enter normal mode in terminal' })
-
   -- RegExp Magic mode
   keymap.n('/', '/\\v', { desc = 'Make search very magic' })
   keymap.v('/', '/\\v', { desc = 'Make search very magic' })
@@ -58,10 +55,18 @@ local function general(keymap)
   keymap.n('<C-u>', '<C-u>zz', { desc = 'Center the cursor when using CTRL+u' })
 end
 
+local function get_pwd()
+    return vim.fn.system("pwd | tr -d '\n'")
+end
+
+local function get_home_dir()
+    return vim.fn.expand '$HOME'
+end
+
 local function telescope(keymap)
   keymap.n('<leader>ff', function()
-    local pwd = vim.fn.system("pwd | tr -d '\n'")
-    local home_dir = vim.fn.expand '$HOME'
+    local pwd = get_pwd()
+    local home_dir = get_home_dir()
     local find_command = { "rg", "--files", "--color", "never" }
 
     if (pwd == home_dir) then
@@ -75,7 +80,28 @@ local function telescope(keymap)
     })
   end, { desc = '(f)ind (f)iles' })
   keymap.n('<leader>fg', function()
-    require('telescope').extensions.live_grep_args.live_grep_args()
+
+    local vimgrep_arguments = function ()
+      local pwd = get_pwd()
+      local home_dir = get_home_dir()
+      if (pwd == home_dir) then
+        return {
+          "rg",
+          "--color=never",
+          "--no-heading",
+          "--with-filename",
+          "--line-number",
+          "--column",
+          "--smart-case",
+          '--ignore-file',
+          home_dir .. '/.gitignore'
+        }
+      end
+      return nil
+    end
+    require('telescope').extensions.live_grep_args.live_grep_args({
+        vimgrep_arguments = vimgrep_arguments()
+      })
   end, { desc = '(f)ind with (g)rep' })
   keymap.n('<leader>fhg', '<CMD>Telescope grep_string hidden=true<CR>', { desc = '(f)ind in (h)idden files with (g)rep' })
 
@@ -101,6 +127,9 @@ local function telescope(keymap)
 end
 
 local function terminal(keymap)
+  -- Make terminal easier to escape
+  keymap.t(';a', '<C-\\><C-n>', { desc = 'Enter normal mode in terminal' })
+
   keymap.n('<leader>tf', ':ToggleTerm direction=float<CR>', { desc = '(t)oggle (f)loating terminal' })
   keymap.n('<leader>th', ':ToggleTerm direction=horizontal<CR>', { desc = '(t)oggle (h)orizontal terminal' })
   keymap.n('<leader>tv', ':ToggleTerm direction=vertical<CR>', { desc = '(t)oggle (v)ertical terminal' })
@@ -114,9 +143,9 @@ local function oil(keymap)
 end
 
 return { 
-  critical = critical, 
-  general = general, 
-  telescope = telescope, 
+  critical = critical,
+  general = general,
+  telescope = telescope,
   terminal = terminal,
   oil = oil
 }

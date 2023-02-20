@@ -10,3 +10,5 @@ if [ ! -d "$tmux_envvar" ] || [ -z "$tmux_envvar" ]; then
 fi
 
 with_unset_git_env "$TMUX_TPM_DIR_PATH"/bin/install_plugins | grep -v Already
+
+"$HOME"/.config/tmux/plugins/tmux-resurrect/resurrect.tmux

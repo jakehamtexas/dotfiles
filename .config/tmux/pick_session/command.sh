@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-. $TMUX_DIR/pick_session/fs_utils.sh
+set -e
 
-picked="$(echo "$(tmux list-sessions)" | fzf)"
+. "$TMUX_DIR"/pick_session/fs_utils.sh
 
-write_session_name $picked
+if ! picked="$(tmux list-sessions | fzf)"; then
+  picked="$(tmux list-clients -F '#S')"
+fi
 
+write_session_name "$picked"
