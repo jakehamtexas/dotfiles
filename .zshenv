@@ -51,6 +51,7 @@ git config --global alias.cpan 'commit -p --amend --no-edit'
 git config --global alias.caan 'commit -a --amend --no-edit'
 
 git config --global alias.fp 'push -u --force-with-lease'
+git config --global alias.fpp '!f(){ git fp --no-verify && yarn && yarn run generate; git push; }; f'
 
 git config --global alias.r '!f(){ git rebase $($HOME/scripts/git_upstream_branch.sh $1); }; f'
 git config --global alias.ri '!f(){ git rebase -i $($HOME/scripts/git_upstream_branch.sh $1); }; f'
@@ -200,7 +201,7 @@ export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/.sb-local-vim"
 export CYPRESS_SECRETS_PATH="$HOME/cypress.env.json"
 
 alias arm64bi='arch -arm64 brew install'
-alias setup="$HOME/scripts/prepare_dev.sh &"
+alias setup="$HOME/scripts/prepare_dev.sh"
 
 alias yr='yarn run'
 alias yrd='yr dev'
