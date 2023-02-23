@@ -134,6 +134,8 @@ done
 source $ZSH/oh-my-zsh.sh >/dev/null 2>&1
 test -f $zsh_autocomplete_path && source $zsh_autocomplete_path 
 
+export HISTORY_FILTER_EXCLUDE=("_KEY" "Bearer")
+
 # TODO: Make this rustup script idempotent and fail gracefully
 #       When it fails on Arch, it has the following output:
 #
