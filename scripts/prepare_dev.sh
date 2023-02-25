@@ -14,7 +14,7 @@ fi
 echo "Copying cypress secrets from $CYPRESS_SECRETS_PATH."
 cp "$CYPRESS_SECRETS_PATH" ./apps/cypress/ || echo "Done (already copied)"
 
-doppler setup
+sudo doppler setup
 
 {
   ./prepare_dev.sh >/dev/null 2>&1 &

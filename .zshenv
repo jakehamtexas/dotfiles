@@ -57,7 +57,7 @@ git config --global alias.r '!f(){ git rebase $($HOME/scripts/git_upstream_branc
 git config --global alias.ri '!f(){ git rebase -i $($HOME/scripts/git_upstream_branch.sh $1); }; f'
 git config --global alias.rc 'rebase --continue'
 
-git config --global alias.wa 'worktree add'
+git config --global alias.wa '!sh $HOME/scripts/sb-worktree/add.sh'
 git config --global alias.wr 'worktree remove'
 git config --global alias.wrf '!f(){ git worktree remove --force $(realpath $1); git worktree prune; }; f'
 git config --global alias.wrp 'worktree prune'
@@ -118,6 +118,15 @@ export DOTFILES_STATE=/tmp/dotfiles
 export DOTFILES_ORIGIN_MAIN_REV_CACHE_PATH=$DOTFILES_STATE/main_rev_cache
 export DOTFILES_LAST_REMOTE_CHECK_TIME_PATH=$DOTFILES_STATE/last_remote_check_time
 
+
+handle_new_worktree() {
+  if [ -f ./worktree_should_init ]; then
+    rm ./worktree_should_init 
+
+    "$HOME/scripts/prepare_dev.sh"
+    nvim
+  fi
+}
 
 handle_home_dir () {
   if [ "$PWD" = "$HOME" ]; then
@@ -194,6 +203,7 @@ dotfiles_diff() {
 chpwd () {
   handle_home_dir
   _can_check && _check_for_new_dotfiles_revision
+  handle_new_worktree
 }
 
 # SAFEBASE CONFIG/ALIASES
