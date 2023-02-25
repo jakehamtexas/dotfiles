@@ -213,4 +213,5 @@ alias sbpd=./prepare_dev.sh
 alias zshrc='vim $HOME/.zshrc'
 
 alias pr="$HOME/scripts/pr/pr.sh"
+
 . "$HOME"/scripts/git.sh
