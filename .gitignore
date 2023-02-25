@@ -147,3 +147,6 @@ yay
 
 # SAFEBASE
 import_template.csv
+
+# Linear plugin
+.linear_env
