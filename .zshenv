@@ -58,7 +58,7 @@ git config --global alias.rc 'rebase --continue'
 
 git config --global alias.wa 'worktree add'
 git config --global alias.wr 'worktree remove'
-git config --global alias.wrf 'worktree remove --force'
+git config --global alias.wrf '!f(){ git worktree remove --force $(realpath $1); git worktree prune; }; f'
 git config --global alias.wrp 'worktree prune'
 
 git config --global alias.bsc 'branch --show-current'
@@ -212,3 +212,5 @@ alias sbpd=./prepare_dev.sh
 alias zshrc='vim $HOME/.zshrc'
 
 alias pr="$HOME/scripts/pr.sh"
+
+. "$HOME"/scripts/git.sh
