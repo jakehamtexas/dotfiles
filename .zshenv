@@ -6,14 +6,6 @@ export NVIM_DIR=$HOME/.config/nvim
 export GPG_TTY=$(tty)
 export EDITOR=$(which nvim)
 
-export TMUX_DIR=$HOME/.config/tmux
-export TMUX_TPM_DIR_PATH=$TMUX_DIR/plugins/tpm
-
-if [ -n $TMUX ]; then
-  tmux setenv TMUX_DIR $TMUX_DIR
-  tmux setenv TMUX_TPM_DIR_PATH $TMUX_TPM_DIR_PATH
-fi
-
 alias npm-what=npm pack && tar -xvzf *.tgz && rm -rf package *.tgz
 alias ssh-pi="ssh -i $HOME/.ssh/rpi_ecdsa pi@192.168.0.6"
 alias vim="nvim"
@@ -128,18 +120,7 @@ handle_home_dir () {
   fi
 }
 
-with_unset_git_env() {
-  readonly git_dir=$GIT_DIR
-  readonly git_wt=$GIT_WORK_TREE
-
-  unset GIT_DIR
-  unset GIT_WORK_TREE
-
-  $@ || true
-  
-  export GIT_DIR=$git_dir
-  export GIT_WORK_TREE=$git_wt
-}
+. lib/with_unset_git_env.sh
 
 alias yay='with_unset_git_env yay'
 
