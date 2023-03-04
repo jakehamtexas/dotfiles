@@ -23,14 +23,25 @@ pick_linear_branch() {
   ensure_linear_env
   issues="$(query_issues)"
   id="$(fzf_issues "$issues")"
+
+  if [ -z "$id" ]; then
+    return 1
+  fi
+
   find_branch_name "$issues" "$id"
 }
 
-branch_to_checkout="${2:-"$(pick_linear_branch || jake/tmp)"}"
-base_commit_ish="${3:-"$(fzf_branches || develop)"}"
+branch_to_checkout="${2:-"$(pick_linear_branch || true)"}"
+base_commit_ish="${3:-"$(fzf_branches || echo develop)"}"
 
 git fetch
-git worktree add -b "$branch_to_checkout" "$1" "$base_commit_ish"
+
+if [ -z "$branch_to_checkout" ]; then
+  git worktree add "$1" "$base_commit_ish"
+else
+  git worktree add -b "$branch_to_checkout" "$1" "$base_commit_ish"
+fi
+
 cd "$1"
 
 if [ -n "$issues" ] && [ -n "$id" ]; then
