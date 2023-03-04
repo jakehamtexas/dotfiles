@@ -14,7 +14,7 @@ local lazypath = fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
    IS_BOOTSTRAPPING = true
    fn.system('with_unset_git_env git clone --filter=blob:none https://github.com/folke/lazy.nvim.git --branch=stable ' ..
-   lazypath)
+      lazypath)
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -38,17 +38,19 @@ lazy.setup({
       "folke/neoconf.nvim", cmd = "Neoconf"
    },
    {
-      'nvim-treesitter/nvim-treesitter', config = function()
-      require 'nvim-treesitter.configs'.setup {
-         -- A list of parser names, or "all" (the five listed parsers should always be installed)
-         ensure_installed = { "markdown", "query" },
-      }
-   end,
+      'nvim-treesitter/nvim-treesitter',
+      config = function()
+         require 'nvim-treesitter.configs'.setup {
+            -- A list of parser names, or "all" (the five listed parsers should always be installed)
+            ensure_installed = { "markdown", "query" },
+         }
+      end,
    },
    "folke/neodev.nvim",
    'neovim/nvim-lspconfig',
 
-   { 'ellisonleao/gruvbox.nvim',
+   {
+      'ellisonleao/gruvbox.nvim',
       lazy = false,
       priority = 1000,
       init = function()
@@ -119,46 +121,53 @@ lazy.setup({
    'pantharshit00/vim-prisma',
 
    'christoomey/vim-tmux-navigator',
-   { 'norcalli/nvim-colorizer.lua',
+   {
+      'norcalli/nvim-colorizer.lua',
       config = function()
          require('colorizer').setup()
-      end },
+      end
+   },
 
-   { "akinsho/toggleterm.nvim", version = '*', config = function()
-      local toggleterm = require("toggleterm")
-      toggleterm.setup({
-         direction = 'float',
-         on_open = function(term)
-            local term_group = vim.api.nvim_create_augroup('TermQuickExit', { clear = true })
-            vim.api.nvim_create_autocmd('TermEnter', {
-               callback = function()
-                  require('config.keymap').n('<esc>', function()
-                     toggleterm.toggle(term.count or 0)
-                  end, { desc = 'Close the terminal', bufnr = term.bufnr })
-               end,
-               buffer = term.bufnr,
-               group = term_group,
-            })
-         end
-      })
-   end },
+   {
+      "akinsho/toggleterm.nvim",
+      version = '*',
+      config = function()
+         local toggleterm = require("toggleterm")
+         toggleterm.setup({
+            direction = 'float',
+            on_open = function(term)
+               local term_group = vim.api.nvim_create_augroup('TermQuickExit', { clear = true })
+               vim.api.nvim_create_autocmd('TermEnter', {
+                  callback = function()
+                     require('config.keymap').n('<esc>', function()
+                        toggleterm.toggle(term.count or 0)
+                     end, { desc = 'Close the terminal', bufnr = term.bufnr })
+                  end,
+                  buffer = term.bufnr,
+                  group = term_group,
+               })
+            end
+         })
+      end
+   },
 
-   { 'Shatur/neovim-session-manager',
+   {
+      'Shatur/neovim-session-manager',
       dependencies = { 'nvim-lua/plenary.nvim' },
       config = function()
          local Path = require('plenary.path')
          require('session_manager').setup({
-            sessions_dir = Path:new(vim.fn.stdpath('data'), 'sessions'), -- The directory where the session files will be saved.
-            path_replacer = '__', -- The character to which the path separator will be replaced for session files.
-            colon_replacer = '++', -- The character to which the colon symbol will be replaced for session files.
+            sessions_dir = Path:new(vim.fn.stdpath('data'), 'sessions'),               -- The directory where the session files will be saved.
+            path_replacer = '__',                                                      -- The character to which the path separator will be replaced for session files.
+            colon_replacer = '++',                                                     -- The character to which the colon symbol will be replaced for session files.
             autoload_mode = require('session_manager.config').AutoloadMode.CurrentDir, -- Define what to do when Neovim is started without arguments. Possible values: Disabled, CurrentDir, LastSession
-            autosave_last_session = true, -- Automatically save last session on exit and on session switch.
-            autosave_ignore_not_normal = true, -- Plugin will not save a session when no buffers are opened, or all of them aren't writable or listed.
-            autosave_ignore_filetypes = { -- All buffers of these file types will be closed before the session is saved.
+            autosave_last_session = true,                                              -- Automatically save last session on exit and on session switch.
+            autosave_ignore_not_normal = true,                                         -- Plugin will not save a session when no buffers are opened, or all of them aren't writable or listed.
+            autosave_ignore_filetypes = {                                              -- All buffers of these file types will be closed before the session is saved.
                'gitcommit',
             },
             autosave_only_in_session = false, -- Always autosaves session. If true, only autosaves after a session is active.
-            max_path_length = 80, -- Shorten the display path if length exceeds this threshold. Use 0 if don't want to shorten the path at all.
+            max_path_length = 80,             -- Shorten the display path if length exceeds this threshold. Use 0 if don't want to shorten the path at all.
          })
       end,
    },
@@ -241,6 +250,7 @@ lazy.setup({
          require('reticle').setup {}
       end
    },
+   { 'github/copilot.vim' },
 })
 
 
