@@ -11,12 +11,9 @@ local function critical(keymap)
     -- Execute our vimrc lua file again to add back our maps
     dofile(vimrc)
 
-    vim.cmd('PackerCompile')
-
     print('Reloaded Neovim config.')
-
   end,
-  { desc = 'Reload Neovim config.' }
+    { desc = 'Reload Neovim config.' }
   )
 
   -- Edit plugins
@@ -29,7 +26,8 @@ local function critical(keymap)
 end
 
 local function general(keymap)
-  keymap.v('<leader>p', '"_dP', { desc = 'Delete selected text into _ register and paste before cursor, i.e. replace the selected text' })
+  keymap.v('<leader>p', '"_dP',
+    { desc = 'Delete selected text into _ register and paste before cursor, i.e. replace the selected text' })
 
   -- Splits
   keymap.n('<C-j>', '<C-w>j', { desc = 'Move to split buffer - down' })
@@ -37,7 +35,8 @@ local function general(keymap)
   keymap.n('<C-h>', '<C-w>h', { desc = 'Move to split buffer - left' })
   keymap.n('<C-l>', '<C-w>l', { desc = 'Move to split buffer - right', override = true })
 
-  keymap.n('<leader>cd', ':cd %:p:h<CR>:pwd<CR>', { desc = '(c)hange (d)irectory (pwd) to the dir of the current buffer' })
+  keymap.n('<leader>cd', ':cd %:p:h<CR>:pwd<CR>',
+    { desc = '(c)hange (d)irectory (pwd) to the dir of the current buffer' })
   keymap.n('<leader>lex', ':Lex %:p:h<CR>', { desc = 'Open (l)eft (ex)plorer in pwd of the current buffer' })
 
   -- Clipboard
@@ -56,11 +55,11 @@ local function general(keymap)
 end
 
 local function get_pwd()
-    return vim.fn.system("pwd | tr -d '\n'")
+  return vim.fn.system("pwd | tr -d '\n'")
 end
 
 local function get_home_dir()
-    return vim.fn.expand '$HOME'
+  return vim.fn.expand '$HOME'
 end
 
 local function telescope(keymap)
@@ -74,14 +73,13 @@ local function telescope(keymap)
       table.insert(find_command, home_dir .. '/.gitignore')
     end
 
-    require('telescope.builtin').find_files({ 
+    require('telescope.builtin').find_files({
       hidden = true,
       find_command = find_command
     })
   end, { desc = '(f)ind (f)iles' })
   keymap.n('<leader>fg', function()
-
-    local vimgrep_arguments = function ()
+    local vimgrep_arguments = function()
       local pwd = get_pwd()
       local home_dir = get_home_dir()
       if (pwd == home_dir) then
@@ -100,8 +98,8 @@ local function telescope(keymap)
       return nil
     end
     require('telescope').extensions.live_grep_args.live_grep_args({
-        vimgrep_arguments = vimgrep_arguments()
-      })
+      vimgrep_arguments = vimgrep_arguments()
+    })
   end, { desc = '(f)ind with (g)rep' })
   keymap.n('<leader>fhg', '<CMD>Telescope grep_string hidden=true<CR>', { desc = '(f)ind in (h)idden files with (g)rep' })
 
@@ -123,7 +121,7 @@ local function telescope(keymap)
   keymap.n('<leader>fo', '<CMD>Telescope oldfiles<CR>', { desc = '(f)ind (o)ld files' })
   keymap.n('<leader>fr', '<CMD>Telescope resume<CR>', { desc = '(r)esume last search' })
 
-  keymap.n('<leader>f/', '<CMD>Telescope current_buffer_fuzzy_find<CR>',{ desc = '(f)uzzy find in current buffer' })
+  keymap.n('<leader>f/', '<CMD>Telescope current_buffer_fuzzy_find<CR>', { desc = '(f)uzzy find in current buffer' })
 end
 
 local function terminal(keymap)
@@ -142,10 +140,20 @@ local function oil(keymap)
   keymap.n("<leader>-", require("oil").open, { desc = "Open parent directory" })
 end
 
-return { 
+local function git(keymap)
+  keymap.n("<leader>Gb", ':BlamerToggle<CR>', { desc = "Toggle (G)it (b)lame in the buffer." })
+end
+
+local function lazy(keymap)
+  keymap.n("<leader>l", ':Lazy<CR>', { desc = "Open (L)azy" })
+end
+
+return {
   critical = critical,
   general = general,
   telescope = telescope,
   terminal = terminal,
-  oil = oil
+  oil = oil,
+  git = git,
+  lazy = lazy
 }

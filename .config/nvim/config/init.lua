@@ -71,14 +71,12 @@ g.maplocalleader = " "
 
 local keymap = require('config.keymap')
 local remaps = require('config.remaps')
-remaps.critical(keymap)
-remaps.general(keymap)
-remaps.telescope(keymap)
-remaps.terminal(keymap)
-remaps.oil(keymap)
+
+for _, remap_fn in pairs(remaps) do
+  remap_fn(keymap)
+end
 
 vim.cmd('syntax enable')
-vim.cmd('colorscheme gruvbox')
 
 -- CoC is the last thing in vim
 if not g.started_by_firenvim then
@@ -87,6 +85,3 @@ end
 
 require('markdown-preview')
 require('pickers.init')
-
--- Git stuff
-vim.g.blamer_enabled = 1

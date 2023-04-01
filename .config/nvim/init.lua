@@ -10,31 +10,41 @@ require('global')
 package.path_add(vim.nvim_dir .. '/config')
 
 local fn = vim.fn
-local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(install_path)) > 0 then
+local lazypath = fn.stdpath("data") .. "/lazy/lazy.nvim"
+print(fn.stdpath("data"))
+if not vim.loop.fs_stat(lazypath) then
    IS_BOOTSTRAPPING = true
-   fn.system('with_unset_git_env git clone --depth 1 https://github.com/wbthomason/packer.nvim ' .. install_path)
-   vim.cmd [[packadd packer.nvim]]
+   fn.system('with_unset_git_env git clone --filter=blob:none https://github.com/folke/lazy.nvim.git --branch=stable ' ..
+   lazypath)
 end
+vim.opt.rtp:prepend(lazypath)
 
-local packer = require('packer')
+local lazy = require("lazy");
+-- "Re sourcing your config is not supported with lazy.nvim"
+-- When plugins are updated, run Lazy sync
+--vim.api.nvim_create_autocmd('BufWritePost', {
+--command = 'source <afile> | Lazy! sync',
+--group = vim.api.nvim_create_augroup('Lazy', { clear = true }),
+--pattern = vim.fn.expand '$MYVIMRC'
+--})
 
--- When plugins are updated, run PackerCompile
-local packer_group = vim.api.nvim_create_augroup('Packer', { clear = true })
-vim.api.nvim_create_autocmd('BufWritePost', {
-   command = 'source <afile> | PackerCompile',
-   group = packer_group,
-   pattern = vim.fn.expand '$MYVIMRC'
-})
+lazy.setup({
+   {
+      "folke/neoconf.nvim", cmd = "Neoconf"
+   },
+   "folke/neodev.nvim",
+   'neovim/nvim-lspconfig',
 
-packer.startup(function(use)
-   use 'wbthomason/packer.nvim'
-
-   use 'neovim/nvim-lspconfig'
-
-   use 'ellisonleao/gruvbox.nvim'
-   use 'folke/lsp-colors.nvim'
-   use {
+   { 'ellisonleao/gruvbox.nvim',
+      lazy = false,
+      priority = 1000,
+      init = function()
+         vim.opt.termguicolors = true
+         vim.cmd('colorscheme gruvbox')
+      end
+   },
+   'folke/lsp-colors.nvim',
+   {
       "folke/which-key.nvim",
       config = function()
          require("which-key").setup({
@@ -43,68 +53,65 @@ packer.startup(function(use)
             -- refer to the configuration section below
          })
       end
-   }
+   },
 
-   use {
+   {
       'iamcco/markdown-preview.nvim',
-      run = ':call mkdp#util#install()'
-   }
+      build = ':call mkdp#util#install()'
+   },
 
-   use {
+   {
       'neoclide/coc.nvim',
       branch = 'release',
-      run = ':CocInstall'
-   }
-   use 'sheerun/vim-polyglot'
+      build = ':CocInstall'
+   },
+   'sheerun/vim-polyglot',
 
-   use { 'prettier/vim-prettier', run = 'yarn install' }
+   { 'prettier/vim-prettier',      build = 'yarn install' },
 
-   use {
+   {
       'nvim-telescope/telescope.nvim',
-      requires = {
+      dependencies = {
          { 'nvim-lua/plenary.nvim' },
          { 'nvim-telescope/telescope-live-grep-args.nvim' },
          { 'nvim-treesitter/nvim-treesitter' }
       }
-   }
+   },
 
-   use {
+   {
       "rcarriga/nvim-notify",
-      after = 'firenvim',
+      cond = not vim.g.started_by_firenvim,
       config = function()
-         if not vim.g.started_by_firenvim then
-            vim.notify = require('notify')
-         end
+         vim.notify = require('notify')
       end
-   }
+   },
 
-   use {
+   {
       'APZelos/blamer.nvim',
-      after = 'firenvim',
-      opt = true,
-      cond = function() return not vim.g.started_by_firenvim end
-   }
-   use {
+      cond = not vim.g.started_by_firenvim,
+   },
+   {
       'lewis6991/gitsigns.nvim',
-      requires = { 'nvim-lua/plenary.nvim' },
+      dependencies = { 'nvim-lua/plenary.nvim' },
       config = function()
          vim.o.termguicolors = true
          require('gitsigns').setup()
       end
-   }
+   },
 
-   use 'tpope/vim-eunuch'
-   use 'tpope/vim-surround'
-   use 'tpope/vim-dadbod'
-   use 'pantharshit00/vim-prisma'
+   'tpope/vim-eunuch',
+   'tpope/vim-surround',
+   'tpope/vim-dadbod',
 
-   use 'christoomey/vim-tmux-navigator'
-   use { 'norcalli/nvim-colorizer.lua',
+   'pantharshit00/vim-prisma',
+
+   'christoomey/vim-tmux-navigator',
+   { 'norcalli/nvim-colorizer.lua',
       config = function()
          require('colorizer').setup()
-      end }
+      end },
 
-   use { "akinsho/toggleterm.nvim", tag = '*', config = function()
+   { "akinsho/toggleterm.nvim", version = '*', config = function()
       local toggleterm = require("toggleterm")
       toggleterm.setup({
          direction = 'float',
@@ -121,10 +128,10 @@ packer.startup(function(use)
             })
          end
       })
-   end }
+   end },
 
-   use { 'Shatur/neovim-session-manager',
-      requires = { 'nvim-lua/plenary.nvim' },
+   { 'Shatur/neovim-session-manager',
+      dependencies = { 'nvim-lua/plenary.nvim' },
       config = function()
          local Path = require('plenary.path')
          require('session_manager').setup({
@@ -141,11 +148,11 @@ packer.startup(function(use)
             max_path_length = 80, -- Shorten the display path if length exceeds this threshold. Use 0 if don't want to shorten the path at all.
          })
       end,
-   }
+   },
 
-   use {
+   {
       'glacambre/firenvim',
-      run = function() vim.fn['firenvim#install'](0) end,
+      build = function() vim.fn['firenvim#install'](0) end,
       config = function()
          local firenvim_config = {
             globalSettings = {
@@ -168,39 +175,28 @@ packer.startup(function(use)
          end
          vim.g.firenvim_config = firenvim_config
       end
-   }
+   },
 
-   use {
+   {
       'lbrayner/vim-rzip'
-   }
+   },
 
-   use { 'nvim-tree/nvim-web-devicons' }
-   use {
+   { 'nvim-tree/nvim-web-devicons' },
+   {
       'stevearc/oil.nvim',
       config = function() require('oil').setup() end
-   }
+   },
 
-   use { 'itchyny/vim-qfedit' }
+   { 'itchyny/vim-qfedit' },
 
-   use {
+   {
       'tummetott/reticle.nvim',
       config = function()
          vim.wo.cursorline = true
          require('reticle').setup {}
       end
-   }
-   -- Automatically set up your configuration after cloning packer.nvim
-   if IS_BOOTSTRAPPING then
-      packer.sync()
-   end
-end)
+   },
+})
 
-if IS_BOOTSTRAPPING then
-   print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-   print '  You can just restart Neovim when  '
-   print '  Packer Sync is completed. :)))))  '
-   print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-   return
-end
 
 require('config.init')
