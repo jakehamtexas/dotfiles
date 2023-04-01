@@ -51,7 +51,8 @@ git config --global alias.cpan 'commit -p --amend --no-edit'
 git config --global alias.caan 'commit -a --amend --no-edit'
 
 git config --global alias.fp 'push -u --force-with-lease'
-git config --global alias.fpp '!f(){ git fp --no-verify && yarn && yarn run generate; git push; }; f'
+git config --global alias.fpp '!f(){ git fp --no-verify; }; f'
+git config --global alias.fpg '!f(){ git fp --no-verify && yarn && yarn run generate; git push; }; f'
 
 git config --global alias.r '!f(){ git rebase $($HOME/scripts/git_upstream_branch.sh $1); }; f'
 git config --global alias.ri '!f(){ git rebase -i $($HOME/scripts/git_upstream_branch.sh $1); }; f'
