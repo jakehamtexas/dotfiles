@@ -147,8 +147,8 @@ yay
 .tldrc
 
 # PERSONAL
-# Make sure to leave this commented in any non-work branch
-.safebase
+# Make sure to leave this uncommented in any non-work branch
+# .safebase
 
 # SAFEBASE
 import_template.csv
