@@ -141,9 +141,14 @@ yay
 .degit
 .pyenv
 .clasprc.json
+.actrc
 
 # TODO: Maybe explore not ignoring this?
 .tldrc
+
+# PERSONAL
+# Make sure to leave this commented in any non-work branch
+.safebase
 
 # SAFEBASE
 import_template.csv
