@@ -161,7 +161,7 @@ packer.startup(function(use)
                },
             }
          }
-         local forbidden_domains = { '.*localhost.*', '.*safebase.*', '.*linear.*' }
+         local forbidden_domains = { '.*localhost.*', '.*safebase.io*', '.*linear.*', '.*notion.so*' }
 
          for _, value in ipairs(forbidden_domains) do
             firenvim_config.localSettings[value] = { takeover = 'never', priority = 1 }
