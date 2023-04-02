@@ -11,7 +11,6 @@ package.path_add(vim.nvim_dir .. '/config')
 
 local fn = vim.fn
 local lazypath = fn.stdpath("data") .. "/lazy/lazy.nvim"
-print(fn.stdpath("data"))
 if not vim.loop.fs_stat(lazypath) then
    IS_BOOTSTRAPPING = true
    fn.system('with_unset_git_env git clone --filter=blob:none https://github.com/folke/lazy.nvim.git --branch=stable ' ..
@@ -27,6 +26,12 @@ local lazy = require("lazy");
 --group = vim.api.nvim_create_augroup('Lazy', { clear = true }),
 --pattern = vim.fn.expand '$MYVIMRC'
 --})
+local firenvim_group = vim.api.nvim_create_augroup('Firenvim', { clear = true })
+local profile_firenvim = false
+
+if vim.g.started_by_firenvim then
+   vim.g.polyglot_disabled = { 'autoindent' }
+end
 
 lazy.setup({
    {
@@ -152,8 +157,32 @@ lazy.setup({
 
    {
       'glacambre/firenvim',
+      lazy = not vim.g.started_by_firenvim,
       build = function() vim.fn['firenvim#install'](0) end,
       config = function()
+         if profile_firenvim then
+            vim.profile('firenvim')
+         end
+
+         vim.api.nvim_create_autocmd({ 'TextChanged', 'TextChangedI' }, {
+            group = firenvim_group,
+            callback = function(e)
+               if vim.g.timer_started == true then
+                  return
+               end
+               vim.g.timer_started = true
+               vim.fn.timer_start(10000, function()
+                  vim.g.timer_started = false
+                  vim.cmd.write()
+               end)
+            end
+         })
+
+         vim.api.nvim_create_autocmd('ExitPre', {
+            group = firenvim_group,
+            -- Close all buffers but this one
+            command = ':%bd|e#'
+         })
          local firenvim_config = {
             globalSettings = {
                alt = 'all',

@@ -48,3 +48,14 @@ function vim.print(obj)
    local str = vim.inspect(obj)
    print(str)
 end
+
+function vim.profile(path)
+   local filename = '/tmp/' .. path .. '.log'
+
+   vim.cmd('profile start ' .. filename)
+
+   vim.cmd('profile file *')
+   vim.cmd('profile func *')
+
+   print('Started profiling at ' .. filename)
+end
