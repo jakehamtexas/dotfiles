@@ -37,6 +37,14 @@ lazy.setup({
    {
       "folke/neoconf.nvim", cmd = "Neoconf"
    },
+   {
+      'nvim-treesitter/nvim-treesitter', config = function()
+      require 'nvim-treesitter.configs'.setup {
+         -- A list of parser names, or "all" (the five listed parsers should always be installed)
+         ensure_installed = { "markdown", "query" },
+      }
+   end,
+   },
    "folke/neodev.nvim",
    'neovim/nvim-lspconfig',
 
@@ -154,7 +162,15 @@ lazy.setup({
          })
       end,
    },
-
+   {
+      'AckslD/nvim-FeMaco.lua',
+      config = function()
+         require('femaco').setup()
+      end,
+      dependencies = {
+         { 'nvim-treesitter/nvim-treesitter' }
+      }
+   },
    {
       'glacambre/firenvim',
       lazy = not vim.g.started_by_firenvim,
@@ -180,8 +196,8 @@ lazy.setup({
 
          vim.api.nvim_create_autocmd('ExitPre', {
             group = firenvim_group,
-            -- Close all buffers but this one
-            command = ':%bd|e#'
+            -- Close all buffers
+            command = ':%bd'
          })
          local firenvim_config = {
             globalSettings = {

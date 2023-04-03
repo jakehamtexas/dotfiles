@@ -148,6 +148,10 @@ local function lazy(keymap)
   keymap.n("<leader>l", ':Lazy<CR>', { desc = "Open (L)azy" })
 end
 
+local function fenced_code_editing(keymap)
+  keymap.n('<leader>fe', require('femaco.edit').edit_code_block, { desc = 'Open (f)enced code block edit buffer' })
+end
+
 return {
   critical = critical,
   general = general,
@@ -155,5 +159,6 @@ return {
   terminal = terminal,
   oil = oil,
   git = git,
-  lazy = lazy
+  lazy = lazy,
+  fenced_code_editing = fenced_code_editing,
 }
