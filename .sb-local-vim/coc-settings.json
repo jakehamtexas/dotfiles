@@ -1,6 +1,4 @@
 {
-  "eslint.workingDirectories": ["./apps/server"],
   "eslint.autoFixOnSave": true,
-  "eslint.packageManager": "yarn",
-  "eslint.lintTask.options": ["-c", "apps/server/.eslintrc.json", "."]
+  "eslint.packageManager": "yarn"
 }

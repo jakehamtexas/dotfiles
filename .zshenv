@@ -6,14 +6,6 @@ export NVIM_DIR=$HOME/.config/nvim
 export GPG_TTY=$(tty)
 export EDITOR=$(which nvim)
 
-export TMUX_DIR=$HOME/.config/tmux
-export TMUX_TPM_DIR_PATH=$TMUX_DIR/plugins/tpm
-
-if [ -n $TMUX ]; then
-  tmux setenv TMUX_DIR $TMUX_DIR
-  tmux setenv TMUX_TPM_DIR_PATH $TMUX_TPM_DIR_PATH
-fi
-
 alias npm-what=npm pack && tar -xvzf *.tgz && rm -rf package *.tgz
 alias ssh-pi="ssh -i $HOME/.ssh/rpi_ecdsa pi@192.168.0.6"
 alias vim="nvim"
@@ -129,6 +121,34 @@ handle_new_worktree() {
   fi
 }
 
+check_merged_worktree() {
+  if ! command -v gh >/dev/null 2>&1; then
+    return
+  fi
+
+  if [[ "$(pwd)" == "$HOME" ]]; then
+    return
+  fi
+
+  if gh pr view --json state --jq '.state' 2>/dev/null | rg -i -q merged; then
+    echo "---------------------------------"
+    echo "This worktree has been merged!"
+    echo "You can probably delete it now!"
+    echo "---------------------------------"
+    echo ""
+    echo "Would you like to delete it?"
+    read "choice?Delete worktree? [Y/n]" 
+
+    if [[ $choice =~ ^[Yy]$ ]]; then
+      git worktree remove --force $(pwd) >/dev/null 2>&1
+      git worktree prune >/dev/null 2>&1
+
+      echo "Deleted worktree!"
+    fi
+  fi
+
+}
+
 handle_home_dir () {
   if [ "$PWD" = "$HOME" ]; then
     export GIT_DIR=$DOTFILES_GIT_DIR
@@ -205,6 +225,7 @@ chpwd () {
   handle_home_dir
   _can_check && _check_for_new_dotfiles_revision
   handle_new_worktree
+  check_merged_worktree
 }
 
 # SAFEBASE CONFIG/ALIASES

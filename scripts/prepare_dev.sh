@@ -3,6 +3,8 @@
 set -e
 
 echo "Copying vim config from $VIM_LOCAL_CONFIG_DIR_PATH."
+rm -rf ./.vim || true
+
 cp -rf "$VIM_LOCAL_CONFIG_DIR_PATH" ./.vim || echo "Done (already copied)"
 
 # Only run this in project root

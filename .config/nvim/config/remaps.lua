@@ -1,18 +1,18 @@
 local function critical(keymap)
   -- Fresh source for everything and open MYVIMRC
   keymap.n('<leader> ', function()
-    -- Make sure all open buffers are saved
-    vim.cmd('silent wa')
+      -- Make sure all open buffers are saved
+      vim.cmd('silent wa')
 
-    keymap.unmap_all()
-    package.unload('config')
+      keymap.unmap_all()
+      package.unload('config')
 
-    local vimrc = os.getenv('MYVIMRC')
-    -- Execute our vimrc lua file again to add back our maps
-    dofile(vimrc)
+      local vimrc = os.getenv('MYVIMRC')
+      -- Execute our vimrc lua file again to add back our maps
+      dofile(vimrc)
 
-    print('Reloaded Neovim config.')
-  end,
+      print('Reloaded Neovim config.')
+    end,
     { desc = 'Reload Neovim config.' }
   )
 
@@ -28,12 +28,6 @@ end
 local function general(keymap)
   keymap.v('<leader>p', '"_dP',
     { desc = 'Delete selected text into _ register and paste before cursor, i.e. replace the selected text' })
-
-  -- Splits
-  keymap.n('<C-j>', '<C-w>j', { desc = 'Move to split buffer - down' })
-  keymap.n('<C-k>', '<C-w>k', { desc = 'Move to split buffer - up' })
-  keymap.n('<C-h>', '<C-w>h', { desc = 'Move to split buffer - left' })
-  keymap.n('<C-l>', '<C-w>l', { desc = 'Move to split buffer - right', override = true })
 
   keymap.n('<leader>cd', ':cd %:p:h<CR>:pwd<CR>',
     { desc = '(c)hange (d)irectory (pwd) to the dir of the current buffer' })
@@ -75,7 +69,7 @@ local function telescope(keymap)
 
     require('telescope.builtin').find_files({
       hidden = true,
-      find_command = find_command
+      find_command = find_command,
     })
   end, { desc = '(f)ind (f)iles' })
   keymap.n('<leader>fg', function()
@@ -98,7 +92,7 @@ local function telescope(keymap)
       return nil
     end
     require('telescope').extensions.live_grep_args.live_grep_args({
-      vimgrep_arguments = vimgrep_arguments()
+      vimgrep_arguments = vimgrep_arguments(),
     })
   end, { desc = '(f)ind with (g)rep' })
   keymap.n('<leader>fhg', '<CMD>Telescope grep_string hidden=true<CR>', { desc = '(f)ind in (h)idden files with (g)rep' })
