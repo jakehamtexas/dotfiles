@@ -1,11 +1,12 @@
 {
   "tsserver.reportStyleChecksAsWarnings": false,
+  "tsserver.useLocalTsdk": true,
   "coc.preferences.extensionUpdateCheck": "daily",
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
   "coc.preferences.formatOnSave": true,
   "eslint.packageManager": "yarn",
+  "sumneko-lua.enable": true,
   "sumneko-lua.enableNvimLuaDev": true,
-  "Lua.telemetry.enable": false,
   "diagnostic-languageserver.filetypes": {
     "sh": "shellcheck"
   },

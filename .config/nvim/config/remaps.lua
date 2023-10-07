@@ -1,18 +1,18 @@
 local function critical(keymap)
   -- Fresh source for everything and open MYVIMRC
   keymap.n('<leader> ', function()
-    -- Make sure all open buffers are saved
-    vim.cmd('silent wa')
+      -- Make sure all open buffers are saved
+      vim.cmd('silent wa')
 
-    keymap.unmap_all()
-    package.unload('config')
+      keymap.unmap_all()
+      package.unload('config')
 
-    local vimrc = os.getenv('MYVIMRC')
-    -- Execute our vimrc lua file again to add back our maps
-    dofile(vimrc)
+      local vimrc = os.getenv('MYVIMRC')
+      -- Execute our vimrc lua file again to add back our maps
+      dofile(vimrc)
 
-    print('Reloaded Neovim config.')
-  end,
+      print('Reloaded Neovim config.')
+    end,
     { desc = 'Reload Neovim config.' }
   )
 
@@ -29,15 +29,9 @@ local function general(keymap)
   keymap.v('<leader>p', '"_dP',
     { desc = 'Delete selected text into _ register and paste before cursor, i.e. replace the selected text' })
 
-  -- Splits
-  keymap.n('<C-j>', '<C-w>j', { desc = 'Move to split buffer - down' })
-  keymap.n('<C-k>', '<C-w>k', { desc = 'Move to split buffer - up' })
-  keymap.n('<C-h>', '<C-w>h', { desc = 'Move to split buffer - left' })
-  keymap.n('<C-l>', '<C-w>l', { desc = 'Move to split buffer - right', override = true })
+  keymap.n('<leader>ca', ':up | %bd | e#<CR>',
+    { desc = '(c)lose (a)ll buffers (except this one)' })
 
-  keymap.n('<leader>cd', ':cd %:p:h<CR>:pwd<CR>',
-    { desc = '(c)hange (d)irectory (pwd) to the dir of the current buffer' })
-  keymap.n('<leader>lex', ':Lex %:p:h<CR>', { desc = 'Open (l)eft (ex)plorer in pwd of the current buffer' })
 
   -- Clipboard
   keymap.v('<leader>mc', '"+y', { desc = '(m)ouse (c)opy' })
@@ -54,7 +48,7 @@ local function general(keymap)
   keymap.n('<C-u>', '<C-u>zz', { desc = 'Center the cursor when using CTRL+u' })
 end
 
-local function get_pwd()
+local function get_file_pwd()
   return vim.fn.system("pwd | tr -d '\n'")
 end
 
@@ -64,7 +58,7 @@ end
 
 local function telescope(keymap)
   keymap.n('<leader>ff', function()
-    local pwd = get_pwd()
+    local pwd = get_file_pwd()
     local home_dir = get_home_dir()
     local find_command = { "rg", "--files", "--color", "never" }
 
@@ -75,12 +69,12 @@ local function telescope(keymap)
 
     require('telescope.builtin').find_files({
       hidden = true,
-      find_command = find_command
+      find_command = find_command,
     })
   end, { desc = '(f)ind (f)iles' })
   keymap.n('<leader>fg', function()
     local vimgrep_arguments = function()
-      local pwd = get_pwd()
+      local pwd = get_file_pwd()
       local home_dir = get_home_dir()
       if (pwd == home_dir) then
         return {
@@ -98,7 +92,7 @@ local function telescope(keymap)
       return nil
     end
     require('telescope').extensions.live_grep_args.live_grep_args({
-      vimgrep_arguments = vimgrep_arguments()
+      vimgrep_arguments = vimgrep_arguments(),
     })
   end, { desc = '(f)ind with (g)rep' })
   keymap.n('<leader>fhg', '<CMD>Telescope grep_string hidden=true<CR>', { desc = '(f)ind in (h)idden files with (g)rep' })
@@ -134,6 +128,9 @@ local function terminal(keymap)
 
   -- Just toggle (once one of the above is set)
   keymap.n('<leader>tt', ':ToggleTerm<CR>', { desc = '(t)oggle any (t)erminal' })
+
+  -- TODO: Open term at buffer's current dir
+  keymap.n('<leader>td', ':ToggleTerm<CR>', { desc = '(t)oggle any (t)erminal' })
 end
 
 local function oil(keymap)
@@ -152,6 +149,96 @@ local function fenced_code_editing(keymap)
   keymap.n('<leader>fe', require('femaco.edit').edit_code_block, { desc = 'Open (f)enced code block edit buffer' })
 end
 
+-- TODO: Put the test output in a colorized, floating buffer. Add a command to open and close this special buffer
+local function safebase(keymap)
+  local test_output_relative_filepath = '.vim/test_output.txt'
+  function get_test_output_filepath()
+    return vim.loop.cwd() .. '/' .. test_output_relative_filepath
+  end
+
+  function get_yarn_test_arg()
+    local current_file = vim.fn.expand('%:p')
+    -- RIP no optional capture groups in lua
+    local is_spec_file = string.match(current_file, '.*%.spec%.ts$') or string.match(current_file, '.*%.spec%.tsx$') or
+        string.match(current_file, '.*%.spec%.js$') or string.match(current_file, '.*%.spec%.jsx$')
+    local is_typescript_file = string.match(current_file, '.*%.ts$') or string.match(current_file, '.*%.tsx$')
+    local is_test_file = string.match(current_file, '.*%.test%.ts$') or string.match(current_file, '.*%.test%.tsx$')
+
+    local extension = string.match(current_file, '.*%.(%w+)$')
+    local maybe_companion_test_filepath = string.gsub(current_file, '%.' .. extension .. '$', '.test.' .. extension)
+
+    local companion_test_file_exists = vim.fn.filereadable(maybe_companion_test_filepath) == 1
+
+    -- Check if it is a testable file (ends with .ts, .tsx, .js, .jsx, but not .spec.ts)
+    if not is_typescript_file or is_spec_file then
+      return
+    end
+
+    if is_test_file then
+      return current_file
+    end
+
+    if companion_test_file_exists then
+      return maybe_companion_test_filepath
+    end
+
+    return nil
+  end
+
+  local function run_safebase_test_command(yarn_test_path_arg)
+    if yarn_test_path_arg == nil then
+      vim.notify('Arg is not testable', "warn")
+      return
+    end
+
+    local test_output_filepath = get_test_output_filepath()
+    vim.fn.system('touch ' .. test_output_filepath)
+
+    -- TODO: Figure out how to reuse the same notification object
+    --       1. Keep the notification around until the `on_exit` function is called.
+    --       1. When the test passes, say "test passed" in the same notification. Auto dismiss.
+    --       1. When the test fails, say "fail", do not dismiss. Add a button to open the test output file.
+    vim.notify('Running tests for ' .. yarn_test_path_arg, "info")
+    vim.fn.jobstart('yarn test ' .. yarn_test_path_arg, {
+      on_stdout = function(_, data)
+        local file = io.open(test_output_filepath, 'a')
+        for _, line in ipairs(data) do
+          file:write(line .. '\n')
+        end
+        file:close()
+      end,
+      on_stderr = function(_, data)
+        local file = io.open(test_output_filepath, 'a')
+        for _, line in ipairs(data) do
+          file:write(line .. '\n')
+        end
+        file:close()
+      end,
+      on_exit = function(_, code)
+        if code == 0 then
+          vim.notify('Test passed for ' .. yarn_test_path_arg)
+        else
+          vim.notify('Test failed, check ' .. test_output_filepath .. ' for details', "error")
+        end
+      end
+    })
+  end
+
+  keymap.n('<leader>stv', ':e ' .. get_test_output_filepath() .. '<CR>', { desc = '(S)afeBase (t)est output (v)iew' })
+  keymap.n('<leader>std', function()
+    local yarn_test_path_arg = vim.fn.expand('%:p:h')
+    run_safebase_test_command(yarn_test_path_arg)
+  end, { desc = '(R)un `yarn (t)est` on the current (d)irectory' })
+  keymap.n('<leader>stf', function()
+    local yarn_test_path_arg = get_yarn_test_arg()
+    run_safebase_test_command(yarn_test_path_arg)
+  end, { desc = '(R)un `yarn (t)est` on the current (f)ile' })
+  keymap.n('<leader>stR', function()
+    vim.fn.system('rm ' .. get_test_output_filepath())
+    run_safebase_test_command()
+  end, { desc = 'Clear the test output file, then (R)un `yarn (t)est` on the current buffer' })
+end
+
 return {
   critical = critical,
   general = general,
@@ -161,4 +248,5 @@ return {
   git = git,
   lazy = lazy,
   fenced_code_editing = fenced_code_editing,
+  safebase = safebase,
 }

@@ -177,24 +177,20 @@ if ! infocmp tmux-256color > /dev/null 2>&1; then
   gunzip $terminfo_zipped > /dev/null 2>&1
   tic -xe tmux-256color $terminfo_unzipped > /dev/null 2>&1
 fi
-
-if [ ! -d "$TMUX_TPM_DIR_PATH" ]; then
-  with_unset_git_env git clone https://github.com/tmux-plugins/tpm $TMUX_TPM_DIR_PATH
-fi
 # END TMUX
 
 set -o vi
 
 # Refer to .zshenv for definition of chpwd
 chpwd
-"$TMUX_DIR"/install.sh quiet
 
 if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && command -v startx; then
   exec startx
 fi
 
 export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv 1>/dev/null 2>&1; then
+command -v pyenv >/dev/null 2>&1 || export PATH="$PYENV_ROOT/bin:$PATH"
+
+if command -v pyenv >/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
