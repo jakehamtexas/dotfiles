@@ -130,6 +130,10 @@ check_merged_worktree() {
     return
   fi
 
+  if [[ "$(gh pr view --json headRefName --jq '.headRefName')" == "develop" ]]; then
+    return
+  fi
+
   if gh pr view --json state --jq '.state' 2>/dev/null | rg -i -q merged; then
     echo "---------------------------------"
     echo "This worktree has been merged!"
@@ -228,6 +232,21 @@ chpwd () {
   check_merged_worktree
 }
 
+gh_path="$(which gh)"
+
+gh() {
+  if ! command -v "$gh_path" >/dev/null 2>&1; then
+    echo "gh not installed"
+    return 1
+  fi
+
+  if [[ "$1" == "pr" && "$2" == "create" ]]; then
+    git push -u origin HEAD
+  fi
+
+  "$gh_path" $@
+}
+
 # SAFEBASE CONFIG/ALIASES
 export VIM_LOCAL_CONFIG_DIR_PATH="$HOME/.sb-local-vim"
 export CYPRESS_SECRETS_PATH="$HOME/cypress.env.json"
@@ -245,5 +264,6 @@ alias sbpd=./prepare_dev.sh
 alias zshrc='vim $HOME/.zshrc'
 
 alias pr="$HOME/scripts/pr/pr.sh"
+alias review="$HOME/scripts/clone-review.sh"
 
 . "$HOME"/scripts/git.sh
