@@ -313,7 +313,20 @@ lazy.setup({
    { 'nvim-tree/nvim-web-devicons' },
    {
       'stevearc/oil.nvim',
-      config = function() require('oil').setup() end
+      opts = {
+         use_default_keymaps = false,
+         keymaps = {
+            ["g?"] = "actions.show_help",
+            ["<CR>"] = "actions.select",
+            ["<C-c>"] = "actions.close",
+            ["-"] = "actions.parent",
+            ["_"] = "actions.open_cwd",
+            ["g."] = "actions.toggle_hidden",
+         },
+         view_options = {
+            show_hidden = true,
+         }
+      }
    },
 
    { 'itchyny/vim-qfedit' },
