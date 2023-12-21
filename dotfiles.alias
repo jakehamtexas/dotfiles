@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-export DOTFILES_GIT_DIR="$HOME/.dotfiles-git"
-alias dotfiles="/usr/bin/git --git-dir=\"\$DOTFILES_GIT_DIR\" --work-tree=\"\$HOME\""
+export DOTFILES_GIT_DIR="$HOME/dotfiles/.git"
+alias dotfiles="/usr/bin/git --git-dir=\"\$DOTFILES_GIT_DIR\" --work-tree=\"\$HOME\"/dotfiles"

@@ -61,13 +61,9 @@ COMPLETION_WAITING_DOTS="true"
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 export NVM_COMPLETION=true
 export NVM_AUTO_USE=true
-export NVM_LAZY_LOAD=false
-
-# TODO: Figure out how to get coc.nvim to load node appropriately, then re-enable this
-# export NVM_NO_USE=true
-# export NVM_LAZY_LOAD=true
-# export NVM_LAZY_LOAD_EXTRA_COMMANDS=('vim' 'nvim')
-# export NVM_LAZY_AUTO_DIR="$HOME/projects"
+export NVM_LAZY_LOAD=true
+export NVM_LAZY_LOAD_EXTRA_COMMANDS=('vim' 'nvim')
+export NVM_LAZY_AUTO_DIR="$HOME/projects"
 
 activate_nvm() {
   # checking dir in path, and if node is a shell function (not loaded)
@@ -194,3 +190,6 @@ command -v pyenv >/dev/null 2>&1 || export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv >/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/terraform terraform

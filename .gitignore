@@ -1,5 +1,4 @@
 # Everything
-.dotfiles-git
 [Dd]esktop
 [Dd]ocuments
 [Bb]ackup
@@ -107,7 +106,7 @@ AndroidStudioProjects
 
 .wget-hsts
 
-.config/tmux/plugins
+tmux/plugins
 cypress.env.json
 .rest-client
 Sites

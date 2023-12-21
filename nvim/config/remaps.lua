@@ -151,9 +151,14 @@ end
 
 -- TODO: Put the test output in a colorized, floating buffer. Add a command to open and close this special buffer
 local function safebase(keymap)
-  local test_output_relative_filepath = '.vim/test_output.txt'
+  local test_output_relative_dir = '.vim'
+  local test_output_filename = 'test_output.txt'
+  function get_test_output_dir()
+    return vim.loop.cwd() .. '/' .. test_output_relative_dir
+  end
+
   function get_test_output_filepath()
-    return vim.loop.cwd() .. '/' .. test_output_relative_filepath
+    return get_test_output_dir() .. '/' .. test_output_filename
   end
 
   function get_yarn_test_arg()
@@ -194,6 +199,11 @@ local function safebase(keymap)
     local test_output_filepath = get_test_output_filepath()
     vim.fn.system('touch ' .. test_output_filepath)
 
+    local function open_test_output()
+      os.execute("mkdir -p " .. get_test_output_dir())
+      return io.open(get_test_output_filepath(), 'a')
+    end
+
     -- TODO: Figure out how to reuse the same notification object
     --       1. Keep the notification around until the `on_exit` function is called.
     --       1. When the test passes, say "test passed" in the same notification. Auto dismiss.
@@ -201,7 +211,7 @@ local function safebase(keymap)
     vim.notify('Running tests for ' .. yarn_test_path_arg, "info")
     vim.fn.jobstart('yarn test ' .. yarn_test_path_arg, {
       on_stdout = function(_, data)
-        local file = io.open(test_output_filepath, 'a')
+        local file = open_test_output()
         for _, line in ipairs(data) do
           file:write(line .. '\n')
         end

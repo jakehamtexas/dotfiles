@@ -15,8 +15,6 @@ alias pacman='sudo pacman'
 alias shutdown='sudo shutdown'
 alias reboot='sudo reboot'
 
-#!/usr/bin/env bash
-
 git config --global core.editor "$(which nvim)"
 git config --global pull.rebase true
 git config --global init.defaultBranch main
@@ -61,7 +59,7 @@ git config --global alias.aliases "! git config --get-regexp '^alias\.' | cat"
 
 test -f "$HOME/.cargo/env" && . "$HOME/.cargo/env"
 
-. $HOME/dotfiles.alias
+. $HOME/dotfiles/dotfiles.alias
 
 _findp () {
   ps aux | rg -v rg | rg $1
@@ -121,115 +119,10 @@ handle_new_worktree() {
   fi
 }
 
-check_merged_worktree() {
-  if ! command -v gh >/dev/null 2>&1; then
-    return
-  fi
-
-  if [[ "$(pwd)" == "$HOME" ]]; then
-    return
-  fi
-
-  if [[ "$(gh pr view --json headRefName --jq '.headRefName')" == "develop" ]]; then
-    return
-  fi
-
-  if gh pr view --json state --jq '.state' 2>/dev/null | rg -i -q merged; then
-    echo "---------------------------------"
-    echo "This worktree has been merged!"
-    echo "You can probably delete it now!"
-    echo "---------------------------------"
-    echo ""
-    echo "Would you like to delete it?"
-    read "choice?Delete worktree? [Y/n]" 
-
-    if [[ $choice =~ ^[Yy]$ ]]; then
-      git worktree remove --force $(pwd) >/dev/null 2>&1
-      git worktree prune >/dev/null 2>&1
-
-      echo "Deleted worktree!"
-    fi
-  fi
-
-}
-
-handle_home_dir () {
-  if [ "$PWD" = "$HOME" ]; then
-    export GIT_DIR=$DOTFILES_GIT_DIR
-    export GIT_WORK_TREE=$HOME
-  else
-    unset GIT_DIR
-    unset GIT_WORK_TREE
-  fi
-}
-
-with_unset_git_env() {
-  readonly git_dir=$GIT_DIR
-  readonly git_wt=$GIT_WORK_TREE
-
-  unset GIT_DIR
-  unset GIT_WORK_TREE
-
-  $@ || true
-  
-  export GIT_DIR=$git_dir
-  export GIT_WORK_TREE=$git_wt
-}
-
-alias yay='with_unset_git_env yay'
-
-_dotfiles_head() {
-  dotfiles rev-parse HEAD
-}
-
-_dotfiles_origin_main() {
-  cat $DOTFILES_ORIGIN_MAIN_REV_CACHE_PATH
-}
-
-
-_can_check () {
-  readonly last_check_epoch_seconds=$(cat $DOTFILES_LAST_REMOTE_CHECK_TIME_PATH 2>/dev/null || echo 0)
-
-  readonly now_seconds=$(date +%s)
-  readonly min_seconds=
-  if [ $now_seconds -gt $(($last_check_epoch_seconds + 60*60)) ]; then
-    return 0
-  fi
-
-  return 1
-}
-
-_check_for_new_dotfiles_revision () {
-  dotfiles fetch >/dev/null 2>&1
-  mkdir -p $DOTFILES_STATE
-
-  readonly main_rev_cache=$(cat $DOTFILES_GIT_DIR/FETCH_HEAD | awk '{print $1}')
-  echo $main_rev_cache > $DOTFILES_ORIGIN_MAIN_REV_CACHE_PATH
-
-  readonly now_seconds=$(date +%s)
-  echo $now_seconds > $DOTFILES_LAST_REMOTE_CHECK_TIME_PATH
-
-  readonly num_ahead=$(dotfiles rev-list $(_dotfiles_head)..$(_dotfiles_origin_main) --count)
-
-  if [[ $num_ahead -eq 0 ]]; then
-    return
-  fi
-
-  echo ''
-  echo 'New changes in upstream dotfiles!'
-  echo 'Use function "dotfiles_diff" to see them.'
-  echo ''
-}
-
-dotfiles_diff() {
-  dotfiles diff $(_dotfiles_head) $(_dotfiles_origin_main)
-}
+DOTFILES_CHECK_INTERVAL_SECONDS=60*60*24 # 1 Day
 
 chpwd () {
-  handle_home_dir
-  _can_check && _check_for_new_dotfiles_revision
   handle_new_worktree
-  check_merged_worktree
 }
 
 gh_path="$(which gh)"
