@@ -7,3 +7,5 @@
 - Separate personal, work, and general config/dotfiles
 - Figure out closing a laptop lid and kernel panic
 - Use `bat` instead of `cat`
+
+- Nix/Ansible for bootstrapping
