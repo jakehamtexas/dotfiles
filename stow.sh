@@ -17,6 +17,8 @@ df:stow() {
 
   mkdir -p $full_path
 
+  # Restow has weird output that is totally spurious
+  # See: https://github.com/aspiers/stow/issues/65
   echo "Stowing $package_name"
   stow -R "$package_name" -t "$full_path" "$@"
 }
