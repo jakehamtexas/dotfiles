@@ -161,6 +161,8 @@ export HISTORY_FILTER_EXCLUDE=("_KEY" "Bearer")
 # fi
 
 # TMUX
+# Used by tmux to enable 256 color support
+export ORIGINAL_TERM=$TERM
 if ! infocmp tmux-256color > /dev/null 2>&1; then
   terminfo_dir=/tmp/tmux-terminfo
 
