@@ -14,8 +14,10 @@ o.sidescrolloff = 10
 -- Backing up/undoing
 o.backup = true
 o.writebackup = true
-o.undofile = true
-o.undodir = ".config/nvim/undodir"
+
+local state_dir = vim.fn.stdpath("state")
+o.backupdir = state_dir .. "/backup"
+o.undodir = state_dir .. "/undo"
 
 -- Config
 o.exrc = true

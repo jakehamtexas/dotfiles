@@ -179,8 +179,6 @@ fi
 
 set -o vi
 
-# Refer to .zshenv for definition of chpwd
-chpwd
 
 if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && command -v startx; then
   exec startx
@@ -195,3 +193,6 @@ fi
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/bin/terraform terraform
+
+# Refer to .zshenv for definition of chpwd
+chpwd
