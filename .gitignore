@@ -1,3 +1,6 @@
+# Vim swap files
+*~
+
 # Everything
 [Dd]esktop
 [Dd]ocuments
@@ -154,3 +157,4 @@ import_template.csv
 
 # Linear plugin
 .linear_env
+

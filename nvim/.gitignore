@@ -1,5 +1,8 @@
-.packer
-sessions
-undodir
-.undodir
-plugin
+tt.*
+.tests
+doc/tags
+debug
+.repro
+foo.*
+*.log
+data

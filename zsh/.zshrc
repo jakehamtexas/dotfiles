@@ -161,6 +161,8 @@ export HISTORY_FILTER_EXCLUDE=("_KEY" "Bearer")
 # fi
 
 # TMUX
+# Used by tmux to enable 256 color support
+export ORIGINAL_TERM=$TERM
 if ! infocmp tmux-256color > /dev/null 2>&1; then
   terminfo_dir=/tmp/tmux-terminfo
 
@@ -177,8 +179,6 @@ fi
 
 set -o vi
 
-# Refer to .zshenv for definition of chpwd
-chpwd
 
 if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && command -v startx; then
   exec startx
@@ -193,3 +193,6 @@ fi
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/bin/terraform terraform
+
+# Refer to .zshenv for definition of chpwd
+chpwd

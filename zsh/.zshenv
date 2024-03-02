@@ -119,10 +119,10 @@ handle_new_worktree() {
   fi
 }
 
-DOTFILES_CHECK_INTERVAL_SECONDS=60*60*24 # 1 Day
-
 chpwd () {
   handle_new_worktree
+
+  nvm use stable
 }
 
 gh_path="$(which gh)"
