@@ -121,7 +121,7 @@ for plugin in "${_plugins[@]}"; do
   name="$(cut -d "/" -f2 <<<$plugin)"
   zsh_custom_plugin_path="$plugin_path/$name"
   if [ ! -d "$zsh_custom_plugin_path" ]; then
-    with_unset_git_env git clone https://github.com/"$plugin".git "$zsh_custom_plugin_path"
+    git clone https://github.com/"$plugin".git "$zsh_custom_plugin_path"
   fi
 
   plugins+=($name)

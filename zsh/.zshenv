@@ -59,8 +59,6 @@ git config --global alias.aliases "! git config --get-regexp '^alias\.' | cat"
 
 test -f "$HOME/.cargo/env" && . "$HOME/.cargo/env"
 
-. $HOME/dotfiles/dotfiles.alias
-
 _findp () {
   ps aux | rg -v rg | rg $1
 }
@@ -104,10 +102,6 @@ killp () {
 
   return 1
 }
-
-export DOTFILES_STATE=/tmp/dotfiles
-export DOTFILES_ORIGIN_MAIN_REV_CACHE_PATH=$DOTFILES_STATE/main_rev_cache
-export DOTFILES_LAST_REMOTE_CHECK_TIME_PATH=$DOTFILES_STATE/last_remote_check_time
 
 
 handle_new_worktree() {
