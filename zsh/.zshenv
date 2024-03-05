@@ -116,7 +116,7 @@ handle_new_worktree() {
 chpwd () {
   handle_new_worktree
 
-  nvm use stable
+  nvm_use
 }
 
 gh_path="$(which gh)"

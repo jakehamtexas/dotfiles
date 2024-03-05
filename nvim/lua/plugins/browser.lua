@@ -1,7 +1,25 @@
 local firenvim_group = vim.api.nvim_create_augroup("Firenvim", { clear = true })
 local profile_firenvim = false
 
-return {
+local toggled_off_plugins = vim.tbl_map(function(plugin)
+  return {
+    plugin,
+    cond = function()
+      return not vim.g.started_by_firenvim
+    end,
+    dependencies = {
+      {
+        "glacambre/firenvim",
+      },
+    },
+  }
+end, {
+  "akinsho/bufferline.nvim",
+  "rcarriga/nvim-notify",
+  "nvim-lualine/lualine.nvim",
+})
+
+return vim.list_extend({
   {
     "glacambre/firenvim",
     lazy = not vim.g.started_by_firenvim,
@@ -18,7 +36,7 @@ return {
 
       vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
         group = firenvim_group,
-        callback = function(e)
+        callback = function()
           if vim.g.timer_started == true then
             return
           end
@@ -28,6 +46,25 @@ return {
             vim.cmd.write()
           end)
         end,
+      })
+
+      vim.api.nvim_create_autocmd({ "UIEnter" }, {
+        group = firenvim_group,
+        callback = function()
+          vim.o.laststatus = 0
+          vim.o.cmdheight = 0
+          vim.o.showmode = false
+        end,
+      })
+
+      -- Resize the window after the initial sizing event
+      vim.api.nvim_create_autocmd({ "WinResized" }, {
+        group = firenvim_group,
+        callback = function()
+          vim.o.lines = vim.o.lines + 10
+          vim.o.columns = 120
+        end,
+        once = true,
       })
 
       vim.api.nvim_create_autocmd("ExitPre", {
@@ -47,6 +84,9 @@ return {
             selector = "textarea",
             takeover = "always",
           },
+          ["github.com"] = {
+            selector = "textarea:not(#pull_request_review_body)",
+          },
         },
       }
       local forbidden_domains = { ".*localhost.*", ".*safebase.io*", ".*linear.*", ".*notion.so*" }
@@ -54,8 +94,12 @@ return {
       for _, value in ipairs(forbidden_domains) do
         firenvim_config.localSettings[value] = { takeover = "never", priority = 1 }
       end
+
       vim.g.firenvim_config = firenvim_config
     end,
+    dependencies = {
+      { "nvim-treesitter/nvim-treesitter" },
+    },
   },
   {
     "AckslD/nvim-FeMaco.lua",
@@ -75,15 +119,4 @@ return {
       },
     },
   },
-  {
-    "rcarriga/nvim-notify",
-    cond = function()
-      return not vim.g.started_by_firenvim
-    end,
-    dependencies = {
-      {
-        "glacambre/firenvim",
-      },
-    },
-  },
-}
+}, toggled_off_plugins)

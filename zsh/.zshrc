@@ -65,16 +65,21 @@ export NVM_LAZY_LOAD=true
 export NVM_LAZY_LOAD_EXTRA_COMMANDS=('vim' 'nvim')
 export NVM_LAZY_AUTO_DIR="$HOME/projects"
 
+nvm_use() {
+  if [ -f .nvmrc ]; then
+    nvm use
+  fi
+}
+
 activate_nvm() {
   # checking dir in path, and if node is a shell function (not loaded)
-  if [[ $PWD =~ $NVM_LAZY_AUTO_DIR && "$(type node)" = *'a shell function'* ]]; then
+  if [[ -f "$PWD"/.nvmrc && "$(type node)" = *'a shell function'* ]]; then
     print 'Activating nvm...'
-    
+    nvm_use
     # trigger loading
     node --version
     # cd into same dir to activate auto_use
     cd $PWD
-
   fi
 }
 

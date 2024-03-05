@@ -12,4 +12,15 @@ return {
       return opts
     end,
   },
+  {
+    "nvim-telescope/telescope.nvim",
+    opts = {
+      pickers = {
+        find_files = {
+          find_command = { "rg", "--files", "--hidden", "-g", "!.git" },
+          hidden = true,
+        },
+      },
+    },
+  },
 }
