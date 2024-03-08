@@ -16,8 +16,8 @@ local function build_spec()
     return { import = "lazyvim.plugins.extras." .. plugin }
   end, {
     "coding.copilot",
-    "formatting.prettier",
     "lang.typescript",
+    "formatting.prettier",
     "lang.json",
     "lang.docker",
     "lang.markdown",

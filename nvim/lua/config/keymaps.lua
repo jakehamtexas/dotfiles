@@ -11,8 +11,8 @@ vim.keymap.set(
 )
 
 -- Clipboard
-vim.keymap.set("v", "<leader>mc", '"+y', { desc = "(m)ouse (c)opy" })
-vim.keymap.set("v", "<leader>mp", '"+p', { desc = "(m)ouse (p)aste" })
+vim.keymap.set({ "v", "n" }, "<leader>mc", '"+y', { desc = "(m)ouse (c)opy" })
+vim.keymap.set({ "v", "n" }, "<leader>mp", '"+p', { desc = "(m)ouse (p)aste" })
 
 -- RegExp Magic mode
 vim.keymap.set({ "n", "v" }, "/", "/\\v", { desc = "Make search very magic" })
