@@ -1,0 +1,1 @@
+. "$ZDOTDIR/rc.sh"

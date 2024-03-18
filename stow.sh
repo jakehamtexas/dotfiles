@@ -30,7 +30,7 @@ df:stow() {
 }
 
 df:stow:config() {
-	APPEND_PACKAGE_NAME=1 df:stow $1 ~/.config
+	APPEND_PACKAGE_NAME=1 df:stow "$1" ~/.config
 }
 
 df:stow:config i3
@@ -41,9 +41,9 @@ df:stow:config skhd
 df:stow:config yabai
 APPEND_PACKAGE_NAME=1 df:stow scripts ~
 
-df:stow rustup ~/.rustup
 df:stow safebase ~
 df:stow scan ~
 df:stow ssh ~/.ssh --adopt
 df:stow xinit ~
 df:stow zsh ~
+df:stow shellcheck ~

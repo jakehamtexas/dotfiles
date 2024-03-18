@@ -46,8 +46,6 @@
 .pki
 .running_kernel
 
-.rustup
-!.rustup/settings.toml
 .shell.pre-oh-my-zsh
 
 source
@@ -157,4 +155,6 @@ import_template.csv
 
 # Linear plugin
 .linear_env
+
+merge-conflict-test-repo-dir
 

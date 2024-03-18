@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cur_dir="$(dirname "$BASH_SOURCE")"
+cur_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 . "$cur_dir"/lib.sh
 . "$cur_dir"/const.sh
@@ -182,6 +182,7 @@ _getset_at_path() {
   global)
     key=$1
     value=$2
+    # shellcheck disable=SC2016
     path='["global", $k]'
     ;;
   branch)
@@ -189,12 +190,14 @@ _getset_at_path() {
     repo_name=$2
     key=$3
     value=$4
+    # shellcheck disable=SC2016
     path='[$repo, "branches", $branch, $k]'
     ;;
   repo)
     repo_name=$1
     key=$2
     value=$3
+    # shellcheck disable=SC2016
     path='[$repo, $k]'
     ;;
   esac
@@ -206,6 +209,7 @@ _getset_at_path() {
     ##
     ;;
   set)
+    # shellcheck disable=SC2016
     filter='setpath('"$path"'; $v)'
     ##
     ;;
@@ -221,9 +225,7 @@ _getset_at_path() {
 }
 
 pr-config() {
-  args_len=$#
-
-  if [ $args_len -eq 0 ]; then
+  if [ $# -eq 0 ]; then
     _show_config branch-with-inherited "$(_repo_name)"
     return 0
   fi
@@ -281,8 +283,7 @@ pr-config() {
     repo_name=$(_repo_name)
 
     shift
-    args_len=$#
-    if [ $args_len -eq 0 ]; then
+    if [ $# -eq 0 ]; then
       _show_config branch "$current_branch" "$repo_name"
       return 0
     fi
@@ -306,8 +307,7 @@ pr-config() {
     ;;
   global)
     shift
-    args_len=$#
-    if [ $args_len -eq 0 ]; then
+    if [ $# -eq 0 ]; then
       _show_config global
       return 0
     fi
