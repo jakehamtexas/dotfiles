@@ -2,6 +2,6 @@
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 "$script_dir"/gh-clone.sh \
-  --post="$script_dir"/post.sh \
-  --tmp \
-  git@git-as-safebase:safebaselabs/qnr-server.git
+	--post="$script_dir"/post.sh \
+	--tmp \
+	git@sb:safebaselabs/qnr-server.git

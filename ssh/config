@@ -1,4 +1,4 @@
-Host git-as-safebase
+Host sb
   HostName github.com
   User git
   IdentityFile ~/.ssh/safebase_ed25519
