@@ -32,7 +32,7 @@ local multi_rg = function(opts)
 
       local prompt_split = vim.split(prompt, "  ")
 
-      local args = { "rg" }
+      local args = { "rg", "--hidden", "-g", "!{.git,node_modules}" }
       if prompt_split[1] then
         table.insert(args, "-e")
         table.insert(args, prompt_split[1])
