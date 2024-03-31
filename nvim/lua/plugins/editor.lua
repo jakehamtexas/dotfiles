@@ -12,4 +12,17 @@ return {
       return opts
     end,
   },
+
+  {
+    "nvimtools/none-ls.nvim",
+    dependencies = {
+      "gbprod/none-ls-shellcheck.nvim",
+    },
+    opts = function(_, opts)
+      opts.sources = vim.tbl_extend("force", opts.sources, {
+        require("none-ls-shellcheck.diagnostics"),
+        require("none-ls-shellcheck.code_actions"),
+      })
+    end,
+  },
 }

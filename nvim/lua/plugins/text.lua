@@ -27,6 +27,10 @@ return {
     config = function() end,
   },
   {
+    "tpope/vim-abolish",
+    config = function() end,
+  },
+  {
     "tummetott/reticle.nvim",
     config = function()
       vim.wo.cursorline = true
