@@ -11,6 +11,17 @@ o.clipboard = ""
 o.scrolloff = 10
 o.sidescrolloff = 10
 
+local zz_group = vim.api.nvim_create_augroup("ZZ", { clear = true })
+
+vim.api.nvim_create_autocmd({ "BufWinEnter", "WinResized" }, {
+  group = zz_group,
+  callback = function()
+    if vim.api.nvim_get_mode()["mode"] == "n" then
+      vim.cmd("normal! zz")
+    end
+  end,
+})
+
 -- Backing up/undoing
 o.backup = true
 o.writebackup = true
