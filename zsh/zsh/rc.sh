@@ -6,8 +6,17 @@ Darwin)
 	;;
 esac
 
+start_nvim() {
+	if command -v nvm >/dev/null; then
+		# This should fail if nvm use default didn't work.
+		(nvm use || nvm use default) && nvim
+	else
+		nvim
+	fi
+}
+
 alias npm-what=npm pack && tar -xvzf ./*.tgz && rm -rf package ./*.tgz
-alias vim="nvim"
+alias vim="start_nvim"
 alias grep="rg"
 alias printdoc=lpr
 alias pacman='sudo pacman'
