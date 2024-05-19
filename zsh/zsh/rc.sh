@@ -88,8 +88,17 @@ gh() {
 		return 1
 	fi
 
-	if [[ "$1" == "pr" && "$2" == "create" ]]; then
-		git push -u origin HEAD
+	if [[ "$1" == "pr" && "$2" == "create" && "$3" ]]; then
+		local do_prepush=true
+		for f in "$@"; do
+			if [[ "$f" == "--no-verify" || "$f" == "--help" ]]; then
+				do_prepush=false
+			fi
+		done
+
+		if [ "$do_prepush" = true ]; then
+			git push -u origin HEAD
+		fi
 	fi
 
 	"$gh_path" "$@"
