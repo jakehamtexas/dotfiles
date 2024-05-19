@@ -285,3 +285,5 @@ complete -o nospace -C /usr/bin/terraform terraform
 if command -v terraform >/dev/null; then
 	complete -o nospace -C "$(which terraform)" terraform
 fi
+
+. "${ZDOTDIR:?}"/gcloud.sh
