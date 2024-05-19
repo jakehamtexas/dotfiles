@@ -25,4 +25,10 @@ return {
       })
     end,
   },
+  {
+    "folke/zen-mode.nvim",
+    keys = {
+      { "<leader>ZM", ":ZenMode<CR>" },
+    },
+  },
 }
