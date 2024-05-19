@@ -21,6 +21,8 @@ local multi_rg = function(opts)
       ["tsx"] = "*.tsx",
       ["js"] = "*.js",
       ["jsx"] = "*.jsx",
+      ["sh"] = "*.sh",
+      ["tf"] = "*.tf",
     }
   opts.pattern = opts.pattern or "%s"
 
@@ -63,7 +65,7 @@ local multi_rg = function(opts)
   pickers
     .new(opts, {
       debounce = 100,
-      prompt_title = "TJ's Live Grep",
+      prompt_title = "Live Grep",
       finder = custom_grep,
       previewer = conf.grep_previewer(opts),
       sorter = require("telescope.sorters").empty(),

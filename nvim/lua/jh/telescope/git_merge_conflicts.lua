@@ -1,5 +1,6 @@
 local conf = require("telescope.config").values
 local finders = require("telescope.finders")
+local make_entry = require("telescope.make_entry")
 local pickers = require("telescope.pickers")
 
 local get_unmerged_files = function()
@@ -18,10 +19,18 @@ local git_merge_conflicts = function(opts)
     return
   end
 
+  local finder = finders.new_async_job({
+    command_generator = function()
+      return vim.tbl_flatten({ { "rg", "--vimgrep", "<<<<<<<" }, unmerged_files })
+    end,
+    entry_maker = make_entry.gen_from_vimgrep(opts),
+    cwd = opts.cwd,
+  })
+
   pickers
     .new(opts, {
       prompt_title = "Git Merge Conflicts",
-      finder = finders.new_table(unmerged_files),
+      finder = finder,
       previewer = conf.file_previewer(opts),
       sorter = conf.file_sorter(opts),
     })
