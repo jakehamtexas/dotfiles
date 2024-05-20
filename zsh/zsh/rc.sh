@@ -104,6 +104,19 @@ gh() {
 	"$gh_path" "$@"
 }
 
+function lazy() {
+	case "${1:?Must specify first argument}" in
+	'sync' | 'restore' | 'clean' | 'update')
+		# Valid args
+		;;
+	*)
+		echo "Invalid argument: $1"
+		;;
+	esac
+
+	nvim --headless "+Lazy! $1" +qa
+}
+
 alias sbpd=./prepare_dev.sh
 
 alias yr='yarn run'
