@@ -5,6 +5,12 @@ export LANG=en_US.UTF-8
 export PURE_POWER_MODE=modern
 export POWERLEVEL9K_MODE='nerdfont-complete'
 export NVIM_DIR=$HOME/.config/nvim
+
+# KITTY
+export KITTY_FONT_FAMILY="CommitMono Nerd Font"
+export KITTY_THEME="CommitMono Nerd Font"
+# END KITTY
+
 GPG_TTY="$(tty)"
 export GPG_TTY
 EDITOR="$(which nvim)"

@@ -33,17 +33,23 @@ df:stow:config() {
 	APPEND_PACKAGE_NAME=1 df:stow "$1" ~/.config
 }
 
+df:stow:home() {
+	df:stow "$1" ~
+}
+
 df:stow:config i3
+
 df:stow:config kitty
 df:stow:config nvim
 df:stow:config tmux
 df:stow:config skhd
 df:stow:config yabai
+df:stow:config nix
 APPEND_PACKAGE_NAME=1 df:stow scripts ~
 
-df:stow safebase ~
-df:stow scan ~
+df:stow:home safebase
+df:stow:home scan
 df:stow ssh ~/.ssh --adopt
-df:stow xinit ~
-df:stow zsh ~
-df:stow shellcheck ~
+df:stow:home xinit
+df:stow:home zsh
+df:stow:home shellcheck

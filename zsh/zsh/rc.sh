@@ -130,60 +130,8 @@ alias review='$HOME/scripts/clone-review.sh'
 
 . "$HOME"/scripts/git.sh
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-if [ ! -d "$ZSH" ]; then
-	export KEEP_ZSHRC=yes
-	sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
-fi
-
-export ZSH_CUSTOM=$ZSH/custom
-
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-export ZSH_THEME="agnoster"
-
-# Uncomment the following line to automatically update without prompting.
-export DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-export COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-#
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-
 # BEGIN NVM
-# NOTE: Must come before plugin loading
+# NOTE: Must come before lugin loading
 NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 export NVM_DIR
 export NVM_COMPLETION=true
@@ -210,61 +158,11 @@ if [ "$NVM_LAZY_LOAD" = true ]; then
 fi
 # END NVM
 
-plugin_path="$ZSH_CUSTOM/plugins"
-
-clear_plugins() {
-	rm -rf "$plugin_path"
-}
-
-# shellcheck source=$HOME/.oh-my-zsh/custom/plugins/zsh-autocomplete
-zsh_autocomplete_path="$plugin_path/zsh-autocomplete"
-revert_autocomplete() {
-	last_working_commit=d8bfbef46efc54c1189010a3b70d501b44487504
-	(cd "$zsh_autocomplete_path" && git checkout "$last_working_commit" >/dev/null 2>&1)
-	exec zsh
-}
-
-plugins=()
-
-_plugins=(
-	git
-	docker
-	docker-compose
-	'MichaelAquilina/zsh-history-filter'
-	'marlonrichert/zsh-autocomplete'
-	'zsh-users/zsh-autosuggestions'
-	'zsh-users/zsh-syntax-highlighting'
-	'b4b4r07/enhancd'
-	'unixorn/fzf-zsh-plugin'
-	'lukechilds/zsh-nvm'
-)
-
-for plugin in "${_plugins[@]}"; do
-	# Skip built-in plugins
-	[[ $plugin != *"/"* ]] && continue
-
-	name="$(cut -d "/" -f2 <<<"$plugin")"
-	zsh_custom_plugin_path="$plugin_path/$name"
-	if [ ! -d "$zsh_custom_plugin_path" ]; then
-		git clone https://github.com/"$plugin".git "$zsh_custom_plugin_path"
-	fi
-
-	plugins+=("$name")
-done
-
-# shellcheck source=$HOME/.oh-my-zsh/.oh-my-zsh.sh
-# Providing a source to shellcheck doesn't seem to work here.
-# Shellcheck doesn't believe that the file exists.
-# shellcheck disable=SC1091
-. "$ZSH"/oh-my-zsh.sh >/dev/null 2>&1
-if [ -f "$zsh_autocomplete_path" ]; then
-	# Same here
-	# shellcheck source=$HOME/.oh-my-zsh/custom/plugins/zsh-autocomplete
-	# shellcheck disable=SC1091
-	. "$zsh_autocomplete_path"
-fi
+# PLUGINS
+. "$ZDOTDIR/zgenom/source.sh"
 
 export HISTORY_FILTER_EXCLUDE=("_KEY" "Bearer")
+# END PLUGINS
 
 # TMUX
 # Used by tmux to enable 256 color support
@@ -300,3 +198,6 @@ if command -v terraform >/dev/null; then
 fi
 
 . "${ZDOTDIR:?}"/gcloud.sh
+
+# Prompt
+. "${ZDOTDIR}"/oh-my-posh/source.sh
