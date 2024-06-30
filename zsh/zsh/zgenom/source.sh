@@ -8,7 +8,7 @@ __install_manager() {
 	local z_path="${HOME}/.zgenom/zgenom.zsh"
 
 	if ! [ -f "$z_path" ]; then
-		git clone https://github.com/jandamm/zgenom.git "$z_path"
+		git clone https://github.com/jandamm/zgenom.git "$(dirname "$z_path")"
 	fi
 
 	source "$z_path"

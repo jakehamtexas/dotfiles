@@ -44,7 +44,8 @@ df:stow:config nvim
 df:stow:config tmux
 df:stow:config skhd
 df:stow:config yabai
-df:stow:config nix
+# TODO: Remove this '|| true' when nix is everywhere
+df:stow:config nix || true
 APPEND_PACKAGE_NAME=1 df:stow scripts ~
 
 df:stow:home safebase
