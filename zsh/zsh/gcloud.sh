@@ -24,15 +24,25 @@ auth_gcloud() {
 	docker run -ti --name "$AUTH_CONTAINER_NAME" -v "$AUTH_CONTAINER_VOLUME_NAME":/var/lib/gcloud_auth "$GCLOUD_DOCKER_IMAGE":"$TAG" gcloud auth login
 }
 
-gcloud() {
-	if ! docker volume ls | awk '{print $NF}' | grep -q "$AUTH_CONTAINER_VOLUME_NAME"; then
-		echo "Authenticating with gcloud, this takes a little while."
-		auth_gcloud
-	fi
+# TODO: Figure out docker auth
+# gcloud() {
+# 	if ! docker volume ls | awk '{print $NF}' | grep -q "$AUTH_CONTAINER_VOLUME_NAME"; then
+# 		echo "Authenticating with gcloud, this takes a little while."
+# 		auth_gcloud
+# 	fi
+#
+# 	if ! docker ps -a | grep -q "$AUTH_CONTAINER_VOLUME_NAME"; then
+# 		echo "Authenticating with gcloud, this takes a little while."
+# 		auth_gcloud
+# 	fi
+#
+# 	docker run --rm \
+# 		--volumes-from "$AUTH_CONTAINER_NAME" \
+# 		--name gcloud \
+# 		"$GCLOUD_DOCKER_IMAGE":"$TAG" \
+# 		gcloud "$@"
+# }
 
-	docker run --rm \
-		--volumes-from "$AUTH_CONTAINER_NAME" \
-		--name gcloud \
-		"$GCLOUD_DOCKER_IMAGE":"$TAG" \
-		gcloud "$@"
+cp_gcloud() {
+	docker cp "$AUTH_CONTAINER_NAME":/var/lib/gcloud_auth/. "$HOME/.config/gcloud"
 }
