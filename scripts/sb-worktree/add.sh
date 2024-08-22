@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
 
-set -e
+set -e -o pipefail
 
 main() {
-	[ -z "$1" ] && {
+	local new_dir="$1"
+	[ -z "$new_dir" ] && {
 		echo 'Usage: worktree-add PATH [new-branch-name] [checkout-from-commit-ish]'
 		exit 1
 	}
 
-	[[ -d "$1" ]] && {
-		echo "Directory exists: $1"
+	[[ -d "$new_dir" ]] && {
+		echo "Directory exists: $new_dir"
 		exit 1
 	}
 
 	. "$(cd "$(dirname "$0")" && pwd)/lib.sh"
+	. "$(cd "$(dirname "$0")" && pwd)/env.sh"
 
 	local issues id
 
@@ -33,38 +35,36 @@ main() {
 	}
 
 	branch_to_checkout="${2:-"$(pick_linear_branch || true)"}"
-	base_commit_ish="${3:-"$(fzf_branches || echo develop)"}"
+	base_commit_ish="${3:-"$(fzf_branches || echo "")"}"
 
 	git fetch
 
+	echo "new_dir: $new_dir"
+	echo "branch_to_checkout: $branch_to_checkout"
+	echo "base_commit_ish: $base_commit_ish"
+
 	if [ -z "$branch_to_checkout" ]; then
-		git worktree add "$1" "$base_commit_ish"
+		if [ -z "$base_commit_ish" ]; then
+			git worktree add --detach "$new_dir" main
+		else
+			git worktree add "$new_dir" "$base_commit_ish"
+		fi
 	else
-		git worktree add -b "$branch_to_checkout" "$1" "$base_commit_ish"
+		git worktree add -b "$branch_to_checkout" "$new_dir" "$base_commit_ish"
 	fi
 
-	cd "$1"
+	local new_dir="$1"
+	local issues="$2"
+	local id="$3"
 
+	cd "$new_dir"
+
+	mkdir .vim
 	if [ -n "$issues" ] && [ -n "$id" ]; then
-		mkdir .vim
 		find_issue "$issues" "$id" >.vim/issue.json
 	fi
 
 	touch "${SHOULD_INIT_FILENAME:?}"
-
-	{
-		echo ""
-		echo "Starting ./prepare_dev.sh."
-		if ! ./prepare_dev.sh >/dev/null 2>&1; then
-			echo ""
-			echo "Dang!"
-			echo "Setup completed with errors."
-		else
-			echo ""
-			echo "Setup complete."
-		fi
-	} &
-
 }
 
 main "$@"

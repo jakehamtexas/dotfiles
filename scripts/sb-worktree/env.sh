@@ -8,7 +8,5 @@ export SHOULD_INIT_FILENAME='.should-init'
 handle_new_worktree() {
 	if [ -f "$SHOULD_INIT_FILENAME" ] && "$SCRIPT_DIR/init.sh"; then
 		rm "$SHOULD_INIT_FILENAME"
-
-		nvim
 	fi
 }
