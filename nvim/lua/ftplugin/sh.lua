@@ -1,6 +1,5 @@
 local o = vim.opt_local
 
-vim.notify("we did it")
 o.autoindent = true
 o.smarttab = true
 o.expandtab = true

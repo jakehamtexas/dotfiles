@@ -1,3 +1,3 @@
 if vim.o.foldmethod == "indent" then
-  vim.o.foldmetho = "manual"
+  vim.o.foldmethod = "manual"
 end
