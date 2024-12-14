@@ -5,6 +5,18 @@ local git_diff_merge_head = require("jh.telescope.git_diff_merge_head")
 
 return {
   {
+    "ibhagwan/fzf-lua",
+    keys = {
+      {
+        "<leader>fg",
+        function()
+          vim.api.nvim_input(vim.g.mapleader .. "sg")
+        end,
+        { desc = "Live grep" },
+      },
+    },
+  },
+  {
     "nvim-telescope/telescope.nvim",
     opts = {
       pickers = {

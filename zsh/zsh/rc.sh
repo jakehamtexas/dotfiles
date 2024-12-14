@@ -40,14 +40,14 @@ git config --global alias.can 'commit --amend --no-edit'
 git config --global alias.cpan 'commit -p --amend --no-edit'
 git config --global alias.caan 'commit -a --amend --no-edit'
 
-git config --global alias.fp 'push -u --force-with-lease'
+git config --global alias.fp '!f(){ git fetch; git push -u --force-with-lease $@; }; f'
 git config --global alias.fpp '!f(){ git fp --no-verify; }; f'
-git config --global alias.fpg '!f(){ git fp --no-verify && yarn && yarn run generate; git push; }; f'
 
 # shellcheck disable=SC2016
-git config --global alias.r '!f(){ git rebase $($HOME/scripts/git_upstream_branch.sh $1); }; f'
+git config --global alias.r '!f(){ git fetch; git rebase $($HOME/scripts/git_upstream_branch.sh $1); }; f'
 # shellcheck disable=SC2016
-git config --global alias.ri '!f(){ git rebase -i $($HOME/scripts/git_upstream_branch.sh $1); }; f'
+git config --global alias.ri '!f(){ git fetch; git rebase -i $($HOME/scripts/git_upstream_branch.sh $1); }; f'
+git config --global alias.rim '!f(){ git ri main; }; f'
 git config --global alias.rc 'rebase --continue'
 
 # shellcheck source=$HOME/scripts/sb-worktree/env.sh
@@ -77,6 +77,10 @@ nvm_use() {
 chpwd() {
 	handle_new_worktree
 
+	if command -v direnv &>/dev/null && test -s .envrc; then
+		direnv allow
+	fi
+
 	nvm_use
 }
 
@@ -105,7 +109,7 @@ gh() {
 }
 
 function lazy() {
-	case "${1:?Must specify first argument}" in
+  case "${1:?Must specify first argument('sync' | 'restore' | 'clean' | 'update')}" in
 	'sync' | 'restore' | 'clean' | 'update')
 		# Valid args
 		;;

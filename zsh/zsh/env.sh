@@ -32,3 +32,8 @@ git config --global user.email 'jakehamtexas@gmail.com'
 git config --global user.name 'Jake Hamilton'
 git config --global fetch.prune true
 git config --global push.autoSetupRemote true
+
+if command -v direnv &>/dev/null; then
+	eval "$(direnv hook zsh)"
+	export DIRENV_WARN_TIMEOUT=0
+fi

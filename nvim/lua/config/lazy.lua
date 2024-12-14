@@ -15,7 +15,7 @@ local function build_spec()
   local extra_plugins = vim.tbl_map(function(plugin)
     return { import = "lazyvim.plugins.extras." .. plugin }
   end, {
-    "coding.copilot",
+    "ai.copilot",
     "lang.typescript",
     "formatting.prettier",
     "lang.json",
@@ -67,7 +67,7 @@ require("lazy").setup({
         -- "netrwPlugin",
         "tarPlugin",
         "tohtml",
-        "tutor",
+        -- "tutor",
         "zipPlugin",
       },
     },

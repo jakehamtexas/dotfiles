@@ -1,3 +1,4 @@
+-- This needs to be fixed so that it works with fzf-lua
 local conf = require("telescope.config").values
 local finders = require("telescope.finders")
 local make_entry = require("telescope.make_entry")

@@ -8,16 +8,29 @@ return {
     config = function() end,
   },
   {
-    "neovim/nvim-lspconfig",
-    opts = function(_, opts)
-      opts.servers.tsserver.root_dir = function(...)
-        return require("lspconfig.util").root_pattern(".git")(...)
-      end
-      return opts
-    end,
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
   },
   {
-    "stevarch/conform.nvim",
+    "neovim/nvim-lspconfig",
+    opts = {
+      -- make sure mason installs the server
+      servers = {
+        tsserver = {
+          enabled = false,
+        },
+        ts_ls = {
+          enabled = false,
+        },
+        vtsls = {
+          enabled = false,
+        },
+      },
+    },
+  },
+  {
+    "stevearc/conform.nvim",
     opts = function(_, opts)
       opts.formatters.prettier.command = function()
         local editor_cwd = vim.fn.getcwd()
