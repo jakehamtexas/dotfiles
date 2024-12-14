@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 df:stow() {
 	package_name=$1
@@ -9,7 +9,7 @@ df:stow() {
 	shift
 
 	local full_path
-	if [ -z "$APPEND_PACKAGE_NAME" ]; then
+	if [ -z "${APPEND_PACKAGE_NAME:-}" ]; then
 		full_path="$path"
 	else
 		full_path="$path/$package_name"
