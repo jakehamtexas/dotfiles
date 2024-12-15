@@ -5,6 +5,7 @@ if lazyvim_docs then
   vim.g.lazyvim_prettier_needs_config = false
 end
 
+---@diagnostic disable-next-line: duplicate-doc-alias
 ---@alias ConformCtx {buf: number, filename: string, dirname: string}
 local M = {}
 

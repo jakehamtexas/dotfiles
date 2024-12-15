@@ -4,6 +4,14 @@ local log_level = vim.log.levels.WARN -- vim.log.levels.DEBUG
 
 return {
   {
+    "folke/snacks.nvim",
+    opts = {
+      scroll = {
+        enabled = false,
+      },
+    },
+  },
+  {
     "mbbill/undotree",
     config = function() end,
   },
