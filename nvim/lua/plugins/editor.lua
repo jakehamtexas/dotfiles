@@ -60,7 +60,7 @@ return {
       opts.log_level = log_level
     end,
   },
-
+  -- Shellcheck
   {
     "nvimtools/none-ls.nvim",
     dependencies = {
@@ -70,6 +70,9 @@ return {
       opts.sources = vim.tbl_extend("force", opts.sources, {
         require("none-ls-shellcheck.diagnostics"),
         require("none-ls-shellcheck.code_actions"),
+        require("null-ls.builtins.formatting.alejandra"),
+        require("null-ls.builtins.code_actions.statix"),
+        require("null-ls.builtins.diagnostics.statix"),
       })
     end,
   },
