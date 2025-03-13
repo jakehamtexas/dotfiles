@@ -16,7 +16,7 @@ df:stow() {
 	fi
 
 	if ! [ -d "$package_name" ]; then
-		echo "$package_name" dir does not exist in dotfiles
+		echo "$package_name" does not exist in dotfiles
 		return 1
 	fi
 
@@ -54,3 +54,5 @@ df:stow ssh ~/.ssh --adopt
 df:stow:home xinit
 df:stow:home zsh
 df:stow:home shellcheck
+
+df:stow:home direnv

@@ -6,6 +6,10 @@ export PURE_POWER_MODE=modern
 export POWERLEVEL9K_MODE='nerdfont-complete'
 export NVIM_DIR=$HOME/.config/nvim
 
+dotfiles_dir="$(dirname "$(find "${HOME}" -maxdepth 2 -name 'dotfiles-keep' -print -quit)")"
+
+export DOTFILES_DIR="${dotfiles_dir}"
+
 # KITTY
 export KITTY_FONT_FAMILY="CommitMono Nerd Font"
 export KITTY_THEME="CommitMono Nerd Font"
@@ -36,4 +40,8 @@ git config --global push.autoSetupRemote true
 if command -v direnv &>/dev/null; then
 	eval "$(direnv hook zsh)"
 	export DIRENV_WARN_TIMEOUT=0
+fi
+
+if ! test -f "${HOME}/.envrc"; then
+	(cd "${DOTFILES_DIR}" && "${DOTFILES_DIR}"/stow.sh)
 fi
